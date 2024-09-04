@@ -1,6 +1,9 @@
+import 'package:RentCost/features/widget/carousel_category.dart';
 import "package:flutter/material.dart";
 import 'package:RentCost/features/view/navigation_bar.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:RentCost/features/widget/carousel_banner.dart';
+import 'package:RentCost/features/model/category.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,7 +15,10 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
+    List<String> imagePaths =
+        categoryList.map((category) => category.path).toList();
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: AppBar(
@@ -25,9 +31,11 @@ class _HomeState extends State<Home> {
                   Container(
                     width: 35.0,
                     height: 35.0,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color(0xFF881FFF), width: 1.0),
                         shape: BoxShape.circle,
-                        image: DecorationImage(
+                        image: const DecorationImage(
                             image: AssetImage("assets/profiles.png"),
                             fit: BoxFit.cover)),
                   ),
@@ -36,13 +44,13 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Hi, Cina",
+                        "Hai, Cina",
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        "Mari cari kostum sekarang...",
-                        style: TextStyle(fontSize: 16),
+                        "Temukan kostum favoritmu...",
+                        style: TextStyle(fontSize: 14),
                       )
                     ],
                   )
@@ -59,15 +67,64 @@ class _HomeState extends State<Home> {
           ),
         ),
       ),
-      body: const Center(
-        child: Row(
-          children: [
-            Row(
-              children: [],
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            const CarouselBanner(
+              imagePaths: [
+                "assets/banner3.png",
+                "assets/banner4.png",
+                "assets/banner3.png",
+                "assets/banner4.png"
+              ],
             ),
-            Row(
-              children: [Text("Kanan")],
-            )
+            const SizedBox(
+              height: 20.0,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Kategori Cosplay",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF881FFF)),
+                      ),
+                      GestureDetector(
+                        child: const Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Lihat Semua",
+                              style: TextStyle(
+                                  fontSize: 13.0, color: Color(0xFF881FFF)),
+                            ),
+                            Icon(
+                              Bootstrap.chevron_right,
+                              size: 11.0,
+                              weight: 10.0,
+                              color: Color(0xFF881FFF),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 18.0,
+                  ),
+                  CarouselCategory(imagePaths: imagePaths)
+                ],
+              ),
+            ),
+            // CarouselCategory(imagePaths: imagePaths)
           ],
         ),
       ),

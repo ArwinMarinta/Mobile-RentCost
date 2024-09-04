@@ -50,26 +50,26 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
 
   Widget _buildNavItem(IconData icon, String label, int index) {
     final bool isSelected = widget.selectedIndex == index;
-    return TextButton(
-      onPressed: () => _onItemTapped(index),
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.zero,
-        minimumSize: const Size(0, 20), // Adjust height as needed
-        foregroundColor: isSelected ? const Color(0xFF881FFF) : Colors.grey,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: isSelected ? const Color(0xFF881FFF) : Colors.grey),
-          const SizedBox(height: 4.0),
-          Text(
-            label,
-            style: TextStyle(
-              color: isSelected ? const Color(0xFF881FFF) : Colors.grey,
-              fontSize: 14, // Set font size here
+    return GestureDetector(
+      onTap: () => _onItemTapped(index),
+      child: Container(
+        color: Colors.transparent, // To ensure GestureDetector covers the area
+        // padding: EdgeInsets.symmetric(vertical: 20), // Adjust padding as needed
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon,
+                color: isSelected ? const Color(0xFF881FFF) : Colors.grey),
+            const SizedBox(height: 4.0),
+            Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? const Color(0xFF881FFF) : Colors.grey,
+                fontSize: 14, // Set font size here
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
