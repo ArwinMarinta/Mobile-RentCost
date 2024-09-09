@@ -1,8 +1,12 @@
+import 'package:RentCost/features/model/costum.dart';
+import 'package:RentCost/features/widget/card_costum.dart';
+import 'package:RentCost/features/widget/carousel_card.dart';
 import 'package:RentCost/features/widget/carousel_category.dart';
 import "package:flutter/material.dart";
 import 'package:RentCost/features/view/navigation_bar.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:RentCost/features/widget/carousel_banner.dart';
+import 'package:RentCost/features/model/category.dart';
 import 'package:RentCost/features/model/category.dart';
 
 class Home extends StatefulWidget {
@@ -17,6 +21,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     List<String> imagePaths =
         categoryList.map((category) => category.path).toList();
+
+    final List<Costum> costum = costumList;
+    // List<Costum> costum = costumList.map((data) => data.toString());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -120,10 +127,58 @@ class _HomeState extends State<Home> {
                   const SizedBox(
                     height: 18.0,
                   ),
-                  CarouselCategory(imagePaths: imagePaths)
+                  CarouselCategory(imagePaths: imagePaths),
                 ],
               ),
             ),
+            SizedBox(
+              height: 20.0,
+            ),
+
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: CardCostum(costum: costum),
+            )
+            // SizedBox(
+            //   height: 200.0, // Atur tinggi dari widget
+            //   child: ListView(
+            //     scrollDirection: Axis.horizontal, // Scroll ke samping
+            //     children: costum.map((data) {
+            //       return Padding(
+            //         padding: const EdgeInsets.all(4.0),
+            //         child: Container(
+            //           width: 200.0, // Tentukan lebar setiap item
+            //           color: Colors
+            //               .blue, // Ubah sesuai kebutuhan (misal background)
+            //           child: Column(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               // Misal menampilkan gambar dari data.path
+            //               Image.asset(
+            //                 data.path,
+            //                 width: 100.0,
+            //                 height: 100.0,
+            //                 fit: BoxFit.cover,
+            //               ),
+            //               const SizedBox(height: 10.0),
+            //               // Menampilkan nama dari data.name
+            //               Text(
+            //                 data.name,
+            //                 style: const TextStyle(
+            //                     color: Colors.white, fontSize: 16.0),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       );
+            //     }).toList(),
+            //   ),
+            // )
+
+            //Carousel
+            // Container(
+            //   child: CarouselCard(costum: costum),
+            // )
             // CarouselCategory(imagePaths: imagePaths)
           ],
         ),

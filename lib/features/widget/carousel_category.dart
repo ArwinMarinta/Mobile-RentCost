@@ -19,15 +19,15 @@ class CarouselCategory extends StatefulWidget {
 class _CarouselCategoryState extends State<CarouselCategory> {
   @override
   Widget build(BuildContext context) {
-    bool _pauseAutoPlayOnTouch = true; // Status autoplay
+    bool pauseAutoPlayOnTouch = true; // Status autoplay
 
-    void _togglePauseOnTouch() {
+    void togglePauseOnTouch() {
       setState(() {
-        _pauseAutoPlayOnTouch = false;
+        pauseAutoPlayOnTouch = false;
       });
     }
 
-    print(_pauseAutoPlayOnTouch);
+    print(pauseAutoPlayOnTouch);
 
     return Column(
       children: [
@@ -39,7 +39,7 @@ class _CarouselCategoryState extends State<CarouselCategory> {
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 1),
             // autoPlayAnimationDuration: const Duration(milliseconds: 600),
-            pauseAutoPlayOnTouch: _pauseAutoPlayOnTouch,
+            pauseAutoPlayOnTouch: pauseAutoPlayOnTouch,
             viewportFraction: 0.2,
             scrollDirection: Axis.horizontal,
           ),
@@ -65,13 +65,13 @@ class _CarouselCategoryState extends State<CarouselCategory> {
         const SizedBox(height: 16.0),
         CarouselSlider(
           options: CarouselOptions(
-            height: 70.0,
-            aspectRatio: 1 / 2,
+            height: 60.0,
+            aspectRatio: 1,
             enableInfiniteScroll: true,
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 1),
             // autoPlayAnimationDuration: const Duration(milliseconds: 600),
-            pauseAutoPlayOnTouch: _pauseAutoPlayOnTouch,
+            pauseAutoPlayOnTouch: pauseAutoPlayOnTouch,
             viewportFraction: 0.2,
             scrollDirection: Axis.horizontal,
             reverse: true,
