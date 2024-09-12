@@ -36,7 +36,7 @@ class CarouselBanner extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               // margin: const EdgeInsets.symmetric(horizontal: 5.0),
               decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: Colors.white,
                   image: DecorationImage(
                     image: AssetImage(imagePath),
                     fit: BoxFit.fill,

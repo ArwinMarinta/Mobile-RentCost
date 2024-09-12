@@ -27,7 +27,7 @@ class CarouselCard extends StatelessWidget {
       items: costum.map((Costum data) {
         return Builder(
           builder: (BuildContext context) {
-            if (data.path != null && data.path.isNotEmpty) {
+            if (data.path.isNotEmpty) {
               return Container(
                 // width: double.infinity, // Lebar penuh
                 height: MediaQuery.of(context).size.height, // Tinggi penuh
