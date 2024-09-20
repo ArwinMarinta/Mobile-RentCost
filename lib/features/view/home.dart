@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Hai, Cina",
+                        "Hai, Arwin",
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w700),
                       ),
@@ -74,7 +74,13 @@ class _HomeState extends State<Home> {
                     child: const Icon(FontAwesome.magnifying_glass_solid),
                   ),
                   const SizedBox(width: 15.0),
-                  const Icon(FontAwesome.bell)
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          context.go('/shop');
+                        });
+                      },
+                      child: const Icon(Bootstrap.shop))
                 ],
               )
             ],

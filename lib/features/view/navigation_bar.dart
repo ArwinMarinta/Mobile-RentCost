@@ -23,7 +23,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         context.go('/category');
         break;
       case 2:
-        context.go('/shop');
+        context.go('/cart');
         break;
       case 3:
         context.go('/profile');
@@ -42,7 +42,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           _buildNavItem(FontAwesome.house_chimney_solid, 'Beranda', 0),
           _buildNavItem(FontAwesome.list_solid, 'Kategori', 1),
           _buildNavItem(FontAwesome.cart_shopping_solid, 'Keranjang', 2),
-          _buildNavItem(FontAwesome.user_plus_solid, 'Akun Saya', 3),
+          _buildNavItem(FontAwesome.user_solid, 'Akun Saya', 3),
         ],
       ),
     );

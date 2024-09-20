@@ -21,7 +21,7 @@ class CardCostum extends StatelessWidget {
               decoration: BoxDecoration(
                   color:
                       Colors.white, // Ubah sesuai kebutuhan (misal background)
-                  border: Border.all(color: Colors.black45, width: 0.5),
+                  border: Border.all(color: Colors.black45, width: 0.2),
                   borderRadius: const BorderRadius.all(Radius.circular(6.0)),
                   boxShadow: [
                     BoxShadow(

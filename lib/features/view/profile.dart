@@ -1,6 +1,7 @@
 import 'package:RentCost/features/view/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:go_router/go_router.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -156,6 +157,11 @@ class _ProfileState extends State<Profile> {
                 height: 20.0,
               ),
               GestureDetector(
+                onTap: () {
+                  setState(() {
+                    context.go("/login");
+                  });
+                },
                 child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
