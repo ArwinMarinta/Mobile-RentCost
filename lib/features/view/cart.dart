@@ -1,5 +1,7 @@
-import 'package:RentCost/features/view/navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:RentCost/features/model/cart.dart';
+import 'package:RentCost/features/view/navigation_bar.dart';
+import 'package:RentCost/features/widget/card_cart.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class Cart extends StatefulWidget {
@@ -12,45 +14,42 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
+    final List<CartType> cart = cartList; // Assuming cartList is predefined
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          elevation: 0,
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2)),
-              Text(
-                "KERANJANG",
-                style: TextStyle(
-                    fontSize: 18.0,
-                    // color: Color(0xFF881FFF),
-                    fontWeight: FontWeight.w500),
-              ),
-            ],
-          )),
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        elevation: 0,
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2)),
+            Text(
+              "KERANJANG",
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+          margin: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
-            children: [
+            children: <Widget>[
               Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                    color: Colors
-                        .white, // Ubah sesuai kebutuhan (misal background)
+                    color: Colors.white,
                     border: Border.all(color: Colors.black45, width: 0.2),
                     borderRadius: const BorderRadius.all(Radius.circular(6.0)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.3), // Warna bayangan
-                        spreadRadius: 0.5, // Seberapa jauh shadow menyebar
-                        blurRadius: 1, // Seberapa kabur bayangan
-                        offset: const Offset(1, 2), // Posisi bayangan (x, y)))
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 0.5,
+                        blurRadius: 1,
+                        offset: const Offset(1, 2),
                       )
                     ]),
                 child: Row(
@@ -76,7 +75,7 @@ class _CartState extends State<Cart> {
                                       fontWeight: FontWeight.w500),
                                 ),
                                 Text(
-                                  "Jl. Sei wein No.6 RT.34, karang joang, 3G kos lantai 2 nomor 21, 76127, Balikpapan Utara, Balikpapan (Kota), Kalimantan Timur",
+                                  "Jl. Sei wein No.6 RT.34, karang joang...",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400),
@@ -96,11 +95,26 @@ class _CartState extends State<Cart> {
                     ),
                   ],
                 ),
-              )
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              CardCart(cart: cart),
             ],
           ),
         ),
       ),
+      // floatingActionButton: Container(
+      //   height:
+      //       56, // Sesuaikan tinggi dengan ukuran FloatingActionButton default
+      //   width: 56, // Sesuaikan lebar dengan ukuran FloatingActionButton default
+      //   child: FloatingActionButton(
+      //     onPressed: () {
+      //       // Aksi untuk tombol
+      //     },
+      //     child: Text("Saman"),
+      //   ),
+      // ),
       bottomNavigationBar: const CustomNavigationBar(selectedIndex: 2),
     );
   }

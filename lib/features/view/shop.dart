@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:go_router/go_router.dart';
 
 class Shop extends StatefulWidget {
   const Shop({super.key});
@@ -13,13 +14,38 @@ class _ShopState extends State<Shop> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.zero,
-        child: AppBar(backgroundColor: const Color(0xFF881FFF)),
-      ),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          centerTitle: true,
+          leading: GestureDetector(
+            onTap: () {
+              context.go("/");
+            },
+            child: const Icon(
+              FontAwesome.chevron_left_solid,
+              color: Colors.black,
+            ),
+          ),
+          elevation: 0,
+          title: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2)),
+              Text(
+                "Toko Saya",
+                style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          )),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
           child: Column(
             children: <Widget>[
               Container(
@@ -33,7 +59,86 @@ class _ShopState extends State<Shop> {
                           fontSize: 18.0,
                           fontWeight: FontWeight.w500),
                     ),
-                    Row()
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              FontAwesome.box_solid,
+                              size: 50,
+                              color: Color(0xFF881FFF),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Pesanan \nBaru",
+                              style: TextStyle(fontSize: 16.0),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Icon(
+                              // Bootstrap.box_seam,
+                              FontAwesome.box_archive_solid,
+                              size: 50,
+                              color: Color(0xFF881FFF),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Siap \n Kirim",
+                              style: TextStyle(fontSize: 16.0),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Icon(
+                              FontAwesome.truck_fast_solid,
+                              size: 50,
+                              color: Color(0xFF881FFF),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Sedang \n Dikirim",
+                              style: TextStyle(fontSize: 16.0),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Icon(
+                              FontAwesome.box_open_solid,
+                              size: 50,
+                              color: Color(0xFF881FFF),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Pesanan \nBaru",
+                              style: TextStyle(fontSize: 16.0),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -44,7 +149,7 @@ class _ShopState extends State<Shop> {
               //   ),
               // )
               const SizedBox(
-                height: 10.0,
+                height: 30.0,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +160,7 @@ class _ShopState extends State<Shop> {
                         TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(
-                    height: 10.0,
+                    height: 15.0,
                   ),
                   DottedBorder(
                     strokeWidth: 1,

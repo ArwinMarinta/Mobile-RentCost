@@ -6,12 +6,13 @@ import 'package:RentCost/features/view/profile.dart';
 import 'package:RentCost/features/view/register.dart';
 import 'package:RentCost/features/view/search.dart';
 import 'package:RentCost/features/view/shop.dart';
+import 'package:RentCost/features/view/verify_email.dart';
 // import 'package:RentCost/features/view/shopping.dart';
 import 'package:go_router/go_router.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 GoRouter goRouter() {
-  return GoRouter(initialLocation: "/cart", routes: [
+  return GoRouter(initialLocation: "/verify-email", routes: [
     GoRoute(
         path: "/",
         pageBuilder: (context, state) => const NoTransitionPage(child: Home())),
@@ -41,5 +42,9 @@ GoRouter goRouter() {
     GoRoute(
         path: "/cart",
         pageBuilder: (context, state) => const NoTransitionPage(child: Cart())),
+    GoRoute(
+        path: "/verify-email",
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: VerifyEmail())),
   ]);
 }
