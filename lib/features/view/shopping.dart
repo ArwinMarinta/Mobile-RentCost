@@ -13,6 +13,7 @@ class _ShoppingState extends State<Shopping> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         backgroundColor: Colors.white,
         title: const Text("Header"),
       ),

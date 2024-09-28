@@ -19,6 +19,7 @@ class _SearchState extends State<Search> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: AppBar(
+          scrolledUnderElevation: 0.0,
           backgroundColor: Colors.white,
           title: Row(
             children: [

@@ -1,7 +1,9 @@
+import 'package:RentCost/features/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:RentCost/features/model/cart.dart';
 import 'package:RentCost/features/view/navigation_bar.dart';
 import 'package:RentCost/features/widget/card_cart.dart';
+import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class Cart extends StatefulWidget {
@@ -18,6 +20,7 @@ class _CartState extends State<Cart> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        scrolledUnderElevation: 0.0,
         backgroundColor: Colors.white,
         centerTitle: true,
         elevation: 0,
@@ -90,7 +93,11 @@ class _CartState extends State<Cart> {
                     ),
                     const SizedBox(width: 6.0),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          context.go('/select_address');
+                        });
+                      },
                       child: const Text("Ubah"),
                     ),
                   ],

@@ -28,6 +28,7 @@ class _RegisterState extends State<Register> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+          scrolledUnderElevation: 0.0,
           backgroundColor: Colors.white,
           centerTitle: true,
           leading: GestureDetector(

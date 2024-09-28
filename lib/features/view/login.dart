@@ -27,6 +27,7 @@ class _LoginState extends State<Login> {
       appBar: PreferredSize(
         preferredSize: Size.zero,
         child: AppBar(
+          scrolledUnderElevation: 0.0,
           backgroundColor: Colors.white,
         ),
       ),

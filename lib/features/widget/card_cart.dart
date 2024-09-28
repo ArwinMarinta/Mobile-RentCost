@@ -35,6 +35,16 @@ class _CardCartState extends State<CardCart> {
                   child: Row(
                     children: [
                       Checkbox(
+                        fillColor: WidgetStateProperty.resolveWith<Color?>(
+                            (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.selected)) {
+                            return const Color(
+                                0xFF881FFF); // Warna saat dicentang
+                          }
+                          return Colors.white; // Warna saat tidak dicentang
+                        }),
+                        // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        // shape: const CircleBorder(),
                         side: const BorderSide(width: 0.6),
                         value: value,
                         // key: data.id,
