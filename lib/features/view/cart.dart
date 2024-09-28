@@ -1,4 +1,4 @@
-import 'package:RentCost/features/view/home.dart';
+// import 'package:RentCost/features/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:RentCost/features/model/cart.dart';
 import 'package:RentCost/features/view/navigation_bar.dart';
@@ -14,6 +14,7 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+  bool? value = false;
   @override
   Widget build(BuildContext context) {
     final List<CartType> cart = cartList; // Assuming cartList is predefined
@@ -111,18 +112,94 @@ class _CartState extends State<Cart> {
           ),
         ),
       ),
-      // floatingActionButton: Container(
-      //   height:
-      //       56, // Sesuaikan tinggi dengan ukuran FloatingActionButton default
-      //   width: 56, // Sesuaikan lebar dengan ukuran FloatingActionButton default
-      //   child: FloatingActionButton(
-      //     onPressed: () {
-      //       // Aksi untuk tombol
-      //     },
-      //     child: Text("Saman"),
-      //   ),
-      // ),
-      bottomNavigationBar: const CustomNavigationBar(selectedIndex: 2),
+      bottomNavigationBar: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // Pastikan ukuran kolom minimal
+          children: [
+            Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 12.0),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1), // Warna shadow
+                      offset: const Offset(0, -1), // Menggeser shadow ke atas
+                      blurRadius: 1, // Jarak blur shadow
+                      spreadRadius: 1, // Jarak spread shadow
+                    ),
+                  ],
+                  border: const Border(
+
+                      // top: BorderSide(width: 0.3, color: Colors.black),
+                      bottom: BorderSide(width: 0.5, color: Colors.black))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Row(
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              splashRadius: 0,
+                              fillColor:
+                                  WidgetStateProperty.resolveWith<Color?>(
+                                      (Set<WidgetState> states) {
+                                if (states.contains(WidgetState.selected)) {
+                                  return const Color(
+                                      0xFF881FFF); // Warna saat dicentang
+                                }
+                                return Colors
+                                    .white; // Warna saat tidak dicentang
+                              }),
+                              // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              // shape: const CircleBorder(),
+                              side: const BorderSide(width: 0.6),
+                              value: value,
+                              // key: data.id,
+                              onChanged: (bool? newValue) {
+                                setState(() {
+                                  value = newValue;
+                                });
+                              },
+                            ),
+                            const Text("Semua")
+                          ],
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        const Text("Rp. 400.000"),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: null,
+                    child: Container(
+                      padding: const EdgeInsets.all(4.0),
+                      decoration: const BoxDecoration(
+                          color: Color(0xFF881FFF),
+                          borderRadius: BorderRadius.all(Radius.circular(6.0))),
+                      child: const Text(
+                        "Lanjut \n Pembayaran",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const CustomNavigationBar(selectedIndex: 2),
+          ],
+        ),
+      ),
     );
   }
 }

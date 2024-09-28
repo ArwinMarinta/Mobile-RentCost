@@ -239,7 +239,19 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      bottomNavigationBar: const CustomNavigationBar(selectedIndex: 0),
+      bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1), // Warna shadow
+                offset: const Offset(0, -1), // Menggeser shadow ke atas
+                blurRadius: 1, // Jarak blur shadow
+                spreadRadius: 1, // Jarak spread shadow
+              ),
+            ],
+          ),
+          child: const CustomNavigationBar(selectedIndex: 0)),
     );
   }
 }

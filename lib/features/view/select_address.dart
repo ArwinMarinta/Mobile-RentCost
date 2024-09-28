@@ -19,6 +19,7 @@ class _SelectAddressState extends State<SelectAddress> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+          scrolledUnderElevation: 0.0,
           backgroundColor: Colors.white,
           centerTitle: true,
           leading: GestureDetector(
@@ -49,7 +50,40 @@ class _SelectAddressState extends State<SelectAddress> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
-          children: <Widget>[CardAddress(address: address)],
+          children: <Widget>[
+            CardAddress(address: address),
+            GestureDetector(
+              onTap: () {
+                context.go("/add_address");
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                width: double.infinity,
+                child: const Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Bootstrap.plus_circle,
+                        size: 20,
+                        color: Color(0xFF881FFF),
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Text(
+                        "Tambah Alamat",
+                        style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF881FFF)),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );

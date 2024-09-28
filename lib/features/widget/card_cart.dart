@@ -35,6 +35,7 @@ class _CardCartState extends State<CardCart> {
                   child: Row(
                     children: [
                       Checkbox(
+                        splashRadius: 0,
                         fillColor: WidgetStateProperty.resolveWith<Color?>(
                             (Set<WidgetState> states) {
                           if (states.contains(WidgetState.selected)) {
@@ -128,7 +129,7 @@ class _CardCartState extends State<CardCart> {
                             height: 10.0,
                           ),
                           Text(
-                            "Rp. ${data.price}",
+                            "Rp. ${data.price} / Hari",
                             style: const TextStyle(
                                 fontSize: 16.0,
                                 color: Color(0xFF881FFF),

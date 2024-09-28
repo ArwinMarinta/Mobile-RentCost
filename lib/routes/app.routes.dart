@@ -1,3 +1,4 @@
+import 'package:RentCost/features/view/add_address.dart';
 import 'package:RentCost/features/view/cart.dart';
 import 'package:RentCost/features/view/category.dart';
 import 'package:RentCost/features/view/home.dart';
@@ -13,7 +14,7 @@ import 'package:go_router/go_router.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 GoRouter goRouter() {
-  return GoRouter(initialLocation: "/select_address", routes: [
+  return GoRouter(initialLocation: "/", routes: [
     GoRoute(
         path: "/",
         pageBuilder: (context, state) => const NoTransitionPage(child: Home())),
@@ -51,5 +52,9 @@ GoRouter goRouter() {
         path: "/select_address",
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: SelectAddress())),
+    GoRoute(
+        path: "/add_address",
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: AddAddress())),
   ]);
 }

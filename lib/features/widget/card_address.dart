@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:RentCost/features/model/address.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 class CardAddress extends StatefulWidget {
   final List<AddressType> address;
@@ -26,6 +27,8 @@ class _CardAddressState extends State<CardAddress> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Checkbox(
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                splashRadius: 0,
                 fillColor: WidgetStateProperty.resolveWith<Color?>(
                     (Set<WidgetState> states) {
                   if (states.contains(WidgetState.selected)) {
@@ -64,6 +67,19 @@ class _CardAddressState extends State<CardAddress> {
                       softWrap: true,
                     )
                   ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Center(
+                  child: GestureDetector(
+                    onTap: null,
+                    child: const Icon(
+                      Bootstrap.trash3,
+                      size: 20,
+                      color: Colors.red,
+                    ),
+                  ),
                 ),
               )
             ],
