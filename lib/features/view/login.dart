@@ -123,7 +123,11 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: null,
+                          onTap: () {
+                            setState(() {
+                              context.go('/verify-email');
+                            });
+                          },
                           child: const Text(
                             "Lupa Kata Sandi",
                             style: TextStyle(
