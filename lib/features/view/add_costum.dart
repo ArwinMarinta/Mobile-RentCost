@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:file_picker/file_picker.dart';
 
 class AddCostum extends StatefulWidget {
   const AddCostum({super.key});
@@ -10,6 +11,10 @@ class AddCostum extends StatefulWidget {
 }
 
 class _AddCostumState extends State<AddCostum> {
+  String? showFileName = "";
+  String errorMessage = '';
+  int maxSizeInBytes = 1 * 1024 * 1024;
+  FilePickerResult? filePickerResult;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -263,6 +268,104 @@ class _AddCostumState extends State<AddCostum> {
               ),
               const SizedBox(
                 height: 20.0,
+              ),
+              Container(
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      child: Text(
+                        "Gambar Costum",
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(8.0)),
+                              border:
+                                  Border.all(color: Colors.black, width: 0.5),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        filePickerResult =
+                                            await FilePicker.platform.pickFiles(
+                                          type: FileType.custom,
+                                          allowedExtensions: [
+                                            'jpeg',
+                                            'jpg',
+                                            'png'
+                                          ],
+                                        );
+
+                                        if (filePickerResult != null) {
+                                          var file =
+                                              filePickerResult!.files.first;
+                                          if (file.size > maxSizeInBytes) {
+                                            setState(() {
+                                              errorMessage =
+                                                  'Ukuran file tidak boleh lebih dari 1 MB';
+                                              showFileName = '';
+                                            });
+                                          } else {
+                                            // Jika ukuran file sesuai, perbarui state dengan nama file
+                                            setState(() {
+                                              showFileName = file.name;
+                                              errorMessage =
+                                                  ''; // Clear any previous error message
+                                            });
+                                          }
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 14.0, horizontal: 8.0),
+                                        backgroundColor:
+                                            const Color(0xFF881FFF),
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8.0)),
+                                        ),
+                                      ),
+                                      child: const Text(
+                                        'Pilih File',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          showFileName!,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

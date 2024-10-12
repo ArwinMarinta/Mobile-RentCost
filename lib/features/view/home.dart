@@ -38,16 +38,21 @@ class _HomeState extends State<Home> {
             children: [
               Row(
                 children: [
-                  Container(
-                    width: 35.0,
-                    height: 35.0,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color(0xFF881FFF), width: 1.0),
-                        shape: BoxShape.circle,
-                        image: const DecorationImage(
-                            image: AssetImage("assets/profiles.png"),
-                            fit: BoxFit.cover)),
+                  GestureDetector(
+                    onTap: () {
+                      context.go('/profile');
+                    },
+                    child: Container(
+                      width: 35.0,
+                      height: 35.0,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: const Color(0xFF881FFF), width: 1.0),
+                          shape: BoxShape.circle,
+                          image: const DecorationImage(
+                              image: AssetImage("assets/profiles.png"),
+                              fit: BoxFit.cover)),
+                    ),
                   ),
                   const SizedBox(width: 6.0),
                   const Column(
@@ -107,9 +112,19 @@ class _HomeState extends State<Home> {
               child: Column(
                 children: [
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      // Garis di kiri
+                      Expanded(
+                        child: Divider(
+                          color: Color(0xFF881FFF), // Warna garis
+                          thickness: 2.0, // Ketebalan garis
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10.0,
+                      ),
                       const Text(
                         "Kategori Cosplay",
                         style: TextStyle(
@@ -117,28 +132,37 @@ class _HomeState extends State<Home> {
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF881FFF)),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          context.go('/category');
-                        },
-                        child: const Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Lihat Semua",
-                              style: TextStyle(
-                                  fontSize: 13.0, color: Color(0xFF881FFF)),
-                            ),
-                            Icon(
-                              Bootstrap.chevron_right,
-                              size: 11.0,
-                              weight: 10.0,
-                              color: Color(0xFF881FFF),
-                            )
-                          ],
+                      const SizedBox(
+                        width: 10.0,
+                      ),
+                      Expanded(
+                        child: Divider(
+                          color: Color(0xFF881FFF), // Warna garis
+                          thickness: 2.0, // Ketebalan garis
                         ),
-                      )
+                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     context.go('/category');
+                      //   },
+                      //   child: const Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Text(
+                      //         "Lihat Semua",
+                      //         style: TextStyle(
+                      //             fontSize: 13.0, color: Color(0xFF881FFF)),
+                      //       ),
+                      //       Icon(
+                      //         Bootstrap.chevron_right,
+                      //         size: 11.0,
+                      //         weight: 10.0,
+                      //         color: Color(0xFF881FFF),
+                      //       )
+                      //     ],
+                      //   ),
+                      // )
                     ],
                   ),
                   const SizedBox(

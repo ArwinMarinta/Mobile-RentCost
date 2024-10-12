@@ -78,7 +78,29 @@ class _ProfileState extends State<Profile> {
                             )
                           ],
                         ),
-                      )
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            context.go('/change-password');
+                          });
+                        },
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Bootstrap.shield_lock,
+                            ),
+                            SizedBox(width: 12.0),
+                            Text(
+                              "Ubah Password",
+                              style: TextStyle(fontSize: 18.0),
+                            )
+                          ],
+                        ),
+                      ),
                     ],
                   )
                 ],

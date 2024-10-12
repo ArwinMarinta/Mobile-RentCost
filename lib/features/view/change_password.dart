@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
+import 'package:icons_plus/icons_plus.dart';
 
-class Personal extends StatefulWidget {
-  const Personal({super.key});
+class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
 
   @override
-  State<Personal> createState() => _PersonalState();
+  State<ChangePassword> createState() => _ChangePasswordState();
 }
 
-class _PersonalState extends State<Personal> {
+class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +35,7 @@ class _PersonalState extends State<Personal> {
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2)),
               Text(
-                "Informasi Pribadi",
+                "Ubah Password",
                 style: TextStyle(
                     fontSize: 18.0,
                     color: Colors.black,
@@ -45,31 +45,15 @@ class _PersonalState extends State<Personal> {
           )),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Center(
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(100.0)),
-                  // Radius untuk sudut membulat
-                  child: Image.asset(
-                    'assets/costum1.png',
-                    fit: BoxFit.cover,
-                    width: 100.0,
-                    height: 100.0,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
               const SizedBox(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Username",
+                      "Masukkan Password Lama",
                       style: TextStyle(
                           fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
@@ -79,7 +63,7 @@ class _PersonalState extends State<Personal> {
                     TextField(
                       onChanged: null,
                       decoration: InputDecoration(
-                        hintText: 'Your Name',
+                        hintText: '********',
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
                         border: OutlineInputBorder(
@@ -102,14 +86,14 @@ class _PersonalState extends State<Personal> {
                 ),
               ),
               const SizedBox(
-                height: 20.0,
+                height: 16.0,
               ),
               const SizedBox(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Email",
+                      "Masukkan Password Baru",
                       style: TextStyle(
                           fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
@@ -117,10 +101,9 @@ class _PersonalState extends State<Personal> {
                       height: 10.0,
                     ),
                     TextField(
-                      enabled: false,
                       onChanged: null,
                       decoration: InputDecoration(
-                        hintText: 'Your Email',
+                        hintText: '********',
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
                         border: OutlineInputBorder(
@@ -143,14 +126,14 @@ class _PersonalState extends State<Personal> {
                 ),
               ),
               const SizedBox(
-                height: 20.0,
+                height: 16.0,
               ),
               const SizedBox(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Phone Number",
+                      "Ulangi Password Baru",
                       style: TextStyle(
                           fontSize: 16.0, fontWeight: FontWeight.bold),
                     ),
@@ -160,7 +143,7 @@ class _PersonalState extends State<Personal> {
                     TextField(
                       onChanged: null,
                       decoration: InputDecoration(
-                        hintText: 'Your Phone Numbers',
+                        hintText: '********',
                         contentPadding: EdgeInsets.symmetric(
                             vertical: 10.0, horizontal: 20.0),
                         border: OutlineInputBorder(
@@ -181,6 +164,9 @@ class _PersonalState extends State<Personal> {
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 16.0,
               ),
             ],
           ),

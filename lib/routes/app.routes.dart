@@ -2,8 +2,10 @@ import 'package:RentCost/features/view/add_address.dart';
 import 'package:RentCost/features/view/add_costum.dart';
 import 'package:RentCost/features/view/cart.dart';
 import 'package:RentCost/features/view/category.dart';
+import 'package:RentCost/features/view/change_password.dart';
 import 'package:RentCost/features/view/confirm_payment.dart';
 import 'package:RentCost/features/view/detail_costum.dart';
+import 'package:RentCost/features/view/detail_history.dart';
 import 'package:RentCost/features/view/forgot_password.dart';
 import 'package:RentCost/features/view/home.dart';
 import 'package:RentCost/features/view/login.dart';
@@ -20,7 +22,7 @@ import 'package:go_router/go_router.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 GoRouter goRouter() {
-  return GoRouter(initialLocation: "/add-costum", routes: [
+  return GoRouter(initialLocation: "/detail-history", routes: [
     GoRoute(
         path: "/",
         pageBuilder: (context, state) => const NoTransitionPage(child: Home())),
@@ -86,5 +88,13 @@ GoRouter goRouter() {
         path: "/add-costum",
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: AddCostum())),
+    GoRoute(
+        path: "/change-password",
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: ChangePassword())),
+    GoRoute(
+        path: "/detail-history",
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: DetailHistory())),
   ]);
 }

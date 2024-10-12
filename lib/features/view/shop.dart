@@ -171,7 +171,9 @@ class _ShopState extends State<Shop> {
                     child: Column(
                       children: [
                         GestureDetector(
-                          onTap: null,
+                          onTap: () {
+                            context.go('/add-costum');
+                          },
                           child: Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
