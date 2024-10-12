@@ -39,6 +39,11 @@ class _ProfileState extends State<Profile> {
                   Column(
                     children: [
                       GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            context.go('/personal');
+                          });
+                        },
                         child: const Row(
                           children: [
                             Icon(
@@ -56,6 +61,11 @@ class _ProfileState extends State<Profile> {
                         height: 10.0,
                       ),
                       GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            context.go('/my-order');
+                          });
+                        },
                         child: const Row(
                           children: [
                             Icon(
@@ -89,6 +99,11 @@ class _ProfileState extends State<Profile> {
                       height: 10,
                     ),
                     GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          context.go('/confirm-payment');
+                        });
+                      },
                       child: const Row(
                         children: [
                           Icon(Bootstrap.bank),

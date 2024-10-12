@@ -132,7 +132,7 @@ class _ShopState extends State<Shop> {
                               height: 10,
                             ),
                             Text(
-                              "Pesanan \nBaru",
+                              "Sampai \n Tujuan",
                               style: TextStyle(fontSize: 16.0),
                               textAlign: TextAlign.center,
                             )

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:go_router/go_router.dart';
 
 class VerifyEmail extends StatefulWidget {
   const VerifyEmail({super.key});
@@ -12,6 +14,22 @@ class _VerifyEmailState extends State<VerifyEmail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        scrolledUnderElevation: 0.0,
+        backgroundColor: Colors.white,
+        centerTitle: true,
+        leading: GestureDetector(
+          onTap: () {
+            context.go("/login");
+          },
+          child: const Icon(
+            FontAwesome.chevron_left_solid,
+            color: Colors.black,
+          ),
+        ),
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 30.0),

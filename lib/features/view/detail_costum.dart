@@ -263,7 +263,7 @@ class _DetailCostumState extends State<DetailCostum> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 14),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFC67C4F),
+                            color: Color(0xFF881FFF),
                             border: Border.all(color: Colors.white, width: 2.0),
                             borderRadius: BorderRadius.circular(18),
                           ),

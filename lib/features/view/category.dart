@@ -12,6 +12,7 @@ class _CategoryState extends State<Category> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
         backgroundColor: Colors.white,

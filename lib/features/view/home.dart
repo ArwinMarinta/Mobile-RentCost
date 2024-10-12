@@ -118,6 +118,9 @@ class _HomeState extends State<Home> {
                             color: Color(0xFF881FFF)),
                       ),
                       GestureDetector(
+                        onTap: () {
+                          context.go('/category');
+                        },
                         child: const Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
