@@ -1,3 +1,4 @@
+import 'package:RentCost/features/widget/add_cart_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:RentCost/features/model/cart.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -89,10 +90,15 @@ class _CardCartState extends State<CardCart> {
                               const Text("Ukuran: "),
                               GestureDetector(
                                 onTap: () {
-                                  showDialog(
+                                  showModalBottomSheet<void>(
+                                    shape: const RoundedRectangleBorder(
+                                      // Mengatur border radius pada modal
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(16.0)),
+                                    ),
                                     context: context,
                                     builder: (BuildContext context) {
-                                      return const ChangeSizeModal();
+                                      return const AddCartModal(); // Memanggil widget modal
                                     },
                                   );
                                 },
@@ -129,7 +135,7 @@ class _CardCartState extends State<CardCart> {
                             height: 10.0,
                           ),
                           Text(
-                            "Rp. ${data.price} / Hari",
+                            "Rp. ${data.price} / 3 Hari",
                             style: const TextStyle(
                                 fontSize: 16.0,
                                 color: Color(0xFF881FFF),

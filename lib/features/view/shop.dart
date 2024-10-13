@@ -49,109 +49,109 @@ class _ShopState extends State<Shop> {
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
           child: Column(
             children: <Widget>[
-              Container(
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Riwayat Rentalan",
-                      style: TextStyle(
-                          // color: const Color(0xFF881FFF),
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              FontAwesome.box_solid,
-                              size: 50,
-                              color: Color(0xFF881FFF),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Pesanan \nBaru",
-                              style: TextStyle(fontSize: 16.0),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Icon(
-                              // Bootstrap.box_seam,
-                              FontAwesome.box_archive_solid,
-                              size: 50,
-                              color: Color(0xFF881FFF),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Siap \n Kirim",
-                              style: TextStyle(fontSize: 16.0),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Icon(
-                              FontAwesome.truck_fast_solid,
-                              size: 50,
-                              color: Color(0xFF881FFF),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Sedang \n Dikirim",
-                              style: TextStyle(fontSize: 16.0),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Icon(
-                              FontAwesome.box_open_solid,
-                              size: 50,
-                              color: Color(0xFF881FFF),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Sampai \n Tujuan",
-                              style: TextStyle(fontSize: 16.0),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
+              // Container(
+              //   child: const Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         "Riwayat Rentalan",
+              //         style: TextStyle(
+              //             // color: const Color(0xFF881FFF),
+              //             fontSize: 18.0,
+              //             fontWeight: FontWeight.w500),
+              //       ),
+              //       SizedBox(
+              //         height: 20,
+              //       ),
+              //       Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         crossAxisAlignment: CrossAxisAlignment.center,
+              //         children: [
+              //           Column(
+              //             crossAxisAlignment: CrossAxisAlignment.center,
+              //             mainAxisAlignment: MainAxisAlignment.center,
+              //             children: [
+              //               Icon(
+              //                 FontAwesome.box_solid,
+              //                 size: 50,
+              //                 color: Color(0xFF881FFF),
+              //               ),
+              //               SizedBox(
+              //                 height: 10,
+              //               ),
+              //               Text(
+              //                 "Pesanan \nBaru",
+              //                 style: TextStyle(fontSize: 16.0),
+              //                 textAlign: TextAlign.center,
+              //               )
+              //             ],
+              //           ),
+              //           Column(
+              //             children: [
+              //               Icon(
+              //                 // Bootstrap.box_seam,
+              //                 FontAwesome.box_archive_solid,
+              //                 size: 50,
+              //                 color: Color(0xFF881FFF),
+              //               ),
+              //               SizedBox(
+              //                 height: 10,
+              //               ),
+              //               Text(
+              //                 "Siap \n Kirim",
+              //                 style: TextStyle(fontSize: 16.0),
+              //                 textAlign: TextAlign.center,
+              //               )
+              //             ],
+              //           ),
+              //           Column(
+              //             children: [
+              //               Icon(
+              //                 FontAwesome.truck_fast_solid,
+              //                 size: 50,
+              //                 color: Color(0xFF881FFF),
+              //               ),
+              //               SizedBox(
+              //                 height: 10,
+              //               ),
+              //               Text(
+              //                 "Sedang \n Dikirim",
+              //                 style: TextStyle(fontSize: 16.0),
+              //                 textAlign: TextAlign.center,
+              //               )
+              //             ],
+              //           ),
+              //           Column(
+              //             children: [
+              //               Icon(
+              //                 FontAwesome.box_open_solid,
+              //                 size: 50,
+              //                 color: Color(0xFF881FFF),
+              //               ),
+              //               SizedBox(
+              //                 height: 10,
+              //               ),
+              //               Text(
+              //                 "Sampai \n Tujuan",
+              //                 style: TextStyle(fontSize: 16.0),
+              //                 textAlign: TextAlign.center,
+              //               )
+              //             ],
+              //           ),
+              //         ],
+              //       )
+              //     ],
+              //   ),
+              // ),
               // GestureDetector(
               //   onTap: null,
               //   child: Container(
               //     child: Text("Komplain sebagai penjual"),
               //   ),
               // )
-              const SizedBox(
-                height: 30.0,
-              ),
+              // const SizedBox(
+              //   height: 30.0,
+              // ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -193,30 +193,30 @@ class _ShopState extends State<Shop> {
                                     fontWeight: FontWeight.w500),
                               ))),
                         ),
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        GestureDetector(
-                          onTap: null,
-                          child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(4.0)),
-                                  border: Border.all(
-                                      color: const Color(0xFFBEBEBE),
-                                      width: 0.8)),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 6.0),
-                              child: const Center(
-                                  child: Text(
-                                "Atur Denda Produk",
-                                style: TextStyle(
-                                    color: Color(0xFF881FFF),
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w500),
-                              ))),
-                        )
+                        // const SizedBox(
+                        //   height: 10.0,
+                        // ),
+                        // GestureDetector(
+                        //   onTap: null,
+                        //   child: Container(
+                        //       width: double.infinity,
+                        //       decoration: BoxDecoration(
+                        //           borderRadius: const BorderRadius.all(
+                        //               Radius.circular(4.0)),
+                        //           border: Border.all(
+                        //               color: const Color(0xFFBEBEBE),
+                        //               width: 0.8)),
+                        //       padding: const EdgeInsets.symmetric(
+                        //           vertical: 10.0, horizontal: 6.0),
+                        //       child: const Center(
+                        //           child: Text(
+                        //         "Atur Denda Produk",
+                        //         style: TextStyle(
+                        //             color: Color(0xFF881FFF),
+                        //             fontSize: 16.0,
+                        //             fontWeight: FontWeight.w500),
+                        //       ))),
+                        // )
                       ],
                     ),
                   ),
@@ -227,7 +227,60 @@ class _ShopState extends State<Shop> {
                     child: Column(
                       children: [
                         GestureDetector(
-                          onTap: null,
+                          onTap: () {
+                            context.go('/history-tenant');
+                          },
+                          child: Container(
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                  border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.black, // Warna border
+                                  width: 0.3, // Ketebalan border
+                                ),
+                              )),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 6.0),
+                              child: const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Riwayat Rental",
+                                        style: TextStyle(
+                                            // color: Color(0xFF881FFF),
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      SizedBox(
+                                        height: 2.0,
+                                      ),
+                                      Text(
+                                        "Lihat dan atur rentalan",
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: TextStyle(
+                                            // color: Color(0xFF881FFF),
+                                            fontSize: 13.0,
+                                            fontWeight: FontWeight.w300),
+                                      )
+                                    ],
+                                  ),
+                                  Icon(
+                                    Bootstrap.caret_right_fill,
+                                    color: Color(0xFFBEBEBE),
+                                  )
+                                ],
+                              )),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            context.go('/costum-tenant');
+                          },
                           child: Container(
                               width: double.infinity,
                               decoration: const BoxDecoration(
@@ -278,57 +331,57 @@ class _ShopState extends State<Shop> {
                         const SizedBox(
                           height: 12.0,
                         ),
-                        GestureDetector(
-                          onTap: null,
-                          child: Container(
-                              width: double.infinity,
-                              decoration: const BoxDecoration(
-                                  border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.black, // Warna border
-                                  width: 0.3, // Ketebalan border
-                                ),
-                              )),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10.0, horizontal: 6.0),
-                              child: const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Denda Rental",
-                                          style: TextStyle(
-                                              // color: Color(0xFF881FFF),
-                                              fontSize: 18.0,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        SizedBox(
-                                          height: 2.0,
-                                        ),
-                                        Text(
-                                          "Lihat denda yang dikenakan untuk pembeli",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: TextStyle(
-                                              // color: Color(0xFF881FFF),
-                                              fontSize: 13.0,
-                                              fontWeight: FontWeight.w300),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Icon(
-                                    Bootstrap.caret_right_fill,
-                                    color: Color(0xFFBEBEBE),
-                                  )
-                                ],
-                              )),
-                        )
+                        // GestureDetector(
+                        //   onTap: null,
+                        //   child: Container(
+                        //       width: double.infinity,
+                        //       decoration: const BoxDecoration(
+                        //           border: Border(
+                        //         bottom: BorderSide(
+                        //           color: Colors.black, // Warna border
+                        //           width: 0.3, // Ketebalan border
+                        //         ),
+                        //       )),
+                        //       padding: const EdgeInsets.symmetric(
+                        //           vertical: 10.0, horizontal: 6.0),
+                        //       child: const Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Expanded(
+                        //             child: Column(
+                        //               crossAxisAlignment:
+                        //                   CrossAxisAlignment.start,
+                        //               children: [
+                        //                 Text(
+                        //                   "Denda Rental",
+                        //                   style: TextStyle(
+                        //                       // color: Color(0xFF881FFF),
+                        //                       fontSize: 18.0,
+                        //                       fontWeight: FontWeight.w500),
+                        //                 ),
+                        //                 SizedBox(
+                        //                   height: 2.0,
+                        //                 ),
+                        //                 Text(
+                        //                   "Lihat denda yang dikenakan untuk pembeli",
+                        //                   overflow: TextOverflow.ellipsis,
+                        //                   maxLines: 1,
+                        //                   style: TextStyle(
+                        //                       // color: Color(0xFF881FFF),
+                        //                       fontSize: 13.0,
+                        //                       fontWeight: FontWeight.w300),
+                        //                 )
+                        //               ],
+                        //             ),
+                        //           ),
+                        //           Icon(
+                        //             Bootstrap.caret_right_fill,
+                        //             color: Color(0xFFBEBEBE),
+                        //           )
+                        //         ],
+                        //       )),
+                        // )
                       ],
                     ),
                   )

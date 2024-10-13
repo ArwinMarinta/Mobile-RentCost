@@ -1,5 +1,7 @@
+import 'package:RentCost/features/model/costum.dart';
 import 'package:RentCost/features/view/home.dart';
 import 'package:RentCost/features/view/navigation_bar.dart';
+import 'package:RentCost/features/widget/card_costum_search.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +14,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  final List<Costum> costum = costumList;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,57 +71,19 @@ class _SearchState extends State<Search> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            // Container(
-            //   margin: const EdgeInsets.symmetric(horizontal: 16.0),
-            //   child: Row(
-            //     children: [
-            //       GestureDetector(
-            //         onTap: null,
-            //         child: Container(
-            //             color: Colors.red,
-            //             // margin: const EdgeInsets.symmetric(
-            //             //     vertical: 10.0, horizontal: 8.0),
-            //             padding: const EdgeInsets.all(10.0),
-            //             child: const Icon(
-            //               Bootstrap.chevron_left,
-            //               size: 25.0,
-            //             )),
-            //       ),
-            //       const Expanded(
-            //         child: TextField(
-            //           decoration: InputDecoration(
-            //             hintText: "Cari Kostum...",
-            //             filled: true,
-            //             fillColor: Colors.grey,
-            //             border: OutlineInputBorder(
-            //               borderRadius: BorderRadius.all(Radius.circular(4.0)),
-            //               borderSide: BorderSide(color: Colors.grey, width: 0),
-            //             ),
-            //             focusedBorder: OutlineInputBorder(
-            //               borderRadius: BorderRadius.all(Radius.circular(4.0)),
-            //               borderSide: BorderSide(
-            //                   color: Colors.grey,
-            //                   width: 1.0), // Mengatur border saat fokus
-            //             ),
-            //             enabledBorder: OutlineInputBorder(
-            //               borderRadius: BorderRadius.all(Radius.circular(4.0)),
-            //               borderSide: BorderSide(
-            //                   color: Colors.grey,
-            //                   width: 1.0), // Mengatur border saat tidak fokus
-            //             ),
-            //           ),
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // ),
-            Container(),
-            Container(),
-          ],
+      body: GridView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Jumlah kolom
+          crossAxisSpacing: 15.0, // Jarak antar kolom
+          mainAxisSpacing: 15.0, // Jarak antar baris
+          childAspectRatio: 0.70, // Rasio untuk lebar vs tinggi item
         ),
+        itemCount: costum.length,
+        itemBuilder: (context, index) {
+          // Kirim data Costum ke widget CardCostumTenant
+          return CardCostumSearch(costum: costum[index]);
+        },
       ),
       bottomNavigationBar: const CustomNavigationBar(selectedIndex: 100),
     );

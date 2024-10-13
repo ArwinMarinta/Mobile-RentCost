@@ -143,6 +143,61 @@ class _ProfileState extends State<Profile> {
               const SizedBox(
                 height: 20.0,
               ),
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Admin",
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          context.go('/banner');
+                        });
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(Bootstrap.bank),
+                          SizedBox(width: 12.0),
+                          Text(
+                            "Banner",
+                            style: TextStyle(fontSize: 18.0),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          context.go('/category');
+                        });
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(Bootstrap.bank),
+                          SizedBox(width: 12.0),
+                          Text(
+                            "Kategori",
+                            style: TextStyle(fontSize: 18.0),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

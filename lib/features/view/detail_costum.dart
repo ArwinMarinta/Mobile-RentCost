@@ -1,3 +1,4 @@
+import 'package:RentCost/features/widget/add_cart_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
@@ -256,7 +257,19 @@ class _DetailCostumState extends State<DetailCostum> {
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: null,
+                      onTap: () {
+                        showModalBottomSheet<void>(
+                          shape: const RoundedRectangleBorder(
+                            // Mengatur border radius pada modal
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(16.0)),
+                          ),
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const AddCartModal(); // Memanggil widget modal
+                          },
+                        );
+                      },
                       child: Padding(
                         padding: const EdgeInsets.all(0),
                         child: Container(

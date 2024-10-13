@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
 
-class Category extends StatefulWidget {
-  const Category({super.key});
+class Banners extends StatefulWidget {
+  const Banners({super.key});
 
   @override
-  State<Category> createState() => _CategoryState();
+  State<Banners> createState() => _BannersState();
 }
 
-class _CategoryState extends State<Category> {
+class _BannersState extends State<Banners> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,7 @@ class _CategoryState extends State<Category> {
         title: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.0),
           child: Text(
-            "Kategori Costume",
+            "Banner",
             style: TextStyle(
                 fontSize: 20.0,
                 color: Colors.black,
@@ -43,7 +43,7 @@ class _CategoryState extends State<Category> {
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: GestureDetector(
               onTap: () {
-                context.go('/add-catetory');
+                context.go('/add-banner');
               },
               child: const Icon(Bootstrap.plus_circle),
             ),
@@ -72,7 +72,7 @@ class _CategoryState extends State<Category> {
                               const BorderRadius.all(Radius.circular(6.0)),
                           // Radius untuk sudut membulat
                           child: Image.asset(
-                            'assets/category1.png',
+                            'assets/banner1.png',
                             fit: BoxFit.cover,
                             height: 100.0,
                             width:
@@ -84,7 +84,7 @@ class _CategoryState extends State<Category> {
                           width: 10.0,
                         ),
                         Text(
-                          "Mobile Legend",
+                          "Bertujuh Project",
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.w500),
                         )
@@ -132,7 +132,7 @@ class _CategoryState extends State<Category> {
                               const BorderRadius.all(Radius.circular(6.0)),
                           // Radius untuk sudut membulat
                           child: Image.asset(
-                            'assets/category2.png',
+                            'assets/banner1.png',
                             fit: BoxFit.cover,
                             height: 100.0,
                             width:
@@ -144,7 +144,7 @@ class _CategoryState extends State<Category> {
                           width: 10.0,
                         ),
                         Text(
-                          "Genshin Impact",
+                          "Bertujuh Project",
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.w500),
                         )
@@ -192,7 +192,7 @@ class _CategoryState extends State<Category> {
                               const BorderRadius.all(Radius.circular(6.0)),
                           // Radius untuk sudut membulat
                           child: Image.asset(
-                            'assets/category3.png',
+                            'assets/banner3.png',
                             fit: BoxFit.cover,
                             height: 100.0,
                             width:
@@ -204,7 +204,7 @@ class _CategoryState extends State<Category> {
                           width: 10.0,
                         ),
                         Text(
-                          "Hongkai",
+                          "Bertujuh Project",
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.w500),
                         )

@@ -190,25 +190,25 @@ class _HomeState extends State<Home> {
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF881FFF)),
                         ),
-                        GestureDetector(
-                          child: const Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Lihat Semua",
-                                style: TextStyle(
-                                    fontSize: 13.0, color: Color(0xFF881FFF)),
-                              ),
-                              Icon(
-                                Bootstrap.chevron_right,
-                                size: 11.0,
-                                weight: 10.0,
-                                color: Color(0xFF881FFF),
-                              )
-                            ],
-                          ),
-                        )
+                        // GestureDetector(
+                        //   child: const Row(
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       Text(
+                        //         "Lihat Semua",
+                        //         style: TextStyle(
+                        //             fontSize: 13.0, color: Color(0xFF881FFF)),
+                        //       ),
+                        //       Icon(
+                        //         Bootstrap.chevron_right,
+                        //         size: 11.0,
+                        //         weight: 10.0,
+                        //         color: Color(0xFF881FFF),
+                        //       )
+                        //     ],
+                        //   ),
+                        // )
                       ],
                     ),
                     const SizedBox(
@@ -235,25 +235,25 @@ class _HomeState extends State<Home> {
                             fontWeight: FontWeight.bold,
                             color: Color(0xFF881FFF)),
                       ),
-                      GestureDetector(
-                        child: const Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Lihat Semua",
-                              style: TextStyle(
-                                  fontSize: 13.0, color: Color(0xFF881FFF)),
-                            ),
-                            Icon(
-                              Bootstrap.chevron_right,
-                              size: 11.0,
-                              weight: 10.0,
-                              color: Color(0xFF881FFF),
-                            )
-                          ],
-                        ),
-                      )
+                      // GestureDetector(
+                      //   child: const Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.center,
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      //     children: [
+                      //       Text(
+                      //         "Lihat Semua",
+                      //         style: TextStyle(
+                      //             fontSize: 13.0, color: Color(0xFF881FFF)),
+                      //       ),
+                      //       Icon(
+                      //         Bootstrap.chevron_right,
+                      //         size: 11.0,
+                      //         weight: 10.0,
+                      //         color: Color(0xFF881FFF),
+                      //       )
+                      //     ],
+                      //   ),
+                      // )
                     ],
                   ),
                   const SizedBox(
