@@ -1,8 +1,8 @@
-import 'package:RentCost/features/widget/add_cart_modal.dart';
+import 'package:rentcost/features/widget/add_cart_modal.dart';
 import 'package:flutter/material.dart';
-import 'package:RentCost/features/model/cart.dart';
+import 'package:rentcost/features/model/cart.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:RentCost/features/widget/change_size_modal.dart';
+import 'package:rentcost/features/widget/change_size_modal.dart';
 
 class CardCart extends StatefulWidget {
   final List<CartType> cart;

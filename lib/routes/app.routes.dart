@@ -1,35 +1,40 @@
-import 'package:RentCost/features/view/add_address.dart';
-import 'package:RentCost/features/view/add_costum.dart';
-import 'package:RentCost/features/view/cart.dart';
-import 'package:RentCost/features/view/category.dart';
-import 'package:RentCost/features/view/change_password.dart';
-import 'package:RentCost/features/view/confirm_payment.dart';
-import 'package:RentCost/features/view/create_banner.dart';
-import 'package:RentCost/features/view/create_category.dart';
-import 'package:RentCost/features/view/detail_costum.dart';
-import 'package:RentCost/features/view/detail_history.dart';
-import 'package:RentCost/features/view/forgot_password.dart';
-import 'package:RentCost/features/view/history_tenant.dart';
-import 'package:RentCost/features/view/home.dart';
-import 'package:RentCost/features/view/login.dart';
-import 'package:RentCost/features/view/my_order.dart';
-import 'package:RentCost/features/view/my_rental.dart';
-import 'package:RentCost/features/view/payment.dart';
-import 'package:RentCost/features/view/personal.dart';
-import 'package:RentCost/features/view/profile.dart';
-import 'package:RentCost/features/view/register.dart';
-import 'package:RentCost/features/view/search.dart';
-import 'package:RentCost/features/view/select_address.dart';
-import 'package:RentCost/features/view/shop.dart';
-import 'package:RentCost/features/view/verify_email.dart';
-import 'package:RentCost/features/view/banner.dart';
+import 'package:flutter/material.dart';
+import 'package:rentcost/features/Authentication/Register/bloc/register_bloc.dart';
+import 'package:rentcost/features/view/add_address.dart';
+import 'package:rentcost/features/view/add_costum.dart';
+import 'package:rentcost/features/view/cart.dart';
+import 'package:rentcost/features/view/category.dart';
+import 'package:rentcost/features/view/change_password.dart';
+import 'package:rentcost/features/view/confirm_payment.dart';
+import 'package:rentcost/features/view/create_banner.dart';
+import 'package:rentcost/features/view/create_category.dart';
+import 'package:rentcost/features/view/detail_costum.dart';
+import 'package:rentcost/features/view/detail_history.dart';
+import 'package:rentcost/features/view/forgot_password.dart';
+import 'package:rentcost/features/view/history_tenant.dart';
+import 'package:rentcost/features/view/home.dart';
+import 'package:rentcost/features/Authentication/Login/view/login.dart';
+import 'package:rentcost/features/view/my_order.dart';
+import 'package:rentcost/features/view/my_rental.dart';
+import 'package:rentcost/features/view/payment.dart';
+import 'package:rentcost/features/users/view/personal.dart';
+import 'package:rentcost/features/view/profile.dart';
+import 'package:rentcost/features/Authentication/Register/view/register.dart';
+import 'package:rentcost/features/view/search.dart';
+import 'package:rentcost/features/view/select_address.dart';
+import 'package:rentcost/features/view/shop.dart';
+import 'package:rentcost/features/view/verify_email.dart';
+import 'package:rentcost/features/view/banner.dart';
+import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:rentcost/routes/navigation_bloc.dart';
 
 // import 'package:RentCost/features/view/shopping.dart';
 import 'package:go_router/go_router.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 GoRouter goRouter() {
-  return GoRouter(initialLocation: "/payment", routes: [
+  return GoRouter(initialLocation: "/login", routes: [
     GoRoute(
         path: "/",
         pageBuilder: (context, state) => const NoTransitionPage(child: Home())),
@@ -49,13 +54,22 @@ GoRouter goRouter() {
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: Search())),
     GoRoute(
-        path: "/login",
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: Login())),
+      path: "/login",
+      pageBuilder: (context, state) {
+        return const NoTransitionPage(child: LoginPage());
+      },
+    ),
     GoRoute(
-        path: "/register",
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: Register())),
+      path: "/personal",
+      pageBuilder: (context, state) {
+        return const NoTransitionPage(child: Personal());
+      },
+    ),
+    GoRoute(
+      path: "/register",
+      pageBuilder: (context, state) =>
+          const NoTransitionPage(child: Register()),
+    ),
     GoRoute(
         path: "/cart",
         pageBuilder: (context, state) => const NoTransitionPage(child: Cart())),
@@ -75,10 +89,6 @@ GoRouter goRouter() {
         path: "/detail",
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: DetailCostum())),
-    GoRoute(
-        path: "/personal",
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: Personal())),
     GoRoute(
         path: "/confirm-payment",
         pageBuilder: (context, state) =>

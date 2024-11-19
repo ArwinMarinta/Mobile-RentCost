@@ -1,8 +1,8 @@
-import 'package:RentCost/features/widget/card_costum_tenant.dart';
+import 'package:rentcost/features/widget/card_costum_tenant.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
-import 'package:RentCost/features/model/costum.dart';
+import 'package:rentcost/features/model/costum.dart';
 
 class MyRental extends StatefulWidget {
   const MyRental({super.key});

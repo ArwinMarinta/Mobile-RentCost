@@ -109,7 +109,9 @@ class _VerifyEmailState extends State<VerifyEmail> {
               Container(
                 width: double.infinity,
                 child: GestureDetector(
-                  onTap: null,
+                  onTap: () {
+                    context.go('/forgot-password');
+                  },
                   child: Container(
                     decoration: const BoxDecoration(
                         color: Color(0xFF881FFF),

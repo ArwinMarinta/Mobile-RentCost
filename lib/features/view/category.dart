@@ -43,7 +43,7 @@ class _CategoryState extends State<Category> {
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: GestureDetector(
               onTap: () {
-                context.go('/add-catetory');
+                context.go('/add-category');
               },
               child: const Icon(Bootstrap.plus_circle),
             ),

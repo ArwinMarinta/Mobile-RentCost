@@ -1,4 +1,4 @@
-import 'package:RentCost/features/view/navigation_bar.dart';
+import 'package:rentcost/features/view/navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';

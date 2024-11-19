@@ -1,8 +1,8 @@
-import 'package:RentCost/features/widget/card_history.dart';
+import 'package:rentcost/features/widget/card_history.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
-import 'package:RentCost/features/model/history.dart';
+import 'package:rentcost/features/model/history.dart';
 
 class MyOrder extends StatefulWidget {
   const MyOrder({super.key});

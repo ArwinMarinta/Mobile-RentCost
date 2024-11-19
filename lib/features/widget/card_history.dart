@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:RentCost/features/model/history.dart';
+import 'package:rentcost/features/model/history.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
 

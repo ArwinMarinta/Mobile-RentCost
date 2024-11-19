@@ -1,8 +1,8 @@
-import 'package:RentCost/features/widget/add_cart_modal.dart';
+import 'package:rentcost/features/widget/add_cart_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
-import 'package:RentCost/features/model/detail.dart';
+import 'package:rentcost/features/model/detail.dart';
 
 class DetailCostum extends StatefulWidget {
   const DetailCostum({super.key});

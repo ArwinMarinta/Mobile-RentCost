@@ -1,4 +1,4 @@
-import "package:RentCost/features/view/navigation_bar.dart";
+import "package:rentcost/features/view/navigation_bar.dart";
 import "package:flutter/material.dart";
 
 class Shopping extends StatefulWidget {

@@ -1,12 +1,12 @@
-import 'package:RentCost/features/model/costum.dart';
-import 'package:RentCost/features/widget/card_costum.dart';
-// import 'package:RentCost/features/widget/carousel_card.dart';
-import 'package:RentCost/features/widget/carousel_category.dart';
+import 'package:rentcost/features/model/costum.dart';
+import 'package:rentcost/features/widget/card_costum.dart';
+// import 'package:rentcost/features/widget/carousel_card.dart';
+import 'package:rentcost/features/widget/carousel_category.dart';
 import "package:flutter/material.dart";
-import 'package:RentCost/features/view/navigation_bar.dart';
+import 'package:rentcost/features/view/navigation_bar.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:RentCost/features/widget/carousel_banner.dart';
-import 'package:RentCost/features/model/category.dart';
+import 'package:rentcost/features/widget/carousel_banner.dart';
+import 'package:rentcost/features/model/category.dart';
 // import 'package:RentCost/features/model/category.dart';
 import 'package:go_router/go_router.dart';
 
@@ -118,7 +118,7 @@ class _HomeState extends State<Home> {
                       // Garis di kiri
                       Expanded(
                         child: Divider(
-                          color: Color(0xFF881FFF), // Warna garis
+                          // color: Color(0xFF881FFF), // Warna garis
                           thickness: 2.0, // Ketebalan garis
                         ),
                       ),
@@ -128,16 +128,16 @@ class _HomeState extends State<Home> {
                       const Text(
                         "Kategori Cosplay",
                         style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF881FFF)),
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(
                         width: 10.0,
                       ),
                       Expanded(
                         child: Divider(
-                          color: Color(0xFF881FFF), // Warna garis
+                          // color: Color(0xFF881FFF), // Warna garis
                           thickness: 2.0, // Ketebalan garis
                         ),
                       ),
@@ -186,9 +186,9 @@ class _HomeState extends State<Home> {
                         const Text(
                           "Kostum Terpopuler",
                           style: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF881FFF)),
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         // GestureDetector(
                         //   child: const Row(
@@ -231,9 +231,9 @@ class _HomeState extends State<Home> {
                       const Text(
                         "Kostum Terbaru",
                         style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF881FFF)),
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       // GestureDetector(
                       //   child: const Row(

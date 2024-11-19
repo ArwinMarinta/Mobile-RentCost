@@ -1,8 +1,8 @@
 // import 'package:RentCost/features/view/home.dart';
 import 'package:flutter/material.dart';
-import 'package:RentCost/features/model/cart.dart';
-import 'package:RentCost/features/view/navigation_bar.dart';
-import 'package:RentCost/features/widget/card_cart.dart';
+import 'package:rentcost/features/model/cart.dart';
+import 'package:rentcost/features/view/navigation_bar.dart';
+import 'package:rentcost/features/widget/card_cart.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 
@@ -177,7 +177,9 @@ class _CartState extends State<Cart> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: null,
+                    onTap: () {
+                      context.go('/payment');
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(4.0),
                       decoration: const BoxDecoration(

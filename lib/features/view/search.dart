@@ -1,7 +1,7 @@
-import 'package:RentCost/features/model/costum.dart';
-import 'package:RentCost/features/view/home.dart';
-import 'package:RentCost/features/view/navigation_bar.dart';
-import 'package:RentCost/features/widget/card_costum_search.dart';
+import 'package:rentcost/features/model/costum.dart';
+import 'package:rentcost/features/view/home.dart';
+import 'package:rentcost/features/view/navigation_bar.dart';
+import 'package:rentcost/features/widget/card_costum_search.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
@@ -85,7 +85,7 @@ class _SearchState extends State<Search> {
           return CardCostumSearch(costum: costum[index]);
         },
       ),
-      bottomNavigationBar: const CustomNavigationBar(selectedIndex: 100),
+      // bottomNavigationBar: const CustomNavigationBar(selectedIndex: 100),
     );
   }
 }

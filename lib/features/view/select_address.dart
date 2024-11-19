@@ -1,8 +1,8 @@
-import 'package:RentCost/features/widget/card_address.dart';
+import 'package:rentcost/features/widget/card_address.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:RentCost/features/model/address.dart';
+import 'package:rentcost/features/model/address.dart';
 
 class SelectAddress extends StatefulWidget {
   const SelectAddress({super.key});

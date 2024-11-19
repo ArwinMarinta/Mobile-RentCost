@@ -1,6 +1,6 @@
-import 'package:RentCost/features/widget/cart_payment.dart';
-import 'package:RentCost/features/widget/detail_payment.dart';
-import 'package:RentCost/features/widget/payment_success.dart';
+import 'package:rentcost/features/widget/cart_payment.dart';
+import 'package:rentcost/features/widget/detail_payment.dart';
+import 'package:rentcost/features/widget/payment_success.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
