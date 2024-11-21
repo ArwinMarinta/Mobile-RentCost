@@ -38,7 +38,7 @@ class CarouselBanner extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.white,
                   image: DecorationImage(
-                    image: AssetImage(imagePath),
+                    image: NetworkImage(imagePath),
                     fit: BoxFit.fill,
                   )),
             );

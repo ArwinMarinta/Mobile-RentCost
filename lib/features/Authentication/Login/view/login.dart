@@ -52,9 +52,8 @@ class _LoginPageState extends State<LoginPage> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Login Berhasil: ${state.token}')),
                 );
-                print('Login berhasil dengan token: ${state.token}');
-                // Navigasi ke halaman berikutnya
-                context.go('/'); // Ganti dengan rute yang sesuai
+
+                context.go('/banner'); // Ganti dengan rute yang sesuai
               } else if (state is LoginFailure) {
                 Navigator.of(context).pop(); // Close loading dialog
                 ScaffoldMessenger.of(context).showSnackBar(

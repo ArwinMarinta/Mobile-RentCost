@@ -14,10 +14,28 @@ class Personal extends StatefulWidget {
 }
 
 class _PersonalState extends State<Personal> {
+  late TextEditingController image;
+  late TextEditingController username;
+  late TextEditingController email;
+  late TextEditingController phone_number;
+
   @override
   void initState() {
     super.initState();
+    image = TextEditingController();
+    username = TextEditingController();
+    email = TextEditingController();
+    phone_number = TextEditingController();
     context.read<UserBloc>().add(UserRequest());
+  }
+
+  @override
+  void dispose() {
+    image.dispose();
+    username.dispose();
+    email.dispose();
+    phone_number.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,10 +78,13 @@ class _PersonalState extends State<Personal> {
           }
 
           if (state is UserLoaded) {
-            print("test loaded");
             final data = state.data;
 
-            print(data);
+            image.text = data.first.data.user.imageUrl;
+            username.text = data.first.data.user.username;
+            email.text = data.first.data.email;
+            phone_number.text = data.first.data.user.phoneNumber;
+
             return SingleChildScrollView(
               child: Container(
                 margin: const EdgeInsets.symmetric(
@@ -75,19 +96,44 @@ class _PersonalState extends State<Personal> {
                       child: ClipRRect(
                         borderRadius:
                             const BorderRadius.all(Radius.circular(100.0)),
-                        // Radius untuk sudut membulat
-                        child: Image.asset(
+                        child: Image.network(
                           data.first.data.user.imageUrl,
                           fit: BoxFit.cover,
                           width: 100.0,
                           height: 100.0,
+                          errorBuilder: (context, error, stackTrace) {
+                            // Menampilkan placeholder jika gambar gagal dimuat
+                            return Icon(
+                              Icons.account_circle,
+                              size: 100.0,
+                              color: Colors.grey,
+                            );
+                          },
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return SizedBox(
+                              width: 100.0,
+                              height: 100.0,
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          (loadingProgress.expectedTotalBytes!)
+                                      : null,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
                     const SizedBox(
                       height: 20.0,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -100,6 +146,7 @@ class _PersonalState extends State<Personal> {
                             height: 10.0,
                           ),
                           TextField(
+                            controller: username,
                             onChanged: null,
                             decoration: InputDecoration(
                               hintText: 'Your Name',
@@ -143,10 +190,11 @@ class _PersonalState extends State<Personal> {
                             height: 10.0,
                           ),
                           TextField(
+                            controller: email,
                             enabled: false,
                             onChanged: null,
                             decoration: InputDecoration(
-                              hintText: '${data.first.data.email}',
+                              hintText: null,
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: 10.0, horizontal: 20.0),
                               border: OutlineInputBorder(
@@ -174,7 +222,7 @@ class _PersonalState extends State<Personal> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    const SizedBox(
+                    SizedBox(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -187,6 +235,7 @@ class _PersonalState extends State<Personal> {
                             height: 10.0,
                           ),
                           TextField(
+                            controller: phone_number,
                             onChanged: null,
                             decoration: InputDecoration(
                               hintText: 'Your Phone Numbers',

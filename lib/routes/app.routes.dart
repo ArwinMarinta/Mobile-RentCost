@@ -12,7 +12,7 @@ import 'package:rentcost/features/view/detail_costum.dart';
 import 'package:rentcost/features/view/detail_history.dart';
 import 'package:rentcost/features/view/forgot_password.dart';
 import 'package:rentcost/features/view/history_tenant.dart';
-import 'package:rentcost/features/view/home.dart';
+import 'package:rentcost/features/home/home.dart';
 import 'package:rentcost/features/Authentication/Login/view/login.dart';
 import 'package:rentcost/features/view/my_order.dart';
 import 'package:rentcost/features/view/my_rental.dart';
@@ -24,7 +24,7 @@ import 'package:rentcost/features/view/search.dart';
 import 'package:rentcost/features/view/select_address.dart';
 import 'package:rentcost/features/view/shop.dart';
 import 'package:rentcost/features/view/verify_email.dart';
-import 'package:rentcost/features/view/banner.dart';
+import 'package:rentcost/features/banner/view/banner.dart';
 import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:rentcost/routes/navigation_bloc.dart';
@@ -36,8 +36,11 @@ import 'package:go_router/go_router.dart';
 GoRouter goRouter() {
   return GoRouter(initialLocation: "/login", routes: [
     GoRoute(
-        path: "/",
-        pageBuilder: (context, state) => const NoTransitionPage(child: Home())),
+      path: "/",
+      pageBuilder: (context, state) {
+        return const NoTransitionPage(child: Home());
+      },
+    ),
     GoRoute(
         path: "/shop",
         pageBuilder: (context, state) => const NoTransitionPage(child: Shop())),

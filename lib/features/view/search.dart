@@ -1,5 +1,5 @@
 import 'package:rentcost/features/model/costum.dart';
-import 'package:rentcost/features/view/home.dart';
+import 'package:rentcost/features/home/home.dart';
 import 'package:rentcost/features/view/navigation_bar.dart';
 import 'package:rentcost/features/widget/card_costum_search.dart';
 import 'package:flutter/material.dart';
