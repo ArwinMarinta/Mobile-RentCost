@@ -3,13 +3,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 class CarouselBanner extends StatelessWidget {
   final List<String> imagePaths;
-  // final double height;
-  // final bool autoPlay;
 
   const CarouselBanner(
       {required this.imagePaths,
-      // required this.height,
-      // required this.autoPlay,
       super.key});
 
   @override

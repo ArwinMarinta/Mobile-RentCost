@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class CarouselCategory extends StatefulWidget {
+class CarouselCategory extends StatelessWidget {
   final List<String> imagePaths;
-  // final double height;
-  // final bool autoPlay;
 
-  const CarouselCategory(
-      {required this.imagePaths,
-      // required this.height,
-      // required this.autoPlay,
-      super.key});
+  const CarouselCategory({required this.imagePaths, super.key});
 
-  @override
-  State<CarouselCategory> createState() => _CarouselCategoryState();
-}
-
-class _CarouselCategoryState extends State<CarouselCategory> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -34,7 +23,7 @@ class _CarouselCategoryState extends State<CarouselCategory> {
             scrollPhysics: const NeverScrollableScrollPhysics(),
             // scrollDirection: Axis.horizontal,
           ),
-          items: widget.imagePaths.map((String imagePath) {
+          items: imagePaths.map((String imagePath) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
@@ -44,8 +33,9 @@ class _CarouselCategoryState extends State<CarouselCategory> {
                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
                   decoration: BoxDecoration(
                       color: Colors.white,
+                      borderRadius: BorderRadius.circular(6),
                       image: DecorationImage(
-                        image: AssetImage(imagePath),
+                        image: NetworkImage(imagePath),
                         fit: BoxFit.fill,
                       )),
                 );
@@ -68,7 +58,7 @@ class _CarouselCategoryState extends State<CarouselCategory> {
             // scrollDirection: Axis.horizontal,
             reverse: true,
           ),
-          items: widget.imagePaths.map((String imagePath) {
+          items: imagePaths.map((String imagePath) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
@@ -78,8 +68,9 @@ class _CarouselCategoryState extends State<CarouselCategory> {
                   margin: const EdgeInsets.symmetric(horizontal: 8.0),
                   decoration: BoxDecoration(
                       color: Colors.white,
+                      borderRadius: BorderRadius.circular(6),
                       image: DecorationImage(
-                        image: AssetImage(imagePath),
+                        image: NetworkImage(imagePath),
                         fit: BoxFit.fill,
                       )),
                 );

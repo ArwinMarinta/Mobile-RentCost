@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentcost/features/Authentication/Register/bloc/register_bloc.dart';
 import 'package:rentcost/features/banner/bloc/banner_bloc.dart';
+import 'package:rentcost/features/category/bloc/category_bloc.dart';
 import 'package:rentcost/features/users/bloc/user_bloc.dart';
 import 'package:rentcost/features/users/view/personal.dart';
 
@@ -23,6 +24,11 @@ void main() {
         ),
         BlocProvider(
           create: (context) => BannerBloc(
+            loginBloc: context.read<LoginBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => CategoriesBloc(
             loginBloc: context.read<LoginBloc>(),
           ),
         ),

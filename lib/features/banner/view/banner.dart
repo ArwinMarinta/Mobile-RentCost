@@ -8,19 +8,8 @@ import 'package:rentcost/features/banner/bloc/banner_state.dart';
 import 'package:rentcost/features/users/bloc/user_bloc.dart';
 import 'package:rentcost/features/users/bloc/user_event.dart';
 
-class Banners extends StatefulWidget {
+class Banners extends StatelessWidget {
   const Banners({super.key});
-
-  @override
-  State<Banners> createState() => _BannersState();
-}
-
-class _BannersState extends State<Banners> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<BannerBloc>().add(BannerRequest());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +53,11 @@ class _BannersState extends State<Banners> {
       ),
       body: BlocBuilder<BannerBloc, BannerState>(
         builder: (context, state) {
-          if (state is BannerLoading) {
+          if (state is BannerInitial) {
+            context.read<BannerBloc>().add(BannerRequest());
+          } else if (state is BannerLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is BannerLoaded) {
-            print('bdhjdhwd');
             // Menggunakan ListView untuk menampilkan daftar banner
             return ListView.builder(
               itemCount: state.banner.length,

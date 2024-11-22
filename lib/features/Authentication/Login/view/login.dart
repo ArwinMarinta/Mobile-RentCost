@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                   SnackBar(content: Text('Login Berhasil: ${state.token}')),
                 );
 
-                context.go('/banner'); // Ganti dengan rute yang sesuai
+                context.go('/');
               } else if (state is LoginFailure) {
                 Navigator.of(context).pop(); // Close loading dialog
                 ScaffoldMessenger.of(context).showSnackBar(

@@ -3,7 +3,7 @@ import 'package:rentcost/features/Authentication/Register/bloc/register_bloc.dar
 import 'package:rentcost/features/view/add_address.dart';
 import 'package:rentcost/features/view/add_costum.dart';
 import 'package:rentcost/features/view/cart.dart';
-import 'package:rentcost/features/view/category.dart';
+import 'package:rentcost/features/category/view/category.dart';
 import 'package:rentcost/features/view/change_password.dart';
 import 'package:rentcost/features/view/confirm_payment.dart';
 import 'package:rentcost/features/view/create_banner.dart';
@@ -45,9 +45,11 @@ GoRouter goRouter() {
         path: "/shop",
         pageBuilder: (context, state) => const NoTransitionPage(child: Shop())),
     GoRoute(
-        path: "/category",
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: Category())),
+      path: "/category",
+      pageBuilder: (context, state) {
+        return const NoTransitionPage(child: Category());
+      },
+    ),
     GoRoute(
         path: "/profile",
         pageBuilder: (context, state) =>

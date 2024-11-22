@@ -9,7 +9,6 @@ class BannerResponse {
     required this.imageUrl,
   });
 
-  // Factory method to create an instance from JSON
   factory BannerResponse.fromJson(Map<String, dynamic> json) {
     return BannerResponse(
       id: json['id'],
