@@ -33,3 +33,20 @@ class CategoriesLoaded extends CategoriesState {
 
   CategoriesLoaded({required this.categories});
 }
+
+class CategoriesCreateFailure extends CategoriesState {
+  final String error;
+
+  CategoriesCreateFailure({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}
+
+class CategoriesCreateSuccess extends CategoriesState {
+  final String message;
+
+  CategoriesCreateSuccess({required this.message});
+}
+
+class CategoriesCreateLoading extends CategoriesState {}

@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:rentcost/features/Authentication/Register/bloc/register_bloc.dart';
-import 'package:rentcost/features/view/add_address.dart';
+import 'package:rentcost/features/SplashScreen/view/splash.dart';
+import 'package:rentcost/features/stores/view/create_store.dart';
+import 'package:rentcost/features/address/view/add_address.dart';
+import 'package:rentcost/features/stores/view/detail_product.dart';
 import 'package:rentcost/features/view/add_costum.dart';
 import 'package:rentcost/features/view/cart.dart';
 import 'package:rentcost/features/category/view/category.dart';
 import 'package:rentcost/features/view/change_password.dart';
 import 'package:rentcost/features/view/confirm_payment.dart';
-import 'package:rentcost/features/view/create_banner.dart';
+import 'package:rentcost/features/banner/view/create_banner.dart';
 import 'package:rentcost/features/view/create_category.dart';
-import 'package:rentcost/features/view/detail_costum.dart';
+import 'package:rentcost/features/product/view/detail_costum.dart';
 import 'package:rentcost/features/view/detail_history.dart';
 import 'package:rentcost/features/view/forgot_password.dart';
 import 'package:rentcost/features/view/history_tenant.dart';
 import 'package:rentcost/features/home/home.dart';
 import 'package:rentcost/features/Authentication/Login/view/login.dart';
 import 'package:rentcost/features/view/my_order.dart';
-import 'package:rentcost/features/view/my_rental.dart';
+import 'package:rentcost/features/stores/view/my_rental.dart';
 import 'package:rentcost/features/view/payment.dart';
 import 'package:rentcost/features/users/view/personal.dart';
 import 'package:rentcost/features/view/profile.dart';
 import 'package:rentcost/features/Authentication/Register/view/register.dart';
-import 'package:rentcost/features/view/search.dart';
-import 'package:rentcost/features/view/select_address.dart';
+import 'package:rentcost/features/product/view/search.dart';
+import 'package:rentcost/features/address/view/select_address.dart';
 import 'package:rentcost/features/view/shop.dart';
 import 'package:rentcost/features/view/verify_email.dart';
 import 'package:rentcost/features/banner/view/banner.dart';
@@ -34,7 +37,7 @@ import 'package:go_router/go_router.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 GoRouter goRouter() {
-  return GoRouter(initialLocation: "/login", routes: [
+  return GoRouter(initialLocation: "/splash", routes: [
     GoRoute(
       path: "/",
       pageBuilder: (context, state) {
@@ -56,8 +59,7 @@ GoRouter goRouter() {
             const NoTransitionPage(child: Profile())),
     GoRoute(
         path: "/search",
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: Search())),
+        pageBuilder: (context, state) => NoTransitionPage(child: Search())),
     GoRoute(
       path: "/login",
       pageBuilder: (context, state) {
@@ -67,7 +69,7 @@ GoRouter goRouter() {
     GoRoute(
       path: "/personal",
       pageBuilder: (context, state) {
-        return const NoTransitionPage(child: Personal());
+        return NoTransitionPage(child: Personal());
       },
     ),
     GoRoute(
@@ -91,9 +93,21 @@ GoRouter goRouter() {
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: AddAddress())),
     GoRoute(
-        path: "/detail",
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: DetailCostum())),
+      path: '/detail/:id', // Menangkap parameter 'id' di URL
+      pageBuilder: (context, state) {
+        final String id =
+            state.pathParameters['id'] ?? ''; // Mengambil nilai id dari URL
+        return NoTransitionPage(
+            child: DetailCostum(id: id)); // Mengoper id ke halaman DetailCostum
+      },
+    ),
+    GoRoute(
+      path: '/detail/user/:id',
+      pageBuilder: (context, state) {
+        final String id = state.pathParameters['id'] ?? '';
+        return NoTransitionPage(child: DetailProductUser(id: id));
+      },
+    ),
     GoRoute(
         path: "/confirm-payment",
         pageBuilder: (context, state) =>
@@ -124,8 +138,7 @@ GoRouter goRouter() {
             const NoTransitionPage(child: HistoryTenant())),
     GoRoute(
         path: "/costum-tenant",
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: MyRental())),
+        pageBuilder: (context, state) => NoTransitionPage(child: MyRental())),
     GoRoute(
         path: "/banner",
         pageBuilder: (context, state) =>
@@ -146,5 +159,13 @@ GoRouter goRouter() {
         path: "/payment",
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: Payment())),
+    GoRoute(
+        path: "/create-store",
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: CreateStore())),
+    GoRoute(
+        path: "/splash",
+        pageBuilder: (context, state) =>
+            NoTransitionPage(child: SplashScreen())),
   ]);
 }

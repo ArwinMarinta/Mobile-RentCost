@@ -4,16 +4,14 @@ import 'package:carousel_slider/carousel_slider.dart';
 class CarouselBanner extends StatelessWidget {
   final List<String> imagePaths;
 
-  const CarouselBanner(
-      {required this.imagePaths,
-      super.key});
+  const CarouselBanner({required this.imagePaths, super.key});
 
   @override
   Widget build(BuildContext context) {
     return CarouselSlider(
       options: CarouselOptions(
-        height: 200.0,
-        aspectRatio: 16 / 9,
+        height: 200.0, // Tentukan tinggi carousel
+        aspectRatio: 16 / 9, // Tetap menjaga rasio aspek jika diperlukan
         enableInfiniteScroll: true,
         autoPlay: true,
         autoPlayInterval: const Duration(seconds: 4),
@@ -27,16 +25,18 @@ class CarouselBanner extends StatelessWidget {
         return Builder(
           builder: (BuildContext context) {
             return Container(
-              // width: double.infinity, // Lebar penuh
-              height: MediaQuery.of(context).size.height, // Tinggi penuh
-              width: MediaQuery.of(context).size.width,
-              // margin: const EdgeInsets.symmetric(horizontal: 5.0),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  image: DecorationImage(
-                    image: NetworkImage(imagePath),
-                    fit: BoxFit.fill,
-                  )),
+              height: 200, // Tentukan tinggi yang konsisten
+              width: MediaQuery.of(context).size.width, // Lebar penuh
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.network(
+                  imagePath,
+                  fit: BoxFit
+                      .cover, // Gambar mengisi ruang dan tetap menjaga rasio aspek
+                  width: double.infinity, // Memastikan gambar memenuhi lebar
+                  height: double.infinity, // Memastikan gambar memenuhi tinggi
+                ),
+              ),
             );
           },
         );

@@ -13,6 +13,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
 
   CategoriesBloc({required this.loginBloc}) : super(CategoriesInitial()) {
     on<CategoriesRequest>(_onCategoriesRequest);
+    on<CategoriesCreateEvent>(_onCategorieCreate);
   }
 
   Future<List<Categories>> _onCategoriesRequest(
@@ -56,6 +57,46 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       print('Error kali: $e');
       emit(CategoriesFailure(error: "error"));
       return Future.error('Error while fetching data');
+    }
+  }
+
+  Future<void> _onCategorieCreate(
+      CategoriesCreateEvent event, Emitter<CategoriesState> emit) async {
+    emit(CategoriesCreateLoading());
+    try {
+      final token = (loginBloc.state is LoginSuccess)
+          ? (loginBloc.state as LoginSuccess).token
+          : null;
+
+      if (token == null) {
+        emit(CategoriesCreateFailure(error: 'Token tidak ada'));
+        return;
+      }
+
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${UrlApi.baseUrl}/categories'),
+      );
+      request.headers['Authorization'] = 'Bearer $token';
+
+      request.files.add(await http.MultipartFile.fromPath(
+        'image_url',
+        event.file,
+      ));
+
+      request.fields['banner_name'] = event.category_name;
+
+      var response = await request.send();
+
+      if (response.statusCode == 201) {
+        emit(CategoriesCreateSuccess(message: "Berhasil menambah banner"));
+        add(CategoriesRequest());
+      } else {
+        emit(CategoriesCreateFailure(error: 'Upload failed'));
+      }
+    } catch (e) {
+      print('Error: $e');
+      emit(CategoriesCreateFailure(error: 'Upload failed'));
     }
   }
 }

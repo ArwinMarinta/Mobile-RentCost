@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentcost/features/Authentication/Register/bloc/register_bloc.dart';
+import 'package:rentcost/features/SplashScreen/bloc/splash_bloc.dart';
+import 'package:rentcost/features/address/bloc/address_bloc.dart';
 import 'package:rentcost/features/banner/bloc/banner_bloc.dart';
 import 'package:rentcost/features/category/bloc/category_bloc.dart';
+import 'package:rentcost/features/product/bloc/detail_bloc.dart';
+import 'package:rentcost/features/product/bloc/product_bloc.dart';
+import 'package:rentcost/features/product/bloc/search_bloc.dart';
+import 'package:rentcost/features/stores/bloc/stores_bloc.dart';
 import 'package:rentcost/features/users/bloc/user_bloc.dart';
+import 'package:rentcost/features/users/bloc/user_product_bloc.dart';
 import 'package:rentcost/features/users/view/personal.dart';
 
 import 'package:rentcost/routes/app.routes.dart';
@@ -29,6 +36,41 @@ void main() {
         ),
         BlocProvider(
           create: (context) => CategoriesBloc(
+            loginBloc: context.read<LoginBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => StoreBloc(
+            loginBloc: context.read<LoginBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => AddressBloc(
+            loginBloc: context.read<LoginBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => ProductBloc(
+            loginBloc: context.read<LoginBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => SearchBloc(
+            loginBloc: context.read<LoginBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => DetailBloc(
+            loginBloc: context.read<LoginBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => ProductUserBloc(
+            loginBloc: context.read<LoginBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => SplashBloc(
             loginBloc: context.read<LoginBloc>(),
           ),
         ),

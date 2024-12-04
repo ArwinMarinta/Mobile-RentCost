@@ -11,3 +11,12 @@ class BannerRequest extends BannerEvent {
   @override
   List<Object> get props => [];
 }
+
+class BannerCreateEvent extends BannerEvent {
+  final String file;
+  final String banner_name;
+  BannerCreateEvent({required this.file, required this.banner_name});
+
+  @override
+  List<Object> get props => [file, banner_name];
+}

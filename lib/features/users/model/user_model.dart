@@ -7,7 +7,6 @@ class User {
     required this.data,
   });
 
-  // Tambahkan metode fromJson untuk parsing response
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       message: json['message'],
@@ -23,6 +22,7 @@ class Data {
   bool isVerified;
   DateTime createdAt;
   UserClass user;
+  Store? store;
 
   Data({
     required this.id,
@@ -31,17 +31,20 @@ class Data {
     required this.isVerified,
     required this.createdAt,
     required this.user,
+    this.store, // Parameter store bisa null
   });
 
-  // Tambahkan metode fromJson untuk parsing response
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
-      id: json['id'],
-      email: json['email'],
-      password: json['password'],
-      isVerified: json['is_verified'],
-      createdAt: DateTime.parse(json['created_at']),
-      user: UserClass.fromJson(json['user']),
+      id: json['auth']['id'],
+      email: json['auth']['email'],
+      password: json['auth']['password'],
+      isVerified: json['auth']['is_verified'],
+      createdAt: DateTime.parse(json['auth']['created_at']),
+      user: UserClass.fromJson(json['auth']['user']),
+      store: json['store'] != null
+          ? Store.fromJson(json['store'])
+          : null, // Cek apakah store ada
     );
   }
 }
@@ -69,7 +72,6 @@ class UserClass {
     required this.createdAt,
   });
 
-  // Tambahkan metode fromJson untuk parsing response
   factory UserClass.fromJson(Map<String, dynamic> json) {
     return UserClass(
       id: json['id'],
@@ -80,6 +82,31 @@ class UserClass {
       identityNumber: json['identity_number'],
       bankAccount: json['bank_account'],
       imageUrl: json['image_url'], // Mengakses imageUrl
+      createdAt: DateTime.parse(json['created_at']),
+    );
+  }
+}
+
+// Model Store
+class Store {
+  int id;
+  String storeName;
+  String storeLocation;
+  DateTime createdAt;
+
+  Store({
+    required this.id,
+    required this.storeName,
+    required this.storeLocation,
+    required this.createdAt,
+  });
+
+  // Tambahkan metode fromJson untuk parsing response
+  factory Store.fromJson(Map<String, dynamic> json) {
+    return Store(
+      id: json['id'],
+      storeName: json['store_name'],
+      storeLocation: json['store_location'],
       createdAt: DateTime.parse(json['created_at']),
     );
   }

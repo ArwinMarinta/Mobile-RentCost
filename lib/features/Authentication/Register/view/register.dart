@@ -76,7 +76,7 @@ class _RegisterState extends State<Register> {
                       content: Text('Register Berhasil: ${state.message}')),
                 );
                 print('Register berhasil dengan token: ${state.message}');
-                // Navigasi ke halaman berikutnya
+  
                 context.go('/login'); // Ganti dengan rute yang sesuai
               } else if (state is RegisterFailure) {
                 Navigator.of(context).pop(); // Close loading dialog

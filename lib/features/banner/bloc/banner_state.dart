@@ -33,3 +33,20 @@ class BannerLoaded extends BannerState {
 
   BannerLoaded({required this.banner});
 }
+
+class BannerCreateLoading extends BannerState {}
+
+class BannerCreateSuccess extends BannerState {
+  final String message;
+
+  BannerCreateSuccess({required this.message});
+}
+
+class BannerCreateFailure extends BannerState {
+  final String error;
+
+  BannerCreateFailure({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}

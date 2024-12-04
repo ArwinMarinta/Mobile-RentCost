@@ -15,22 +15,20 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
 
   BannerBloc({required this.loginBloc}) : super(BannerInitial()) {
     on<BannerRequest>(_onBannerRequest);
+    on<BannerCreateEvent>(_onBannerCreate);
   }
 
   Future<List<BannerResponse>> _onBannerRequest(
       BannerRequest event, Emitter<BannerState> emit) async {
-    print("tevsasas");
     emit(BannerLoading());
     try {
-      print("seidky");
       final token = (loginBloc.state is LoginSuccess)
           ? (loginBloc.state as LoginSuccess).token
           : null;
 
       if (token == null) {
-        emit(BannerFailure(error: 'Token tidak ada')); 
-        return Future.error(
-            'Token tidak ada'); 
+        emit(BannerFailure(error: 'Token tidak ada'));
+        return Future.error('Token tidak ada');
       }
 
       final response = await http.get(
@@ -62,6 +60,46 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
       print('Error: $e');
       emit(BannerFailure(error: "error"));
       return Future.error('Error while fetching data');
+    }
+  }
+
+  Future<void> _onBannerCreate(
+      BannerCreateEvent event, Emitter<BannerState> emit) async {
+    emit(BannerCreateLoading());
+    try {
+      final token = (loginBloc.state is LoginSuccess)
+          ? (loginBloc.state as LoginSuccess).token
+          : null;
+
+      if (token == null) {
+        emit(BannerCreateFailure(error: 'Token tidak ada'));
+        return;
+      }
+
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${UrlApi.baseUrl}/banners'),
+      );
+      request.headers['Authorization'] = 'Bearer $token';
+
+      request.files.add(await http.MultipartFile.fromPath(
+        'image_url',
+        event.file,
+      ));
+
+      request.fields['banner_name'] = event.banner_name;
+
+      var response = await request.send();
+
+      if (response.statusCode == 201) {
+        emit(BannerCreateSuccess(message: "Berhasil menambah banner"));
+        add(BannerRequest());
+      } else {
+        emit(BannerCreateFailure(error: 'Upload failed'));
+      }
+    } catch (e) {
+      print('Error: $e');
+      emit(BannerCreateFailure(error: 'Upload failed'));
     }
   }
 }

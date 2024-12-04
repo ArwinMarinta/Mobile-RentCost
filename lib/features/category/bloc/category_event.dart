@@ -11,3 +11,12 @@ class CategoriesRequest extends CategoriesEvent {
   @override
   List<Object> get props => [];
 }
+
+class CategoriesCreateEvent extends CategoriesEvent {
+  final String file;
+  final String category_name;
+  CategoriesCreateEvent({required this.file, required this.category_name});
+
+  @override
+  List<Object> get props => [file, category_name];
+}

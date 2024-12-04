@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rentcost/features/Authentication/Register/bloc/register_event.dart';
 import 'package:rentcost/features/Authentication/Register/bloc/register_state.dart';
+import 'package:rentcost/config/config.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   RegisterBloc() : super(RegisterInitial()) {
@@ -14,7 +15,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     emit(RegisterLoading());
     try {
       final response = await http.post(
-        Uri.parse('https://cc31-36-85-35-19.ngrok-free.app/auth/register'),
+        Uri.parse('${UrlApi.baseUrl}/auth/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'username': event.username,

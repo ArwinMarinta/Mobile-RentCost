@@ -1,11 +1,11 @@
-import 'package:rentcost/features/view/add_address.dart';
 import 'package:flutter/material.dart';
 import 'package:rentcost/features/model/costum.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rentcost/features/product/model/product.dart';
 
 class CardCostum extends StatelessWidget {
-  final List<Costum> costum;
+  final List<ProductData> costum;
 
   const CardCostum({required this.costum, super.key});
 
@@ -13,47 +13,49 @@ class CardCostum extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 285.0,
-      child: ListView(
+      child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        children: costum.map((data) {
+        itemCount: costum.length,
+        itemBuilder: (context, index) {
+          final data = costum[index];
           return Padding(
             padding: const EdgeInsets.all(4.0),
             child: GestureDetector(
               onTap: () {
-                context.go('/detail');
+                context.go('/detail/${data.id}');
               },
               child: Container(
                 width: 150.0,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.black45, width: 0.2),
-                    borderRadius: const BorderRadius.all(Radius.circular(6.0)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 0.5,
-                        blurRadius: 1,
-                        offset: const Offset(1, 2),
-                      )
-                    ]),
+                  color: Colors.white,
+                  border: Border.all(color: Colors.black45, width: 0.2),
+                  borderRadius: const BorderRadius.all(Radius.circular(6.0)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 0.5,
+                      blurRadius: 1,
+                      offset: const Offset(1, 2),
+                    )
+                  ],
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Menampilkan gambar dari data.path
-
+                    // Menampilkan gambar dari data.imageUrl
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(6.0),
-                          topRight: Radius.circular(6.0)),
-                      // Radius untuk sudut membulat
-                      child: Image.asset(
-                        data.path,
+                        topLeft: Radius.circular(6.0),
+                        topRight: Radius.circular(6.0),
+                      ),
+                      child: Image.network(
+                        data.imageUrl,
                         fit: BoxFit.cover,
                         width: double.infinity,
+                        height: 150,
                       ),
                     ),
-
                     const SizedBox(height: 10.0),
                     Container(
                       margin: const EdgeInsets.symmetric(
@@ -63,16 +65,15 @@ class CardCostum extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            data.name,
+                            data.productName, // Menggunakan data.productName
                             style: const TextStyle(
                                 fontSize: 16.0, fontWeight: FontWeight.bold),
-                            overflow: TextOverflow
-                                .ellipsis, // Menambahkan titik-titik di akhir teks
+                            overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
                           const SizedBox(height: 4.0),
                           Text(
-                            "Rp. ${data.price} / Hari",
+                            "Rp. ${data.price} / 3 Hari", // Menggunakan data.price
                             style: const TextStyle(
                                 fontSize: 14.0,
                                 color: Color(0xFF881FFF),
@@ -85,11 +86,9 @@ class CardCostum extends StatelessWidget {
                                 Bootstrap.geo_alt,
                                 size: 13.0,
                               ),
-                              const SizedBox(
-                                width: 4.0,
-                              ),
+                              const SizedBox(width: 4.0),
                               Text(
-                                data.city,
+                                data.productName, // Menggunakan data.productName
                                 style: const TextStyle(
                                   fontSize: 14.0,
                                 ),
@@ -104,12 +103,11 @@ class CardCostum extends StatelessWidget {
                                 size: 13.0,
                                 color: Color(0xFFF8B84E),
                               ),
-                              const SizedBox(
-                                width: 4.0,
-                              ),
-                              Text("${data.rating} | ${data.tersewa}")
+                              const SizedBox(width: 4.0),
+                              Text(
+                                  "${data.id} | ${data.rentalAmount}x Tersewa"),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -118,7 +116,7 @@ class CardCostum extends StatelessWidget {
               ),
             ),
           );
-        }).toList(),
+        },
       ),
     );
   }
