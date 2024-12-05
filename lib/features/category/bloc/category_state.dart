@@ -50,3 +50,20 @@ class CategoriesCreateSuccess extends CategoriesState {
 }
 
 class CategoriesCreateLoading extends CategoriesState {}
+
+class CategoriesDeleteLoading extends CategoriesState {}
+
+class CategoriesDeleteSuccess extends CategoriesState {
+  final String message;
+
+  CategoriesDeleteSuccess({required this.message});
+}
+
+class CategoriesDeleteFailure extends CategoriesState {
+  final String error;
+
+  CategoriesDeleteFailure({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}

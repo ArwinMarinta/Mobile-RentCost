@@ -34,7 +34,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         final errorData = response.body.isNotEmpty
             ? jsonDecode(response.body)
             : {'error': 'Tidak ada detail error dari server'};
-        emit(RegisterFailure(error: errorData['error'] ?? 'Register gagal'));
+        emit(RegisterFailure(error: errorData['message'] ?? 'Register gagal'));
       }
     } catch (e) {
       print(e);

@@ -1,120 +1,112 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:rentcost/features/banner/bloc/banner_bloc.dart';
-import 'package:rentcost/features/banner/bloc/banner_event.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rentcost/features/banner/bloc/banner_state.dart';
+import 'package:rentcost/features/category/bloc/category_bloc.dart';
+import 'package:rentcost/features/category/bloc/category_event.dart';
+import 'package:rentcost/features/category/bloc/category_state.dart';
+import 'package:rentcost/features/category/model/category_model.dart';
 
-class CreateBanner extends StatefulWidget {
-  const CreateBanner({super.key});
+class CreateCategory extends StatefulWidget {
+  const CreateCategory({super.key});
 
   @override
-  State<CreateBanner> createState() => _CreateBannerState();
+  State<CreateCategory> createState() => _CreateCategoryState();
 }
 
-class _CreateBannerState extends State<CreateBanner> {
-  TextEditingController banner_name = TextEditingController();
+class _CreateCategoryState extends State<CreateCategory> {
+  TextEditingController category_name = TextEditingController();
   String? showFileName = "";
   String errorMessage = '';
-  int maxSizeInBytes = 3 * 1024 * 1024; // 1 MB
+  int maxSizeInBytes = 3 * 1024 * 1024;
   FilePickerResult? filePickerResult;
-
-  @override
-  void dispose() {
-    banner_name.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    // print(filePickerResult);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        scrolledUnderElevation: 0.0,
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        leading: GestureDetector(
-          onTap: () {
-            context.go("/banner");
-          },
-          child: const Icon(
-            FontAwesome.chevron_left_solid,
-            color: Colors.black,
-          ),
-        ),
-        elevation: 0,
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2)),
-            Text(
-              "Tambah Banner",
-              style: TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold),
+    return BlocListener<CategoriesBloc, CategoriesState>(
+      listener: (context, state) {
+        if (state is CategoriesCreateLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const Center(
+              child: CircularProgressIndicator(),
             ),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: BlocListener<BannerBloc, BannerState>(
-            listener: (context, state) {
-              if (state is BannerCreateLoading) {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                );
-              } else if (state is BannerCreateSuccess) {
-                Navigator.of(context).pop();
+          );
+        } else if (state is CategoriesCreateSuccess) {
+          Navigator.of(context).pop();
 
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Center(
-                      child: Text(
-                        state.message,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    backgroundColor: Colors.white,
-                    duration: const Duration(seconds: 3),
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: const EdgeInsets.all(10),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Center(
+                child: Text(
+                  state.message,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black,
                   ),
-                );
+                ),
+              ),
+              backgroundColor: Colors.white,
+              duration: const Duration(seconds: 3),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            ),
+          );
 
-                context.read<BannerBloc>().add(BannerRequest());
-                context.go('/banner');
-              }
-            },
+          context.read<CategoriesBloc>().add(CategoriesRequest());
+          context.go('/category');
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+            scrolledUnderElevation: 0.0,
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            leading: GestureDetector(
+              onTap: () {
+                context.go("/category");
+              },
+              child: const Icon(
+                FontAwesome.chevron_left_solid,
+                color: Colors.black,
+              ),
+            ),
+            elevation: 0,
+            title: const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 2, vertical: 2)),
+                Text(
+                  "Tambah Kategori",
+                  style: TextStyle(
+                      fontSize: 18.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            )),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               children: <Widget>[
-                // Nama Banner
                 Container(
                   child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
                         child: Text(
-                          "Nama Banner",
+                          "Nama Kategori",
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.w500),
                         ),
@@ -123,9 +115,10 @@ class _CreateBannerState extends State<CreateBanner> {
                         height: 8.0,
                       ),
                       TextField(
-                        controller: banner_name,
+                        controller: category_name,
+                        onChanged: null,
                         decoration: const InputDecoration(
-                          hintText: 'Nama Banner',
+                          hintText: 'Ex: Mobile Legend',
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 20.0),
                           border: OutlineInputBorder(
@@ -142,7 +135,8 @@ class _CreateBannerState extends State<CreateBanner> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(6.0)),
                             borderSide: BorderSide(
-                                color: Color(0xFF881FFF), width: 2.0),
+                                color: Color(0xFF881FFF),
+                                width: 2.0), // Mengatur border saat fokus
                           ),
                         ),
                       ),
@@ -152,14 +146,14 @@ class _CreateBannerState extends State<CreateBanner> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                // Upload Gambar Banner
                 Container(
                   child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(
                         child: Text(
-                          "Gambar Banner",
+                          "Gambar Kategori",
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.w500),
                         ),
@@ -205,9 +199,11 @@ class _CreateBannerState extends State<CreateBanner> {
                                                 showFileName = '';
                                               });
                                             } else {
+                                              // Jika ukuran file sesuai, perbarui state dengan nama file
                                               setState(() {
                                                 showFileName = file.name;
-                                                errorMessage = '';
+                                                errorMessage =
+                                                    ''; // Clear any previous error message
                                               });
                                             }
                                           }
@@ -233,27 +229,13 @@ class _CreateBannerState extends State<CreateBanner> {
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
-                                            // Memeriksa apakah file telah dipilih dan menampilkan nama file
-                                            filePickerResult != null &&
-                                                    filePickerResult!
-                                                        .files.isNotEmpty
-                                                ? filePickerResult!.files.first
-                                                    .name // Nama file pertama
-                                                : 'Belum ada file yang dipilih', // Jika belum ada file yang dipilih
+                                            showFileName!,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  if (errorMessage.isNotEmpty)
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        errorMessage,
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                    ),
                                 ],
                               ),
                             ),
@@ -267,55 +249,52 @@ class _CreateBannerState extends State<CreateBanner> {
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: GestureDetector(
-          onTap: () {
-            final bannerNameText = banner_name.text.trim();
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.white,
+          child: GestureDetector(
+            onTap: () {
+              final categoryNameText = category_name.text.trim();
 
-            if (bannerNameText.isEmpty) {
+              if (categoryNameText.isEmpty) {
+                setState(() {
+                  errorMessage = 'Nama banner tidak boleh kosong';
+                });
+                return;
+              }
+
+              if (filePickerResult == null || filePickerResult!.files.isEmpty) {
+                setState(() {
+                  errorMessage = 'Pilih gambar untuk banner';
+                });
+                return;
+              }
+
               setState(() {
-                errorMessage = 'Nama banner tidak boleh kosong';
+                errorMessage = '';
               });
-              return;
-            }
 
-            if (filePickerResult == null || filePickerResult!.files.isEmpty) {
-              setState(() {
-                errorMessage = 'Pilih gambar untuk banner';
-              });
-              return;
-            }
-
-            setState(() {
-              errorMessage = '';
-            });
-
-            if (filePickerResult != null &&
-                filePickerResult!.files.isNotEmpty) {
-              context.read<BannerBloc>().add(
-                    BannerCreateEvent(
-                      file: filePickerResult?.files.first.path ?? '',
-                      banner_name: bannerNameText,
+              if (filePickerResult != null &&
+                  filePickerResult!.files.isNotEmpty) {
+                context.read<CategoriesBloc>().add(CategoriesCreateEvent(
+                    file: filePickerResult?.files.first.path ?? '',
+                    category_name: categoryNameText));
+              }
+            },
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Color(0xFF881FFF),
+                borderRadius: BorderRadius.all(Radius.circular(6.0)),
+              ),
+              child: const Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Tambah',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                      color: Colors.white,
                     ),
-                  );
-            }
-          },
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFF881FFF),
-              borderRadius: BorderRadius.all(Radius.circular(6.0)),
-            ),
-            child: const Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Tambah',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                    color: Colors.white,
                   ),
                 ),
               ),

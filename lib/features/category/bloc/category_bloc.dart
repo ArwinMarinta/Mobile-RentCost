@@ -14,6 +14,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   CategoriesBloc({required this.loginBloc}) : super(CategoriesInitial()) {
     on<CategoriesRequest>(_onCategoriesRequest);
     on<CategoriesCreateEvent>(_onCategorieCreate);
+    on<CategoriesDeleteEvent>(_onCategorieDelete);
   }
 
   Future<List<Categories>> _onCategoriesRequest(
@@ -84,19 +85,53 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
         event.file,
       ));
 
-      request.fields['banner_name'] = event.category_name;
+      request.fields['category_name'] = event.category_name;
 
       var response = await request.send();
 
       if (response.statusCode == 201) {
-        emit(CategoriesCreateSuccess(message: "Berhasil menambah banner"));
-        add(CategoriesRequest());
+        emit(CategoriesCreateSuccess(message: "Berhasil menambah categories"));
+        // add(CategoriesRequest());
       } else {
-        emit(CategoriesCreateFailure(error: 'Upload failed'));
+        emit(CategoriesCreateFailure(error: 'Gagal menambah categories'));
       }
     } catch (e) {
       print('Error: $e');
-      emit(CategoriesCreateFailure(error: 'Upload failed'));
+      emit(CategoriesCreateFailure(error: 'Gagal menambah categories'));
+    }
+  }
+
+  Future<void> _onCategorieDelete(
+      CategoriesDeleteEvent event, Emitter<CategoriesState> emit) async {
+    emit(CategoriesDeleteLoading());
+    try {
+      final token = (loginBloc.state is LoginSuccess)
+          ? (loginBloc.state as LoginSuccess).token
+          : null;
+
+      if (token == null) {
+        emit(CategoriesCreateFailure(error: 'Token tidak ada'));
+        return;
+      }
+
+      final categories = event.id;
+
+      final response = await http.delete(
+        Uri.parse('${UrlApi.baseUrl}/categories/${categories}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        emit(CategoriesDeleteSuccess(message: "Berhasil menghapus Categories"));
+        // add(CategoriesRequest());
+      } else {
+        emit(CategoriesDeleteFailure(error: 'Gagal Menghapus Categories'));
+      }
+    } catch (e) {
+      emit(CategoriesCreateFailure(error: 'Gagal Menghapus Categories'));
     }
   }
 }

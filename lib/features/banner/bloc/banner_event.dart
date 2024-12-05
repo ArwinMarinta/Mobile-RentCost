@@ -20,3 +20,12 @@ class BannerCreateEvent extends BannerEvent {
   @override
   List<Object> get props => [file, banner_name];
 }
+
+class BannerDeleteEvent extends BannerEvent {
+  final int id;
+
+  BannerDeleteEvent({required this.id});
+
+  @override
+  List<Object> get props => [id];
+}

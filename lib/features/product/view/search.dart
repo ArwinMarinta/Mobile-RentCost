@@ -25,6 +25,7 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<SearchBloc>().add(SearchProductEvent(search: ''));
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(

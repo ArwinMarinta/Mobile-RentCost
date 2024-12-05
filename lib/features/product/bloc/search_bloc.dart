@@ -41,6 +41,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       );
 
       if (response.statusCode == 200) {
+        if (query.trim().isEmpty) {
+          emit(SearchFailure(error: "Silakan masukkan kata kunci pencarian."));
+          return [];
+        }
         final Map<String, dynamic> data = jsonDecode(response.body);
 
         List<ProductData> list = (data['data'] as List)

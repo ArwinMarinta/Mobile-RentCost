@@ -31,10 +31,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> imagePaths =
-        categoryList.map((category) => category.path).toList();
-    final List<Costum> costum = costumList;
-    final List<Costum> costum1 = costumNewList;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(

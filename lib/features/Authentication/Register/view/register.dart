@@ -73,15 +73,53 @@ class _RegisterState extends State<Register> {
                 Navigator.of(context).pop(); // Close loading dialog
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                      content: Text('Register Berhasil: ${state.message}')),
+                    content: Center(
+                      child: Text(
+                        state.message,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Colors.white,
+                    duration: const Duration(seconds: 3),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                  ),
                 );
-                print('Register berhasil dengan token: ${state.message}');
-  
-                context.go('/login'); // Ganti dengan rute yang sesuai
+
+                Future.delayed(const Duration(seconds: 3), () {
+                  context.go('/login');
+                });
               } else if (state is RegisterFailure) {
-                Navigator.of(context).pop(); // Close loading dialog
+                Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Register Gagal: ${state.error}')),
+                  SnackBar(
+                    content: Center(
+                      child: Text(
+                        state.error,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Colors.red,
+                    duration: const Duration(seconds: 3),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                  ),
                 );
               }
             },

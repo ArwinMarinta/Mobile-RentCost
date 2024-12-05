@@ -20,3 +20,12 @@ class CategoriesCreateEvent extends CategoriesEvent {
   @override
   List<Object> get props => [file, category_name];
 }
+
+class CategoriesDeleteEvent extends CategoriesEvent {
+  final int id;
+
+  CategoriesDeleteEvent({required this.id});
+
+  @override
+  List<Object> get props => [id];
+}

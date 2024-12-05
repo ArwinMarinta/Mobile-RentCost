@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rentcost/features/Authentication/ChangePassword/bloc/change_password_bloc.dart';
 import 'package:rentcost/features/Authentication/Register/bloc/register_bloc.dart';
 import 'package:rentcost/features/SplashScreen/bloc/splash_bloc.dart';
 import 'package:rentcost/features/address/bloc/address_bloc.dart';
@@ -71,6 +72,11 @@ void main() {
         ),
         BlocProvider(
           create: (context) => SplashBloc(
+            loginBloc: context.read<LoginBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => ChangePasswordBloc(
             loginBloc: context.read<LoginBloc>(),
           ),
         ),

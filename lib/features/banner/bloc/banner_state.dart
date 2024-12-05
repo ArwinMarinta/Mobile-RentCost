@@ -50,3 +50,20 @@ class BannerCreateFailure extends BannerState {
   @override
   List<Object> get props => [error];
 }
+
+class BannerDeleteLoading extends BannerState {}
+
+class BannerDeleteSuccess extends BannerState {
+  final String message;
+
+  BannerDeleteSuccess({required this.message});
+}
+
+class BannerDeleteFailure extends BannerState {
+  final String error;
+
+  BannerDeleteFailure({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}

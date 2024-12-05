@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -6,17 +7,49 @@ import 'package:rentcost/features/category/bloc/category_bloc.dart';
 import 'package:rentcost/features/category/bloc/category_event.dart';
 import 'package:rentcost/features/category/bloc/category_state.dart';
 
-class Category extends StatefulWidget {
+class Category extends StatelessWidget {
   const Category({super.key});
 
   @override
-  State<Category> createState() => _CategoryState();
-}
-
-class _CategoryState extends State<Category> {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocListener<CategoriesBloc, CategoriesState>(
+      listener: (context, state) {
+        if (state is CategoriesDeleteLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (state is CategoriesDeleteSuccess) {
+          Navigator.of(context).pop();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Center(
+                child: Text(
+                  state.message,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              backgroundColor: Colors.white,
+              duration: const Duration(seconds: 3),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            ),
+          );
+
+          context.read<CategoriesBloc>().add(CategoriesRequest());
+        }
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
           scrolledUnderElevation: 0.0,
@@ -37,9 +70,10 @@ class _CategoryState extends State<Category> {
             child: Text(
               "Kategori Costume",
               style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold),
+                fontSize: 20.0,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           actions: [
@@ -64,12 +98,13 @@ class _CategoryState extends State<Category> {
               return ListView.builder(
                 itemCount: state.categories.length,
                 itemBuilder: (context, index) {
-                  // Mengambil data BannerData
-                  final categries = state.categories[index];
+                  final category = state.categories[index];
 
                   return Container(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 12.0),
+                      horizontal: 16.0,
+                      vertical: 12.0,
+                    ),
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(color: Colors.black, width: 0.2),
@@ -82,10 +117,11 @@ class _CategoryState extends State<Category> {
                         Row(
                           children: [
                             ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(6.0)),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(6.0),
+                              ),
                               child: Image.network(
-                                categries.image_url,
+                                category.image_url,
                                 fit: BoxFit.cover,
                                 height: 100.0,
                                 width: 100.0,
@@ -93,10 +129,12 @@ class _CategoryState extends State<Category> {
                             ),
                             const SizedBox(width: 10.0),
                             Text(
-                              categries.category_name,
-                              style: TextStyle(
-                                  fontSize: 16.0, fontWeight: FontWeight.w500),
-                            )
+                              category.category_name,
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ],
                         ),
                         Row(
@@ -105,7 +143,7 @@ class _CategoryState extends State<Category> {
                               onTap: () {
                                 // Implementasi untuk Ubah
                               },
-                              child: Text(
+                              child: const Text(
                                 "Ubah",
                                 style: TextStyle(color: Color(0xFFFFBE05)),
                               ),
@@ -113,15 +151,52 @@ class _CategoryState extends State<Category> {
                             const SizedBox(width: 12.0),
                             GestureDetector(
                               onTap: () {
-                                // Implementasi untuk Hapus
+                                showCupertinoDialog(
+                                  barrierDismissible: false,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return CupertinoAlertDialog(
+                                      title: const Text("Hapus Categories"),
+                                      content: const Text(
+                                          "Apakah Anda yakin ingin menghapus categories ini?"),
+                                      actions: <Widget>[
+                                        CupertinoDialogAction(
+                                          child: Text(
+                                            'Tutup',
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Menutup dialog
+                                          },
+                                        ),
+                                        CupertinoDialogAction(
+                                          child: Text(
+                                            'Hapus',
+                                            style: TextStyle(color: Colors.red),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(); // Tutup dialog
+                                            context.read<CategoriesBloc>().add(
+                                                CategoriesDeleteEvent(
+                                                    id: category
+                                                        .id)); // Menutup dialog
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
-                              child: Text(
+                              child: const Text(
                                 "Hapus",
                                 style: TextStyle(color: Color(0xFFFE8A8A)),
                               ),
-                            )
+                            ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   );
@@ -131,6 +206,8 @@ class _CategoryState extends State<Category> {
 
             return Container();
           },
-        ));
+        ),
+      ),
+    );
   }
 }

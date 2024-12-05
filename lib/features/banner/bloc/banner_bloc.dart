@@ -16,6 +16,7 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
   BannerBloc({required this.loginBloc}) : super(BannerInitial()) {
     on<BannerRequest>(_onBannerRequest);
     on<BannerCreateEvent>(_onBannerCreate);
+    on<BannerDeleteEvent>(_onBannerDelete);
   }
 
   Future<List<BannerResponse>> _onBannerRequest(
@@ -93,13 +94,48 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
 
       if (response.statusCode == 201) {
         emit(BannerCreateSuccess(message: "Berhasil menambah banner"));
-        add(BannerRequest());
+        // add(BannerRequest());
       } else {
         emit(BannerCreateFailure(error: 'Upload failed'));
       }
     } catch (e) {
       print('Error: $e');
       emit(BannerCreateFailure(error: 'Upload failed'));
+    }
+  }
+
+  Future<void> _onBannerDelete(
+      BannerDeleteEvent event, Emitter<BannerState> emit) async {
+    emit(BannerDeleteLoading());
+    try {
+      final token = (loginBloc.state is LoginSuccess)
+          ? (loginBloc.state as LoginSuccess).token
+          : null;
+
+      if (token == null) {
+        emit(BannerCreateFailure(error: 'Token tidak ada'));
+        return;
+      }
+
+      final banner = event.id;
+
+      final response = await http.delete(
+        Uri.parse('${UrlApi.baseUrl}/banners/${banner}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        emit(BannerDeleteSuccess(message: "Berhasil menghapus banner"));
+        // add(BannerRequest());
+      } else {
+        emit(BannerDeleteFailure(error: 'Gagal Menghapus Banner'));
+      }
+    } catch (e) {
+      print('Error: $e');
+      emit(BannerCreateFailure(error: 'Gagal Menghapus Banner'));
     }
   }
 }
