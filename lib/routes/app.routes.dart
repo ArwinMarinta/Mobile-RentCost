@@ -4,7 +4,7 @@ import 'package:rentcost/features/SplashScreen/view/splash.dart';
 import 'package:rentcost/features/stores/view/create_store.dart';
 import 'package:rentcost/features/address/view/add_address.dart';
 import 'package:rentcost/features/stores/view/detail_product.dart';
-import 'package:rentcost/features/view/add_costum.dart';
+import 'package:rentcost/features/stores/view/add_costum.dart';
 import 'package:rentcost/features/view/cart.dart';
 import 'package:rentcost/features/category/view/category.dart';
 import 'package:rentcost/features/Authentication/ChangePassword/view/change_password.dart';
@@ -13,7 +13,7 @@ import 'package:rentcost/features/banner/view/create_banner.dart';
 import 'package:rentcost/features/category/view/create_category.dart';
 import 'package:rentcost/features/product/view/detail_costum.dart';
 import 'package:rentcost/features/view/detail_history.dart';
-import 'package:rentcost/features/view/forgot_password.dart';
+import 'package:rentcost/features/Authentication/ForgotPassword/view/forgot_password.dart';
 import 'package:rentcost/features/view/history_tenant.dart';
 import 'package:rentcost/features/home/home.dart';
 import 'package:rentcost/features/Authentication/Login/view/login.dart';
@@ -26,7 +26,7 @@ import 'package:rentcost/features/Authentication/Register/view/register.dart';
 import 'package:rentcost/features/product/view/search.dart';
 import 'package:rentcost/features/address/view/select_address.dart';
 import 'package:rentcost/features/view/shop.dart';
-import 'package:rentcost/features/view/verify_email.dart';
+import 'package:rentcost/features/Authentication/ForgotPassword/view/verify_email.dart';
 import 'package:rentcost/features/banner/view/banner.dart';
 import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -117,9 +117,14 @@ GoRouter goRouter() {
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: MyOrder())),
     GoRoute(
-        path: "/forgot-password",
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: ForgotPassword())),
+      path: '/forgot-password',
+      pageBuilder: (context, state) {
+        final token = state.uri.queryParameters['token'] ?? '';
+        return NoTransitionPage(
+          child: ForgotPassword(token: token),
+        );
+      },
+    ),
     GoRoute(
         path: "/add-costum",
         pageBuilder: (context, state) =>

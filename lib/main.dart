@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentcost/features/Authentication/ChangePassword/bloc/change_password_bloc.dart';
+import 'package:rentcost/features/Authentication/ForgotPassword/bloc/forgot_password_bloc.dart';
+import 'package:rentcost/features/Authentication/ForgotPassword/bloc/verify_email_bloc.dart';
 import 'package:rentcost/features/Authentication/Register/bloc/register_bloc.dart';
 import 'package:rentcost/features/SplashScreen/bloc/splash_bloc.dart';
 import 'package:rentcost/features/address/bloc/address_bloc.dart';
@@ -12,7 +14,6 @@ import 'package:rentcost/features/product/bloc/search_bloc.dart';
 import 'package:rentcost/features/stores/bloc/stores_bloc.dart';
 import 'package:rentcost/features/users/bloc/user_bloc.dart';
 import 'package:rentcost/features/users/bloc/user_product_bloc.dart';
-import 'package:rentcost/features/users/view/personal.dart';
 
 import 'package:rentcost/routes/app.routes.dart';
 import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
@@ -79,6 +80,12 @@ void main() {
           create: (context) => ChangePasswordBloc(
             loginBloc: context.read<LoginBloc>(),
           ),
+        ),
+        BlocProvider(
+          create: (context) => VerifyEmailBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ForgotPasswordBloc(),
         ),
       ],
       child: const MyApp(),

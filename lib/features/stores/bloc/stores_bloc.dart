@@ -11,6 +11,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   final LoginBloc loginBloc;
   StoreBloc({required this.loginBloc}) : super(StoreInitial()) {
     on<StoreCreate>(_onStoreRequest);
+    on<ProductCreateEvent>(_onCreateProduct);
   }
 
   Future<void> _onStoreRequest(
@@ -49,6 +50,50 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       }
     } catch (e) {
       emit(StoreFailure(error: 'Terjadi kesalahan, coba lagi.'));
+    }
+  }
+
+  Future<void> _onCreateProduct(
+      ProductCreateEvent event, Emitter<StoreState> emit) async {
+    emit(ProductLoadingStore());
+    try {
+      final token = (loginBloc.state is LoginSuccess)
+          ? (loginBloc.state as LoginSuccess).token
+          : null;
+
+      if (token == null) {
+        emit(ProductFailureStore(error: 'Token tidak ada'));
+        return;
+      }
+
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse('${UrlApi.baseUrl}/banners'),
+      );
+      request.headers['Authorization'] = 'Bearer $token';
+
+      request.files.add(await http.MultipartFile.fromPath(
+        'image_url',
+        event.image_url,
+      ));
+
+      request.fields['product_name'] = event.product_name;
+      request.fields['price'] = event.price;
+      request.fields['category_id'] = event.category_id.toString();
+      request.fields['price'] = event.price;
+      request.fields['stock'] = jsonEncode(event.size_stock);
+
+      var response = await request.send();
+
+      if (response.statusCode == 201) {
+        emit(ProductSuccessStore(message: "Berhasil menambah banner"));
+        // add(BannerRequest());
+      } else {
+        emit(ProductFailureStore(error: 'Upload failed'));
+      }
+    } catch (e) {
+      print('Error: $e');
+      emit(ProductFailureStore(error: 'Upload failed'));
     }
   }
 }
