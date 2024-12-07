@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:rentcost/features/category/bloc/category_bloc.dart';
+import 'package:rentcost/features/category/bloc/category_state.dart';
+import 'package:rentcost/features/category/model/category_model.dart';
 import 'package:rentcost/features/stores/bloc/stores_bloc.dart';
 import 'package:rentcost/features/stores/bloc/stores_event.dart';
 import 'package:rentcost/features/stores/bloc/stores_state.dart';
+import 'package:rentcost/features/users/bloc/user_product_bloc.dart';
+import 'package:rentcost/features/users/bloc/user_product_event.dart';
 
 class AddCostum extends StatefulWidget {
   const AddCostum({super.key});
@@ -17,9 +23,7 @@ class AddCostum extends StatefulWidget {
 class _AddCostumState extends State<AddCostum> {
   TextEditingController productName = TextEditingController();
   TextEditingController price = TextEditingController();
-  TextEditingController imageUrl = TextEditingController();
-  TextEditingController categoryId = TextEditingController();
-  TextEditingController size_stock = TextEditingController();
+  int? categoryId;
   List<Map<String, dynamic>> sizeStock = [];
 
   String? showFileName = "";
@@ -30,8 +34,8 @@ class _AddCostumState extends State<AddCostum> {
   void _addStock() {
     setState(() {
       sizeStock.add({
-        'size': '', // Placeholder untuk size
-        'stock': '', // Placeholder untuk stock
+        'size_id': '',
+        'stok': '',
       });
     });
   }
@@ -42,8 +46,23 @@ class _AddCostumState extends State<AddCostum> {
     });
   }
 
+  void _deleteStock(int index) {
+    setState(() {
+      sizeStock.removeAt(index);
+    });
+  }
+
+  Map<String, String> sizeMapping = {
+    '1': 'S',
+    '2': 'M',
+    '3': 'L',
+    '4': 'XL',
+    '5': 'XXL',
+  };
+
   @override
   Widget build(BuildContext context) {
+    print(sizeStock);
     return BlocListener<StoreBloc, StoreState>(
       listener: (context, state) {
         if (state is ProductLoadingStore) {
@@ -79,7 +98,8 @@ class _AddCostumState extends State<AddCostum> {
           );
 
           Future.delayed(const Duration(seconds: 3), () {
-            context.go('/store');
+            context.read<ProductUserBloc>().add(ProductUser());
+            context.go('/shop');
           });
         } else if (state is ProductFailureStore) {
           Navigator.of(context).pop();
@@ -237,92 +257,60 @@ class _AddCostumState extends State<AddCostum> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                // Container(
-                //   child: Column(
-                //     // mainAxisAlignment: MainAxisAlignment.start,
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       const SizedBox(
-                //         child: Text(
-                //           "Stok",
-                //           style: TextStyle(
-                //               fontSize: 16.0, fontWeight: FontWeight.w500),
-                //         ),
-                //       ),
-                //       const SizedBox(
-                //         height: 8.0,
-                //       ),
-                //       TextField(
-                //         onChanged: null,
-                //         decoration: const InputDecoration(
-                //           hintText: 'ex: 1',
-                //           contentPadding: EdgeInsets.symmetric(
-                //               vertical: 10.0, horizontal: 20.0),
-                //           border: OutlineInputBorder(
-                //             borderRadius:
-                //                 BorderRadius.all(Radius.circular(6.0)),
-                //           ),
-                //           enabledBorder: OutlineInputBorder(
-                //             borderSide: BorderSide(
-                //                 color: Color(0xFF8E8E8E), width: 1.0),
-                //             borderRadius:
-                //                 BorderRadius.all(Radius.circular(6.0)),
-                //           ),
-                //           focusedBorder: OutlineInputBorder(
-                //             borderRadius:
-                //                 BorderRadius.all(Radius.circular(6.0)),
-                //             borderSide: BorderSide(
-                //                 color: Color(0xFF881FFF),
-                //                 width: 2.0), // Mengatur border saat fokus
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 20.0,
-                // ),
                 Container(
+                  width: double.infinity,
                   child: Column(
-                    // mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
+                      Container(
                         child: Text(
                           "Category",
                           style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 8.0,
-                      ),
-                      TextField(
-                        controller: categoryId,
-                        onChanged: null,
-                        decoration: const InputDecoration(
-                          hintText: 'ex: 1',
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(6.0)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(0xFF8E8E8E), width: 1.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(6.0)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(6.0)),
-                            borderSide: BorderSide(
-                                color: Color(0xFF881FFF),
-                                width: 2.0), // Mengatur border saat fokus
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      BlocBuilder<CategoriesBloc, CategoriesState>(
+                        builder: (context, state) {
+                          if (state is CategoriesLoading) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (state is CategoriesLoaded) {
+                            return Container(
+                              width: double.infinity,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: const Color(0xFF8E8E8E), width: 1.0),
+                                borderRadius: BorderRadius.circular(6.0),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<int>(
+                                  value: categoryId,
+                                  hint: const Text('Select a category'),
+                                  items: state.categories.map((category) {
+                                    return DropdownMenuItem<int>(
+                                      value: category.id,
+                                      child: Text(category.category_name),
+                                    );
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      categoryId = value;
+                                      print(categoryId);
+                                    });
+                                  },
+                                ),
+                              ),
+                            );
+                          } else if (state is CategoriesFailure) {
+                            return Text('Error: ${state.error}');
+                          }
+                          return const Text('No categories available.');
+                        },
                       ),
                     ],
                   ),
@@ -330,52 +318,6 @@ class _AddCostumState extends State<AddCostum> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                // Container(
-                //   child: Column(
-                //     // mainAxisAlignment: MainAxisAlignment.start,
-                //     crossAxisAlignment: CrossAxisAlignment.start,
-                //     children: [
-                //       const SizedBox(
-                //         child: Text(
-                //           "Size",
-                //           style: TextStyle(
-                //               fontSize: 16.0, fontWeight: FontWeight.w500),
-                //         ),
-                //       ),
-                //       const SizedBox(
-                //         height: 8.0,
-                //       ),
-                //       TextField(
-                //         onChanged: null,
-                //         decoration: const InputDecoration(
-                //           hintText: 'ex: M',
-                //           contentPadding: EdgeInsets.symmetric(
-                //               vertical: 10.0, horizontal: 20.0),
-                //           border: OutlineInputBorder(
-                //             borderRadius:
-                //                 BorderRadius.all(Radius.circular(6.0)),
-                //           ),
-                //           enabledBorder: OutlineInputBorder(
-                //             borderSide: BorderSide(
-                //                 color: Color(0xFF8E8E8E), width: 1.0),
-                //             borderRadius:
-                //                 BorderRadius.all(Radius.circular(6.0)),
-                //           ),
-                //           focusedBorder: OutlineInputBorder(
-                //             borderRadius:
-                //                 BorderRadius.all(Radius.circular(6.0)),
-                //             borderSide: BorderSide(
-                //                 color: Color(0xFF881FFF),
-                //                 width: 2.0), // Mengatur border saat fokus
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 20.0,
-                // ),
                 Container(
                   child: Column(
                     // mainAxisAlignment: MainAxisAlignment.start,
@@ -478,134 +420,37 @@ class _AddCostumState extends State<AddCostum> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                // Container(
-                //   child: Row(
-                //     children: [
-                //       Expanded(
-                //         child: Container(
-                //           child: Column(
-                //             // mainAxisAlignment: MainAxisAlignment.start,
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               const SizedBox(
-                //                 child: Text(
-                //                   "Size",
-                //                   style: TextStyle(
-                //                       fontSize: 16.0,
-                //                       fontWeight: FontWeight.w500),
-                //                 ),
-                //               ),
-                //               const SizedBox(
-                //                 height: 8.0,
-                //               ),
-                //               TextField(
-                //                 onChanged: null,
-                //                 decoration: const InputDecoration(
-                //                   hintText: 'ex: M',
-                //                   contentPadding: EdgeInsets.symmetric(
-                //                       vertical: 10.0, horizontal: 20.0),
-                //                   border: OutlineInputBorder(
-                //                     borderRadius:
-                //                         BorderRadius.all(Radius.circular(6.0)),
-                //                   ),
-                //                   enabledBorder: OutlineInputBorder(
-                //                     borderSide: BorderSide(
-                //                         color: Color(0xFF8E8E8E), width: 1.0),
-                //                     borderRadius:
-                //                         BorderRadius.all(Radius.circular(6.0)),
-                //                   ),
-                //                   focusedBorder: OutlineInputBorder(
-                //                     borderRadius:
-                //                         BorderRadius.all(Radius.circular(6.0)),
-                //                     borderSide: BorderSide(
-                //                         color: Color(0xFF881FFF),
-                //                         width:
-                //                             2.0), // Mengatur border saat fokus
-                //                   ),
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       ),
-                //       const SizedBox(
-                //         width: 20,
-                //       ),
-                //       Expanded(
-                //         child: Container(
-                //           child: Column(
-                //             // mainAxisAlignment: MainAxisAlignment.start,
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               const SizedBox(
-                //                 child: Text(
-                //                   "Stok",
-                //                   style: TextStyle(
-                //                       fontSize: 16.0,
-                //                       fontWeight: FontWeight.w500),
-                //                 ),
-                //               ),
-                //               const SizedBox(
-                //                 height: 8.0,
-                //               ),
-                //               TextField(
-                //                 onChanged: null,
-                //                 decoration: const InputDecoration(
-                //                   hintText: 'ex: 1',
-                //                   contentPadding: EdgeInsets.symmetric(
-                //                       vertical: 10.0, horizontal: 20.0),
-                //                   border: OutlineInputBorder(
-                //                     borderRadius:
-                //                         BorderRadius.all(Radius.circular(6.0)),
-                //                   ),
-                //                   enabledBorder: OutlineInputBorder(
-                //                     borderSide: BorderSide(
-                //                         color: Color(0xFF8E8E8E), width: 1.0),
-                //                     borderRadius:
-                //                         BorderRadius.all(Radius.circular(6.0)),
-                //                   ),
-                //                   focusedBorder: OutlineInputBorder(
-                //                     borderRadius:
-                //                         BorderRadius.all(Radius.circular(6.0)),
-                //                     borderSide: BorderSide(
-                //                         color: Color(0xFF881FFF),
-                //                         width:
-                //                             2.0), // Mengatur border saat fokus
-                //                   ),
-                //                 ),
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
-                // GestureDetector(
-                //   onTap: null,
-                //   child: Row(children: [
-                //     Icon(
-                //       Bootstrap.plus_circle,
-                //       size: 20,
-                //     ),
-                //     const SizedBox(
-                //       width: 6.0,
-                //     ),
-                //     Text("Tambah Stock")
-                //   ]),
-                // )
                 SizedBox(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ...sizeStock.map((stock) {
                         int index = sizeStock.indexOf(stock);
-                        return Padding(
+                        // Dapatkan daftar ukuran yang sudah digunakan
+
+                        String? selectedSize =
+                            stock['size_id'] as String?; // Nilai yang dipilih
+
+                        List<String> availableSizes = ['1', '2', '3', '4', '5']
+                            .where((size) => !sizeStock
+                                .where((s) =>
+                                    s !=
+                                    stock) // Kecualikan ukuran dari item ini
+                                .map((s) => s['size_id'] as String)
+                                .contains(size))
+                            .toList();
+
+                        if (selectedSize != null &&
+                            !availableSizes.contains(selectedSize)) {
+                          availableSizes.add(
+                              selectedSize); // Tambahkan ukuran yang dipilih
+                        }
+
+                        return Container(
                           padding: const EdgeInsets.only(bottom: 16.0),
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               // Size Input
                               Expanded(
@@ -622,13 +467,30 @@ class _AddCostumState extends State<AddCostum> {
                                       ),
                                     ),
                                     const SizedBox(height: 8.0),
-                                    TextField(
-                                      onChanged: (value) =>
-                                          _updateStock(index, 'size', value),
+                                    DropdownButtonFormField<String>(
+                                      items:
+                                          availableSizes.map((String sizeId) {
+                                        String displaySize = sizeMapping[
+                                                sizeId] ??
+                                            sizeId; // Ambil nama ukuran berdasarkan ID
+                                        return DropdownMenuItem<String>(
+                                          value: sizeId, // Kirim ID ke server
+                                          child: Text(
+                                              displaySize), // Tampilkan nama ukuran
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        if (value != null) {
+                                          _updateStock(index, 'size_id',
+                                              value); // Kirim ID ke server
+                                        }
+                                      },
                                       decoration: const InputDecoration(
-                                        hintText: 'ex: M',
+                                        hintText: 'Select size',
                                         contentPadding: EdgeInsets.symmetric(
-                                            vertical: 10.0, horizontal: 20.0),
+                                          vertical: 10.0,
+                                          horizontal: 20.0,
+                                        ),
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(6.0)),
@@ -648,10 +510,12 @@ class _AddCostumState extends State<AddCostum> {
                                               width: 2.0),
                                         ),
                                       ),
+                                      hint: const Text("ex: M"),
                                     ),
                                   ],
                                 ),
                               ),
+
                               const SizedBox(width: 20),
                               // Stock Input
                               Expanded(
@@ -669,8 +533,12 @@ class _AddCostumState extends State<AddCostum> {
                                     ),
                                     const SizedBox(height: 8.0),
                                     TextField(
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter.digitsOnly,
+                                      ],
                                       onChanged: (value) =>
-                                          _updateStock(index, 'stock', value),
+                                          _updateStock(index, 'stok', value),
                                       decoration: const InputDecoration(
                                         hintText: 'ex: 1',
                                         contentPadding: EdgeInsets.symmetric(
@@ -698,6 +566,20 @@ class _AddCostumState extends State<AddCostum> {
                                   ],
                                 ),
                               ),
+
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    _deleteStock(index);
+                                  },
+                                  child: Icon(
+                                    Bootstrap.trash,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         );
@@ -707,18 +589,18 @@ class _AddCostumState extends State<AddCostum> {
                         onTap: _addStock,
                         child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.add_circle, // Digunakan untuk icon tambah
                               size: 20,
                             ),
                             const SizedBox(width: 6.0),
-                            Text("Buat atau tambah stock")
+                            const Text("Buat atau tambah stock")
                           ],
                         ),
                       ),
                     ],
                   ),
-                ),
+                )
               ],
             ),
           ),
@@ -728,7 +610,24 @@ class _AddCostumState extends State<AddCostum> {
           child: SizedBox(
             // padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: GestureDetector(
-              onTap: null,
+              onTap: () {
+                final productNameText = productName.text.trim();
+                final priceText = price.text.trim();
+                final categoryIdText = categoryId.toString();
+                final sizeList = sizeStock.map((item) {
+                  return {
+                    'size_id': item['size_id'],
+                    'stok': item['stok'],
+                  };
+                }).toList();
+
+                context.read<StoreBloc>().add(ProductCreateEvent(
+                    productName: productNameText,
+                    price: priceText,
+                    imageUrl: filePickerResult?.files.first.path ?? '',
+                    categoryId: categoryIdText,
+                    sizeStock: sizeList));
+              },
               child: Container(
                 decoration: const BoxDecoration(
                     color: Color(0xFF881FFF),

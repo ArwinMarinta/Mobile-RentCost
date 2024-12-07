@@ -14,7 +14,7 @@ class ConfirmPayment extends StatefulWidget {
 class _ConfirmPaymentState extends State<ConfirmPayment> {
   String? showFileName = "";
   String errorMessage = '';
-  int maxSizeInBytes = 1 * 1024 * 1024;
+  int maxSizeInBytes = 3 * 1024 * 1024;
   FilePickerResult? filePickerResult;
   final currentDate = DateTime.now();
   final currentEnd = DateTime.now().add(const Duration(days: 1));

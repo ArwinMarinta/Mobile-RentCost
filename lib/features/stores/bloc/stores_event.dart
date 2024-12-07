@@ -16,21 +16,21 @@ class StoreCreate extends StoreEvent {
 }
 
 class ProductCreateEvent extends StoreEvent {
-  final String product_name;
+  final String productName;
   final String price;
-  final String image_url;
-  final int category_id;
-  final List<Map<String, dynamic>> size_stock;
+  final String imageUrl;
+  final String categoryId;
+  final List<Map<String, dynamic>> sizeStock;
 
   ProductCreateEvent({
-    required this.product_name,
+    required this.productName,
     required this.price,
-    required this.image_url,
-    required this.category_id,
-    required this.size_stock,
+    required this.imageUrl,
+    required this.categoryId,
+    required this.sizeStock,
   });
 
   @override
   List<Object> get props =>
-      [product_name, price, image_url, category_id, size_stock];
+      [productName, price, imageUrl, categoryId, sizeStock];
 }

@@ -68,32 +68,31 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('${UrlApi.baseUrl}/banners'),
+        Uri.parse('${UrlApi.baseUrl}/products'),
       );
       request.headers['Authorization'] = 'Bearer $token';
 
       request.files.add(await http.MultipartFile.fromPath(
         'image_url',
-        event.image_url,
+        event.imageUrl,
       ));
 
-      request.fields['product_name'] = event.product_name;
-      request.fields['price'] = event.price;
-      request.fields['category_id'] = event.category_id.toString();
-      request.fields['price'] = event.price;
-      request.fields['stock'] = jsonEncode(event.size_stock);
+      request.fields['product_name'] = event.productName;
+      request.fields['price'] = event.price.toString();
+      request.fields['category_id'] = event.categoryId.toString();
+      request.fields['size_stock'] = jsonEncode(event.sizeStock);
 
       var response = await request.send();
 
       if (response.statusCode == 201) {
-        emit(ProductSuccessStore(message: "Berhasil menambah banner"));
+        emit(ProductSuccessStore(message: "Berhasil menambah product"));
         // add(BannerRequest());
       } else {
         emit(ProductFailureStore(error: 'Upload failed'));
       }
     } catch (e) {
       print('Error: $e');
-      emit(ProductFailureStore(error: 'Upload failed'));
+      emit(ProductFailureStore(error: 'Gagal Upload'));
     }
   }
 }
