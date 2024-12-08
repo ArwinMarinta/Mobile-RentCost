@@ -13,7 +13,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final LoginBloc loginBloc;
   ProductBloc({required this.loginBloc}) : super(ProductInitial()) {
     on<ProductFilter>(_onProductFilter);
-    // on<ProductSearch>(_onProductSearch);
+    on<ProductDeleteRequest>(_onProductDelete);
   }
 
   Future<void> _onProductFilter(
@@ -82,98 +82,39 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     }
   }
 
-  // Future<List<ProductData>> _onProductSearch(
-  //     ProductSearch event, Emitter<ProductState> emit) async {
-  //   emit(ProductLoading());
-  //   try {
-  //     final token = (loginBloc.state is LoginSuccess)
-  //         ? (loginBloc.state as LoginSuccess).token
-  //         : null;
+  Future<void> _onProductDelete(
+      ProductDeleteRequest event, Emitter<ProductState> emit) async {
+    emit(ProductDeleteLoading());
+    try {
+      final token = (loginBloc.state is LoginSuccess)
+          ? (loginBloc.state as LoginSuccess).token
+          : null;
 
-  //     if (token == null) {
-  //       emit(ProductFailure(error: 'Token tidak ada'));
-  //       return Future.error('Token tidak ada');
-  //     }
+      if (token == null) {
+        emit(ProductDeleteFailure(error: 'Token tidak ada'));
+        return;
+      }
 
-  //     final query = event.search;
+      final id = event.id;
 
-  //     final response = await http.get(
-  //       Uri.parse('${UrlApi.baseUrl}/products/search?search=$query'),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer $token',
-  //       },
-  //     );
+      final response = await http.delete(
+        Uri.parse('${UrlApi.baseUrl}/products/${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      final data = jsonDecode(response.body);
 
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> data = jsonDecode(response.body);
-
-  //       List<ProductData> list = (data['data'] as List)
-  //           .map((data) => ProductData.fromJson(data))
-  //           .toList();
-
-  //       if (list.isEmpty) {
-  //         emit(ProductFailure(error: "Tidak ada hasil untuk \"$query\""));
-  //         return [];
-  //       }
-
-  //       emit(ProductSearchState(search: list));
-  //       return list;
-  //     } else {
-  //       final errorData = response.body.isNotEmpty
-  //           ? jsonDecode(response.body)
-  //           : {'error': 'Tidak ada detail error dari server'};
-  //       emit(ProductFailure(error: errorData['error'] ?? 'User gagal'));
-  //       return Future.error('Failed to load products');
-  //     }
-  //   } catch (e) {
-  //     print('Error: $e');
-  //     emit(ProductFailure(error: "Error while fetching data"));
-  //     return Future.error('Error while fetching data');
-  //   }
-  // }
-
-  // Future<List<ProductData>> _onProductNews(
-  //     ProductNews event, Emitter<ProductState> emit) async {
-  //   emit(ProductLoading());
-  //   try {
-  //     final token = (loginBloc.state is LoginSuccess)
-  //         ? (loginBloc.state as LoginSuccess).token
-  //         : null;
-
-  //     if (token == null) {
-  //       emit(ProductFailure(error: 'Token tidak ada'));
-  //       return Future.error('Token tidak ada');
-  //     }
-
-  //     final response = await http.get(
-  //       Uri.parse('${UrlApi.baseUrl}/products/search?filter=news'),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer $token',
-  //       },
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       final Map<String, dynamic> data = jsonDecode(response.body);
-
-  //       List<ProductData> list = (data['data'] as List)
-  //           .map((data) => ProductData.fromJson(data))
-  //           .toList();
-
-  //       emit(ProductNewsState(news: list));
-  //       return list;
-  //     } else {
-  //       final errorData = response.body.isNotEmpty
-  //           ? jsonDecode(response.body)
-  //           : {'error': 'Tidak ada detail error dari server'};
-  //       emit(ProductFailure(error: errorData['error'] ?? 'User gagal'));
-  //       return Future.error('Failed to load Addresss');
-  //     }
-  //   } catch (e) {
-  //     print('Error: $e');
-  //     emit(ProductFailure(error: "error"));
-  //     return Future.error('Error while fetching data');
-  //   }
-  // }
+      if (response.statusCode == 200) {
+        emit(ProductDeleteSuccess(message: data['message']));
+        // add(BannerRequest());
+      } else {
+        emit(ProductDeleteFailure(error: data['error']));
+      }
+    } catch (e) {
+      print('Error: $e');
+      emit(ProductDeleteFailure(error: 'Gagal Menghapus Banner'));
+    }
+  }
 }

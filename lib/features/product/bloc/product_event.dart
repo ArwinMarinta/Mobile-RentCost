@@ -30,4 +30,16 @@ class ProductSearch extends ProductEvent {
   final String search;
 
   ProductSearch({required this.search});
+
+  @override
+  List<Object> get props => [search];
+}
+
+class ProductDeleteRequest extends ProductEvent {
+  final String id;
+
+  ProductDeleteRequest({required this.id});
+
+  @override
+  List<Object> get props => [id];
 }

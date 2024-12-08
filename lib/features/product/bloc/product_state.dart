@@ -33,12 +33,6 @@ class ProductFailure extends ProductState {
   List<Object> get props => [error];
 }
 
-// class ProductLoaded extends ProductState {
-//   final List<Product> product;
-
-//   ProductLoaded({required this.categories});
-// }
-
 final class ProductPopulerState extends ProductState {
   final List<ProductData> populer;
 
@@ -62,4 +56,24 @@ final class ProductSearchState extends ProductState {
   final List<ProductData> search;
 
   ProductSearchState({required this.search});
+}
+
+final class ProductDeleteLoading extends ProductState {}
+
+final class ProductDeleteSuccess extends ProductState {
+  final String message;
+
+  ProductDeleteSuccess({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}
+
+final class ProductDeleteFailure extends ProductState {
+  final String error;
+
+  ProductDeleteFailure({required this.error});
+
+  @override
+  List<Object> get props => [error];
 }

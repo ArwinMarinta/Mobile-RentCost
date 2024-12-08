@@ -429,13 +429,13 @@ class _AddCostumState extends State<AddCostum> {
                         // Dapatkan daftar ukuran yang sudah digunakan
 
                         String? selectedSize =
-                            stock['size_id'] as String?; // Nilai yang dipilih
+                            stock['size_id'] as String?; 
 
                         List<String> availableSizes = ['1', '2', '3', '4', '5']
                             .where((size) => !sizeStock
                                 .where((s) =>
                                     s !=
-                                    stock) // Kecualikan ukuran dari item ini
+                                    stock) 
                                 .map((s) => s['size_id'] as String)
                                 .contains(size))
                             .toList();
@@ -482,7 +482,7 @@ class _AddCostumState extends State<AddCostum> {
                                       onChanged: (value) {
                                         if (value != null) {
                                           _updateStock(index, 'size_id',
-                                              value); // Kirim ID ke server
+                                              value);
                                         }
                                       },
                                       decoration: const InputDecoration(

@@ -12,6 +12,9 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   StoreBloc({required this.loginBloc}) : super(StoreInitial()) {
     on<StoreCreate>(_onStoreRequest);
     on<ProductCreateEvent>(_onCreateProduct);
+    on<StockDelete>(_onStockDelete);
+    on<ProductUpdateEvent>(_onUpdateProduct);
+    on<StockCreate>(_onCreateStock);
   }
 
   Future<void> _onStoreRequest(
@@ -93,6 +96,135 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     } catch (e) {
       print('Error: $e');
       emit(ProductFailureStore(error: 'Gagal Upload'));
+    }
+  }
+
+  Future<void> _onStockDelete(
+      StockDelete event, Emitter<StoreState> emit) async {
+    emit(StockDeleteLoading());
+    try {
+      final token = (loginBloc.state is LoginSuccess)
+          ? (loginBloc.state as LoginSuccess).token
+          : null;
+
+      if (token == null) {
+        emit(StockUpdateFailure(error: 'Token tidak ada'));
+        return;
+      }
+
+      final stock = event.id;
+
+      final response = await http.delete(
+        Uri.parse('${UrlApi.baseUrl}/stock/${stock}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        final message = data['message'];
+        emit(StockDeleteSuccess(message: message));
+        // add(BannerRequest());
+      } else {
+        final message = data['error'];
+        emit(StockUpdateFailure(error: message));
+      }
+    } catch (e) {
+      print('Error: $e');
+      emit(StockUpdateFailure(error: 'Gagal Menghapus Banner'));
+    }
+  }
+
+  Future<void> _onUpdateProduct(
+      ProductUpdateEvent event, Emitter<StoreState> emit) async {
+    emit(ProductUpdateLoading());
+    try {
+      final token = (loginBloc.state is LoginSuccess)
+          ? (loginBloc.state as LoginSuccess).token
+          : null;
+
+      if (token == null) {
+        emit(StockUpdateFailure(error: 'Token tidak ada'));
+        return;
+      }
+
+      final id = event.id;
+
+      var request = http.MultipartRequest(
+        'PATCH',
+        Uri.parse('${UrlApi.baseUrl}/products/${id}'),
+      );
+      request.headers['Authorization'] = 'Bearer $token';
+
+      if (event.imageUrl != event.oldImageUrl) {
+        request.files.add(await http.MultipartFile.fromPath(
+          'image_url',
+          event.imageUrl,
+        ));
+      } else {
+        request.fields['image_url'] = event.oldImageUrl;
+      }
+
+      request.fields['product_name'] = event.productName;
+      request.fields['price'] = event.price.toString();
+      request.fields['category_id'] = event.categoryId.toString();
+
+      var response = await request.send().timeout(Duration(seconds: 30));
+
+      if (response.statusCode == 200) {
+        // final message = data['message'];
+        emit(StockDeleteSuccess(message: "Berhasil mengubah kostum"));
+        // add(BannerRequest());
+      } else {
+        // final message = data['error'];
+        emit(ProductUpdateFailure(error: "Gagal mengubah kostum"));
+      }
+    } catch (e) {
+      print('Error: $e');
+      emit(ProductUpdateFailure(error: 'Gagal mengubah kostum'));
+    }
+  }
+
+  Future<void> _onCreateStock(
+      StockCreate event, Emitter<StoreState> emit) async {
+    emit(StockCreateLoading());
+    try {
+      final token = (loginBloc.state is LoginSuccess)
+          ? (loginBloc.state as LoginSuccess).token
+          : null;
+
+      if (token == null) {
+        emit(StockCreateFailure(error: 'Token tidak ada'));
+        return;
+      }
+
+      final id = event.id;
+
+      final response = await http.post(
+        Uri.parse('${UrlApi.baseUrl}/stock/${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({"size_id": event.sizeId, "stok": event.stok}),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 201) {
+        final message = data['message'];
+        emit(StockCreateSuccess(message: message));
+        // add(BannerRequest());
+      } else {
+        final message = data['error'];
+        emit(StockCreateFailure(error: message));
+      }
+    } catch (e) {
+      print('Error: $e');
+      emit(StockCreateFailure(error: 'Gagal Menghapus Banner'));
     }
   }
 }

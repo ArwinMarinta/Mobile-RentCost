@@ -95,9 +95,8 @@ class _DetailCostumState extends State<DetailCostum> {
                     child: Image.network(
                       data.imageUrl,
                       fit: BoxFit.cover,
-                      width: double
-                          .infinity, // Agar gambar memenuhi lebar container
-                      height: 300.0, // Atur tinggi gambar sesuai kebutuhan
+                      width: double.infinity,
+                      height: 300.0,
                     ),
                   ),
                   const SizedBox(
@@ -249,13 +248,15 @@ class _DetailCostumState extends State<DetailCostum> {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
-                            showModalBottomSheet<void>(
+                            showModalBottomSheet(
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
                                     top: Radius.circular(16.0)),
                               ),
                               context: context,
-                              builder: (BuildContext context) {
+                              builder: (
+                                BuildContext context,
+                              ) {
                                 return SingleChildScrollView(
                                   // Membuat konten bisa scroll jika melebihi tinggi
                                   child: Container(

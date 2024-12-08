@@ -5,6 +5,7 @@ import 'package:rentcost/features/stores/view/create_store.dart';
 import 'package:rentcost/features/address/view/add_address.dart';
 import 'package:rentcost/features/stores/view/detail_product.dart';
 import 'package:rentcost/features/stores/view/add_costum.dart';
+import 'package:rentcost/features/stores/view/update_costum.dart';
 import 'package:rentcost/features/view/cart.dart';
 import 'package:rentcost/features/category/view/category.dart';
 import 'package:rentcost/features/Authentication/ChangePassword/view/change_password.dart';
@@ -25,7 +26,7 @@ import 'package:rentcost/features/view/profile.dart';
 import 'package:rentcost/features/Authentication/Register/view/register.dart';
 import 'package:rentcost/features/product/view/search.dart';
 import 'package:rentcost/features/address/view/select_address.dart';
-import 'package:rentcost/features/view/shop.dart';
+import 'package:rentcost/features/stores/view/shop.dart';
 import 'package:rentcost/features/Authentication/ForgotPassword/view/verify_email.dart';
 import 'package:rentcost/features/banner/view/banner.dart';
 import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
@@ -172,5 +173,11 @@ GoRouter goRouter() {
         path: "/splash",
         pageBuilder: (context, state) =>
             NoTransitionPage(child: SplashScreen())),
+    GoRoute(
+        path: "/update-product/:id",
+        pageBuilder: (context, state) {
+          final String id = state.pathParameters['id'] ?? '';
+          return NoTransitionPage(child: UpdateCostum(id: id));
+        })
   ]);
 }
