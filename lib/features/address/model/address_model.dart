@@ -8,6 +8,7 @@ class AddressData {
   final String address1;
   final String address2;
   final DateTime createdAt;
+  final bool used;
 
   AddressData({
     required this.id,
@@ -19,6 +20,7 @@ class AddressData {
     required this.address1,
     required this.address2,
     required this.createdAt,
+    required this.used,
   });
 
   factory AddressData.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class AddressData {
       zipCode: json['zip_code'],
       address1: json['address1'],
       address2: json['address2'],
+      used: json['used'],
       createdAt: DateTime.parse(json['created_at']),
     );
   }

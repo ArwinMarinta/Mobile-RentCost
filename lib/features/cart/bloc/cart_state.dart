@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:rentcost/features/cart/model/cart.dart';
 import 'package:rentcost/features/category/model/category_model.dart';
 
 abstract class CartState extends Equatable {
@@ -28,11 +29,14 @@ class CartFailure extends CartState {
   List<Object> get props => [error];
 }
 
-// class CartLoaded extends CartState {
-//   final List<Cart> Cart;
+class CartLoaded extends CartState {
+  final CartResponse cart;
 
-//   CartLoaded({required this.Cart});
-// }
+  CartLoaded({required this.cart});
+
+  @override
+  List<Object> get props => [cart];
+}
 
 class CartToItemLoading extends CartState {}
 

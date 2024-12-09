@@ -14,3 +14,10 @@ class CartToItemRequest extends CartEvent {
   @override
   List<Object> get props => [id, sizeId];
 }
+
+class CartRequest extends CartEvent {
+  CartRequest();
+
+  @override
+  List<Object> get props => [];
+}

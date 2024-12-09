@@ -11,6 +11,9 @@ class SelectAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool? value;
+    int? selectedAddressId;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -40,8 +43,11 @@ class SelectAddress extends StatelessWidget {
         if (state is AddressInitial) {
           context.read<AddressBloc>().add(RequestAddress());
         } else if (state is AddressLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Scaffold(
+            backgroundColor: Colors.white,
+            body: const Center(
+              child: CircularProgressIndicator(),
+            ),
           );
         } else if (state is AddressLoaded) {
           return SingleChildScrollView(
@@ -67,30 +73,65 @@ class SelectAddress extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Checkbox(
+                            splashRadius: 0,
+                            fillColor: WidgetStateProperty.resolveWith<Color?>(
+                              (Set<WidgetState> states) {
+                                if (states.contains(WidgetState.selected)) {
+                                  return const Color(
+                                      0xFF881FFF); // Warna saat dicentang
+                                }
+                                return Colors
+                                    .white; // Warna saat tidak dicentang
+                              },
+                            ),
+                            shape: const CircleBorder(),
+                            side: const BorderSide(width: 0.6),
+                            value: data.used == true,
+                            onChanged: (data.used == true)
+                                ? (bool? newValue) {
+                                    // Jika data.used == true, checkbox dapat diubah
+                                    selectedAddressId = data
+                                        .id; // Menyimpan ID alamat yang dipilih
+                                  }
+                                : (bool?
+                                    newValue) {}, // Jika data.used != true, checkbox tidak bisa diubah// Nonaktifkan jika data.used tidak
+                            // Nonaktifkan checkbox jika alamat tidak tersedia
+                          ),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data.username,
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  '${data.username} | ${data.phoneNumber}',
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w500),
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                Text(data.address1),
-                                if (data.address2.isNotEmpty)
-                                  Text(data.address2),
+                                Text(
+                                  '${data.address1} ${data.address2} ${data.city} ${data.state} ${data.zipCode}',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                ),
                               ],
                             ),
                           ),
-                          GestureDetector(
-                            onTap: null,
-                            child: const Icon(
-                              Bootstrap.trash3,
-                              size: 20,
-                              color: Colors.red,
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: GestureDetector(
+                              onTap: null,
+                              child: Center(
+                                child: const Icon(
+                                  Bootstrap.trash3,
+                                  size: 20,
+                                  color: Colors.red,
+                                ),
+                              ),
                             ),
                           ),
                         ],

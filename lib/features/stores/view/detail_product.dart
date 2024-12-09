@@ -799,6 +799,8 @@ class _DetailCostumState extends State<DetailProductUser> {
                                                           Navigator.of(context)
                                                               .pop();
                                                           Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
                                                               .pop(); // Close loading dialog
                                                           ScaffoldMessenger.of(
                                                                   context)
@@ -853,6 +855,8 @@ class _DetailCostumState extends State<DetailProductUser> {
                                                           onDeleteOrUpdate();
                                                         } else if (state
                                                             is StockUpdateFailure) {
+                                                          Navigator.of(context)
+                                                              .pop();
                                                           Navigator.of(context)
                                                               .pop();
                                                           Navigator.of(context)

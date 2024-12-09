@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
@@ -176,12 +177,15 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       var response = await request.send().timeout(Duration(seconds: 30));
 
       if (response.statusCode == 200) {
-        // final message = data['message'];
-        emit(StockDeleteSuccess(message: "Berhasil mengubah kostum"));
+        var data = jsonDecode(await response.stream.bytesToString());
+        print(data);
+        var message = data['message'];
+        emit(StockUpdateSuccess(message: message));
         // add(BannerRequest());
       } else {
-        // final message = data['error'];
-        emit(ProductUpdateFailure(error: "Gagal mengubah kostum"));
+        var error = await response.stream.bytesToString();
+        print(error);
+        emit(ProductUpdateFailure(error: error));
       }
     } catch (e) {
       print('Error: $e');
@@ -254,7 +258,6 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       );
 
       final data = jsonDecode(response.body);
-
       if (response.statusCode == 200) {
         final message = data['message'];
         emit(StockUpdateSuccess(message: message));

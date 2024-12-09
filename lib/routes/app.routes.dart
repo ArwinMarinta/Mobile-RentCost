@@ -6,7 +6,7 @@ import 'package:rentcost/features/address/view/add_address.dart';
 import 'package:rentcost/features/stores/view/detail_product.dart';
 import 'package:rentcost/features/stores/view/add_costum.dart';
 import 'package:rentcost/features/stores/view/update_costum.dart';
-import 'package:rentcost/features/view/cart.dart';
+import 'package:rentcost/features/cart/view/cart.dart';
 import 'package:rentcost/features/category/view/category.dart';
 import 'package:rentcost/features/Authentication/ChangePassword/view/change_password.dart';
 import 'package:rentcost/features/view/confirm_payment.dart';
