@@ -78,7 +78,7 @@ class Stock {
     // Membaca data size dan mengonversinya menjadi objek Size
     var sizeData = json['size'] != null
         ? Size.fromJson(json['size'])
-        : Size(sizeName: 'Unknown');
+        : Size(sizeName: 'Unknown', id: 0);
 
     return Stock(
       id: json['id'] ?? 0,
@@ -90,14 +90,18 @@ class Stock {
 }
 
 class Size {
-  String sizeName;
+  final int id;
+  final String sizeName;
 
-  Size({required this.sizeName});
+  Size({
+    required this.id,
+    required this.sizeName,
+  });
 
   factory Size.fromJson(Map<String, dynamic> json) {
     return Size(
-      sizeName:
-          json['size_name'] ?? 'Unknown', // Default ke 'Unknown' jika tidak ada
+      id: json['id'],
+      sizeName: json['size_name'],
     );
   }
 }

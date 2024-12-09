@@ -55,6 +55,14 @@ class _DetailCostumState extends State<DetailProductUser> {
   List<String> selectedSizes = [];
   String? existingSizeId;
   String? existingStok;
+  String? existingSizeName;
+
+  void onDeleteOrUpdate() {
+    setState(() {
+      value = false;
+      selectedStockId = null;
+    });
+  }
 
   // @override
   // void didUpdateWidget(covariant DetailCostum oldWidget) {
@@ -69,7 +77,7 @@ class _DetailCostumState extends State<DetailProductUser> {
 
   @override
   Widget build(BuildContext context) {
-    print(selectedStockId.toString());
+    print(selectedSizeId.toString());
     return BlocBuilder<DetailBloc, DetailState>(builder: (context, state) {
       if (state is DetailLoading) {
         return Scaffold(
@@ -295,499 +303,313 @@ class _DetailCostumState extends State<DetailProductUser> {
                                     top: Radius.circular(16.0)),
                               ),
                               context: context,
+                              isDismissible: false,
+                              enableDrag: false,
                               builder: (BuildContext context) {
-                                return StatefulBuilder(
-                                  builder: (BuildContext context,
-                                      StateSetter setState) {
-                                    return SingleChildScrollView(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 10.0,
-                                                horizontal: 10.0,
-                                              ),
-                                              decoration: const BoxDecoration(
-                                                border: Border(
-                                                  bottom: BorderSide(
-                                                    color: Colors
-                                                        .black, // Warna border
-                                                    width:
-                                                        0.5, // Ketebalan border
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context); // Menutup modal
+                                    onDeleteOrUpdate(); // Memperbarui state
+                                  },
+                                  child: StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSetter setState) {
+                                      return SingleChildScrollView(
+                                        child: Container(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 10.0,
+                                                  horizontal: 10.0,
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                      color: Colors
+                                                          .black, // Warna border
+                                                      width:
+                                                          0.5, // Ketebalan border
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  "Ukuran kostum",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: data.stock.length,
-                                              itemBuilder: (context, index) {
-                                                final size = data.stock[index];
-                                                return Row(
+                                                child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
                                                           .spaceBetween,
                                                   children: [
-                                                    Row(
-                                                      children: [
-                                                        Checkbox(
-                                                          splashRadius: 0,
-                                                          fillColor: WidgetStateProperty
-                                                              .resolveWith<
-                                                                  Color?>((Set<
-                                                                      WidgetState>
-                                                                  states) {
-                                                            if (states.contains(
-                                                                WidgetState
-                                                                    .selected)) {
-                                                              return const Color(
-                                                                  0xFF881FFF);
-                                                            }
-                                                            return Colors.white;
-                                                          }),
-                                                          shape:
-                                                              const CircleBorder(),
-                                                          side:
-                                                              const BorderSide(
-                                                                  width: 0.6),
-                                                          value:
-                                                              selectedStockId ==
-                                                                  size.id,
-                                                          onChanged: size
-                                                                  .available
-                                                              ? (bool?
-                                                                  newValue) {
-                                                                  setState(() {
-                                                                    // Jika sudah dipilih, set menjadi null (toggle off)
-                                                                    if (selectedStockId ==
-                                                                        size.id) {
-                                                                      selectedStockId =
-                                                                          null;
-                                                                    } else {
-                                                                      selectedStockId =
-                                                                          size.id; // Toggle on
-                                                                    }
-                                                                  });
-                                                                }
-                                                              : null,
-                                                        ),
-                                                        Text(
-                                                            size.size.sizeName),
-                                                      ],
-                                                    ),
-                                                    Text("${size.stok} Produk"),
-                                                  ],
-                                                );
-                                              },
-                                            ),
-                                            Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 10.0,
-                                                horizontal: 10.0,
-                                              ),
-                                              decoration: const BoxDecoration(
-                                                border: Border(
-                                                  top: BorderSide(
-                                                    color: Colors
-                                                        .black, // Warna border
-                                                    width:
-                                                        0.5, // Ketebalan border
-                                                  ),
-                                                ),
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  BlocListener<StoreBloc,
-                                                      StoreState>(
-                                                    listener: (context, state) {
-                                                      if (state
-                                                          is StockCreateLoading) {
-                                                        showDialog(
-                                                          context: context,
-                                                          barrierDismissible:
-                                                              false,
-                                                          builder: (context) =>
-                                                              const Center(
-                                                            child:
-                                                                CircularProgressIndicator(),
-                                                          ),
-                                                        );
-                                                      } else if (state
-                                                          is StockCreateSuccess) {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        Navigator.of(context)
-                                                            .pop(); // Close loading dialog
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          SnackBar(
-                                                            content: Center(
-                                                              child: Text(
-                                                                state.message,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            backgroundColor:
-                                                                Colors.white,
-                                                            duration:
-                                                                const Duration(
-                                                                    seconds: 3),
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                            ),
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .all(10),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        10,
-                                                                    horizontal:
-                                                                        20),
-                                                          ),
-                                                        );
-
-                                                        context
-                                                            .read<DetailBloc>()
-                                                            .add(DetailProduct(
-                                                                id: currentId));
-                                                      } else if (state
-                                                          is StockCreateFailure) {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          SnackBar(
-                                                            content: Center(
-                                                              child: Text(
-                                                                state.error,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            duration:
-                                                                const Duration(
-                                                                    seconds: 3),
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                            ),
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .all(10),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        10,
-                                                                    horizontal:
-                                                                        20),
-                                                          ),
-                                                        );
-                                                      }
-                                                    },
-                                                    child: Expanded(
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          showCupertinoDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return Material(
-                                                                // Menambahkan Material widget sebagai ancestor
-                                                                color: Colors
-                                                                    .transparent, // Agar tetap menggunakan desain Cupertino
-                                                                child:
-                                                                    CupertinoAlertDialog(
-                                                                  title: Text(
-                                                                      'Tambah Stock'),
-                                                                  content:
-                                                                      Column(
-                                                                    crossAxisAlignment:
-                                                                        CrossAxisAlignment
-                                                                            .start,
-                                                                    children: [
-                                                                      const SizedBox(
-                                                                        child:
-                                                                            Text(
-                                                                          "Ukuran",
-                                                                          style: TextStyle(
-                                                                              fontSize: 14.0,
-                                                                              fontWeight: FontWeight.w500),
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                          height:
-                                                                              8.0),
-                                                                      Column(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.start,
-                                                                        children: [
-                                                                          const SizedBox(
-                                                                              height: 8.0),
-                                                                          DropdownButtonFormField<
-                                                                              String>(
-                                                                            value:
-                                                                                selectedSizeId,
-                                                                            decoration:
-                                                                                const InputDecoration(
-                                                                              hintText: 'Pilih Ukuran',
-                                                                              contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                                                                              border: OutlineInputBorder(
-                                                                                borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                                                                              ),
-                                                                              enabledBorder: OutlineInputBorder(
-                                                                                borderSide: BorderSide(color: Color(0xFF8E8E8E), width: 1.0),
-                                                                                borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                                                                              ),
-                                                                              focusedBorder: OutlineInputBorder(
-                                                                                borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                                                                                borderSide: BorderSide(color: Color(0xFF881FFF), width: 2.0),
-                                                                              ),
-                                                                            ),
-                                                                            onChanged:
-                                                                                (String? newValue) {
-                                                                              setState(() {
-                                                                                selectedSizeId = newValue;
-                                                                                if (newValue != null && !selectedSizes.contains(newValue)) {
-                                                                                  selectedSizes.add(newValue); // Menambahkan ukuran yang dipilih ke dalam list
-                                                                                }
-                                                                              });
-                                                                            },
-                                                                            items: sizeMapping.keys
-                                                                                .where((sizeId) => !selectedSizes.contains(sizeId)) // Filter ukuran yang sudah dipilih
-                                                                                .map<DropdownMenuItem<String>>((sizeId) {
-                                                                              return DropdownMenuItem<String>(
-                                                                                value: sizeId,
-                                                                                child: Text(sizeMapping[sizeId] ?? ''), // Ambil label ukuran dari sizeMapping
-                                                                              );
-                                                                            }).toList(),
-                                                                          )
-                                                                        ],
-                                                                      ),
-                                                                      const SizedBox(
-                                                                          height:
-                                                                              8.0),
-                                                                      const SizedBox(
-                                                                        child:
-                                                                            Text(
-                                                                          "Stok",
-                                                                          style: TextStyle(
-                                                                              fontSize: 14.0,
-                                                                              fontWeight: FontWeight.w500),
-                                                                        ),
-                                                                      ),
-                                                                      const SizedBox(
-                                                                          height:
-                                                                              8.0),
-                                                                      TextField(
-                                                                        controller:
-                                                                            stok,
-                                                                        keyboardType:
-                                                                            TextInputType.number,
-                                                                        inputFormatters: [
-                                                                          FilteringTextInputFormatter
-                                                                              .digitsOnly,
-                                                                        ],
-                                                                        decoration:
-                                                                            const InputDecoration(
-                                                                          hintText:
-                                                                              'Cth: 1',
-                                                                          contentPadding: EdgeInsets.symmetric(
-                                                                              vertical: 10.0,
-                                                                              horizontal: 20.0),
-                                                                          border:
-                                                                              OutlineInputBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.all(Radius.circular(6.0)),
-                                                                          ),
-                                                                          enabledBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderSide:
-                                                                                BorderSide(color: Color(0xFF8E8E8E), width: 1.0),
-                                                                            borderRadius:
-                                                                                BorderRadius.all(Radius.circular(6.0)),
-                                                                          ),
-                                                                          focusedBorder:
-                                                                              OutlineInputBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.all(Radius.circular(6.0)),
-                                                                            borderSide:
-                                                                                BorderSide(color: Color(0xFF881FFF), width: 2.0),
-                                                                          ),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  ),
-                                                                  actions: <Widget>[
-                                                                    CupertinoDialogAction(
-                                                                      child: Text(
-                                                                          'Tutup',
-                                                                          style:
-                                                                              TextStyle(color: Colors.red)),
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.of(context)
-                                                                            .pop(); // Menutup dialog
-                                                                      },
-                                                                    ),
-                                                                    CupertinoDialogAction(
-                                                                      child: Text(
-                                                                          'Tambah',
-                                                                          style:
-                                                                              TextStyle(color: Colors.black)),
-                                                                      onPressed:
-                                                                          () {
-                                                                        final sizeIdText = sizeId
-                                                                            .text
-                                                                            .trim();
-                                                                        final stokText = stok
-                                                                            .text
-                                                                            .trim();
-
-                                                                        print(selectedSizeId
-                                                                            .toString());
-                                                                        context.read<StoreBloc>().add(StockCreate(
-                                                                            id:
-                                                                                currentId,
-                                                                            sizeId:
-                                                                                selectedSizeId.toString(),
-                                                                            stok: stokText));
-                                                                      },
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              );
-                                                            },
-                                                          );
-                                                        },
-                                                        child: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      7.0,
-                                                                  vertical:
-                                                                      8.0),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: Color(
-                                                                0xFF881FFF),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        18),
-                                                          ),
-                                                          child: Center(
-                                                            child: Text(
-                                                              "Tambah stock",
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
+                                                    // Text
+                                                    Expanded(
+                                                      child: Center(
+                                                        child: Text(
+                                                          "Ukuran kostum",
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w600,
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Container(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        vertical: 6.0,
-                                                        horizontal: 10),
-                                                    child: GestureDetector(
+                                                    // Tombol Close
+                                                    GestureDetector(
                                                       onTap: () {
-                                                        if (selectedStockId !=
-                                                            null) {
-                                                          var stockItem = data
-                                                              .stock
-                                                              .firstWhere(
-                                                            (item) =>
-                                                                item.id ==
-                                                                selectedStockId,
-                                                            // Return a default Stock object if no match is found
+                                                        Navigator.pop(
+                                                            context); // Menutup modal
+                                                        onDeleteOrUpdate(); // Memperbarui state
+                                                      },
+                                                      child: Center(
+                                                        child:
+                                                            Icon(Bootstrap.x),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: data.stock.length,
+                                                itemBuilder: (context, index) {
+                                                  final size =
+                                                      data.stock[index];
+                                                  return Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Row(
+                                                        children: [
+                                                          Checkbox(
+                                                            splashRadius: 0,
+                                                            fillColor: WidgetStateProperty
+                                                                .resolveWith<
+                                                                    Color?>((Set<
+                                                                        WidgetState>
+                                                                    states) {
+                                                              if (states.contains(
+                                                                  WidgetState
+                                                                      .selected)) {
+                                                                return const Color(
+                                                                    0xFF881FFF);
+                                                              }
+                                                              return Colors
+                                                                  .white;
+                                                            }),
+                                                            shape:
+                                                                const CircleBorder(),
+                                                            side:
+                                                                const BorderSide(
+                                                                    width: 0.6),
+                                                            value:
+                                                                selectedStockId ==
+                                                                    size.id,
+                                                            onChanged: size
+                                                                    .available
+                                                                ? (bool?
+                                                                    newValue) {
+                                                                    setState(
+                                                                        () {
+                                                                      // Reset bos checkbox setiap kali ada perubahan
+                                                                      value =
+                                                                          false;
+
+                                                                      // Toggle selectedStockId
+                                                                      if (selectedStockId ==
+                                                                          size.id) {
+                                                                        selectedStockId =
+                                                                            null;
+                                                                      } else {
+                                                                        selectedStockId =
+                                                                            size.id;
+                                                                      }
+                                                                    });
+                                                                  }
+                                                                : null,
+                                                          ),
+                                                          Text(size
+                                                              .size.sizeName),
+                                                        ],
+                                                      ),
+                                                      Text(
+                                                          "${size.stok} Produk"),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 10.0,
+                                                  horizontal: 10.0,
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                  border: Border(
+                                                    top: BorderSide(
+                                                      color: Colors
+                                                          .black, // Warna border
+                                                      width:
+                                                          0.5, // Ketebalan border
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    BlocListener<StoreBloc,
+                                                        StoreState>(
+                                                      listener:
+                                                          (context, state) {
+                                                        if (state
+                                                            is StockCreateLoading) {
+                                                          showDialog(
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                false,
+                                                            builder: (context) =>
+                                                                const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            ),
+                                                          );
+                                                        } else if (state
+                                                            is StockCreateSuccess) {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop(); // Close loading dialog
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Center(
+                                                                child: Text(
+                                                                  state.message,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    color: Colors
+                                                                        .black,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              duration:
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .all(10),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10,
+                                                                      horizontal:
+                                                                          20),
+                                                            ),
                                                           );
 
-                                                          if (stockItem !=
-                                                              null) {
-                                                            existingSizeId =
-                                                                stockItem.size
-                                                                    .sizeName
-                                                                    .toString();
-
-                                                            existingStok =
-                                                                stockItem.stok
-                                                                    .toString();
-
+                                                          context
+                                                              .read<
+                                                                  DetailBloc>()
+                                                              .add(DetailProduct(
+                                                                  id: currentId));
+                                                          onDeleteOrUpdate();
+                                                        } else if (state
+                                                            is StockCreateFailure) {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Center(
+                                                                child: Text(
+                                                                  state.error,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              duration:
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .all(10),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10,
+                                                                      horizontal:
+                                                                          20),
+                                                            ),
+                                                          );
+                                                          onDeleteOrUpdate();
+                                                        }
+                                                      },
+                                                      child: Expanded(
+                                                        child: GestureDetector(
+                                                          onTap: () {
                                                             showCupertinoDialog(
                                                               context: context,
                                                               builder:
                                                                   (BuildContext
                                                                       context) {
                                                                 return Material(
+                                                                  // Menambahkan Material widget sebagai ancestor
                                                                   color: Colors
-                                                                      .transparent,
+                                                                      .transparent, // Agar tetap menggunakan desain Cupertino
                                                                   child:
                                                                       CupertinoAlertDialog(
                                                                     title: Text(
-                                                                        'Ubah Stock'),
+                                                                        'Tambah Stock'),
                                                                     content:
                                                                         Column(
                                                                       crossAxisAlignment:
                                                                           CrossAxisAlignment
                                                                               .start,
                                                                       children: [
-                                                                        SizedBox(
+                                                                        const SizedBox(
                                                                           child:
                                                                               Text(
                                                                             "Ukuran",
@@ -805,8 +627,8 @@ class _DetailCostumState extends State<DetailProductUser> {
                                                                             const SizedBox(height: 8.0),
                                                                             DropdownButtonFormField<String>(
                                                                               value: selectedSizeId,
-                                                                              decoration: InputDecoration(
-                                                                                hintText: existingSizeId,
+                                                                              decoration: const InputDecoration(
+                                                                                hintText: 'Pilih Ukuran',
                                                                                 contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                                                                                 border: OutlineInputBorder(
                                                                                   borderRadius: BorderRadius.all(Radius.circular(6.0)),
@@ -824,7 +646,7 @@ class _DetailCostumState extends State<DetailProductUser> {
                                                                                 setState(() {
                                                                                   selectedSizeId = newValue;
                                                                                   if (newValue != null && !selectedSizes.contains(newValue)) {
-                                                                                    selectedSizes.add(newValue);
+                                                                                    selectedSizes.add(newValue); // Menambahkan ukuran yang dipilih ke dalam list
                                                                                   }
                                                                                 });
                                                                               },
@@ -854,9 +676,8 @@ class _DetailCostumState extends State<DetailProductUser> {
                                                                             height:
                                                                                 8.0),
                                                                         TextField(
-                                                                          controller: stok
-                                                                            ..text =
-                                                                                existingStok ?? stok.text,
+                                                                          controller:
+                                                                              stok,
                                                                           keyboardType:
                                                                               TextInputType.number,
                                                                           inputFormatters: [
@@ -865,7 +686,7 @@ class _DetailCostumState extends State<DetailProductUser> {
                                                                           decoration:
                                                                               const InputDecoration(
                                                                             hintText:
-                                                                                "ex: 1",
+                                                                                'Cth: 1',
                                                                             contentPadding:
                                                                                 EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                                                                             border:
@@ -895,7 +716,7 @@ class _DetailCostumState extends State<DetailProductUser> {
                                                                         onPressed:
                                                                             () {
                                                                           Navigator.of(context)
-                                                                              .pop(); // Close the dialog
+                                                                              .pop(); // Menutup dialog
                                                                         },
                                                                       ),
                                                                       CupertinoDialogAction(
@@ -905,19 +726,19 @@ class _DetailCostumState extends State<DetailProductUser> {
                                                                                 TextStyle(color: Colors.black)),
                                                                         onPressed:
                                                                             () {
+                                                                          final sizeIdText = sizeId
+                                                                              .text
+                                                                              .trim();
                                                                           final stokText = stok
                                                                               .text
                                                                               .trim();
 
-                                                                          // Only proceed if selectedSizeId is not null
-                                                                          if (selectedSizeId != null &&
-                                                                              stokText.isNotEmpty) {
-                                                                            context.read<StoreBloc>().add(StockCreate(
-                                                                                  id: currentId,
-                                                                                  sizeId: selectedSizeId!,
-                                                                                  stok: stokText,
-                                                                                ));
-                                                                          }
+                                                                          print(
+                                                                              selectedSizeId.toString());
+                                                                          context.read<StoreBloc>().add(StockCreate(
+                                                                              id: currentId,
+                                                                              sizeId: selectedSizeId.toString(),
+                                                                              stok: stokText));
                                                                         },
                                                                       ),
                                                                     ],
@@ -925,172 +746,509 @@ class _DetailCostumState extends State<DetailProductUser> {
                                                                 );
                                                               },
                                                             );
-                                                          }
+                                                          },
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                                    horizontal:
+                                                                        7.0,
+                                                                    vertical:
+                                                                        8.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Color(
+                                                                  0xFF881FFF),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          18),
+                                                            ),
+                                                            child: Center(
+                                                              child: Text(
+                                                                "Tambah stock",
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    BlocListener<StoreBloc,
+                                                        StoreState>(
+                                                      listener:
+                                                          (context, state) {
+                                                        if (state
+                                                            is StockUpdateLoading) {
+                                                          showDialog(
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                false,
+                                                            builder: (context) =>
+                                                                const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            ),
+                                                          );
+                                                        } else if (state
+                                                            is StockUpdateSuccess) {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop(); // Close loading dialog
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Center(
+                                                                child: Text(
+                                                                  state.message,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    color: Colors
+                                                                        .black,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              duration:
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .all(10),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10,
+                                                                      horizontal:
+                                                                          20),
+                                                            ),
+                                                          );
+
+                                                          context
+                                                              .read<
+                                                                  DetailBloc>()
+                                                              .add(DetailProduct(
+                                                                  id: currentId));
+                                                          onDeleteOrUpdate();
+                                                        } else if (state
+                                                            is StockUpdateFailure) {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Center(
+                                                                child: Text(
+                                                                  state.error,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              duration:
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .all(10),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10,
+                                                                      horizontal:
+                                                                          20),
+                                                            ),
+                                                          );
+                                                          onDeleteOrUpdate();
                                                         }
                                                       },
-                                                      child: Center(
-                                                        child: Icon(
-                                                          Bootstrap
-                                                              .pencil_square,
-                                                          color: Colors.yellow,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  BlocListener<StoreBloc,
-                                                      StoreState>(
-                                                    listener: (context, state) {
-                                                      if (state
-                                                          is StockDeleteLoading) {
-                                                        showDialog(
-                                                          context: context,
-                                                          barrierDismissible:
-                                                              false,
-                                                          builder: (context) =>
-                                                              const Center(
-                                                            child:
-                                                                CircularProgressIndicator(),
-                                                          ),
-                                                        );
-                                                      } else if (state
-                                                          is StockDeleteSuccess) {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        Navigator.of(context)
-                                                            .pop(); // Close loading dialog
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          SnackBar(
-                                                            content: Center(
-                                                              child: Text(
-                                                                state.message,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  color: Colors
-                                                                      .black,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            backgroundColor:
-                                                                Colors.white,
-                                                            duration:
-                                                                const Duration(
-                                                                    seconds: 3),
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                            ),
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .all(10),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        10,
-                                                                    horizontal:
-                                                                        20),
-                                                          ),
-                                                        );
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                vertical: 6.0,
+                                                                horizontal: 10),
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            if (selectedStockId !=
+                                                                null) {
+                                                              var stockItem = data
+                                                                  .stock
+                                                                  .firstWhere(
+                                                                (item) =>
+                                                                    item.id ==
+                                                                    selectedStockId,
+                                                                // Return a default Stock object if no match is found
+                                                              );
 
-                                                        context
-                                                            .read<DetailBloc>()
-                                                            .add(DetailProduct(
-                                                                id: currentId));
-                                                      } else if (state
-                                                          is StockDeleteFailure) {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          SnackBar(
-                                                            content: Center(
-                                                              child: Text(
-                                                                state.error,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      16.0,
-                                                                  color: Colors
-                                                                      .white,
-                                                                ),
-                                                              ),
+                                                              if (stockItem !=
+                                                                  null) {
+                                                                existingSizeName =
+                                                                    stockItem
+                                                                        .size
+                                                                        .sizeName
+                                                                        .toString();
+                                                                existingSizeId =
+                                                                    stockItem
+                                                                        .size.id
+                                                                        .toString();
+
+                                                                ;
+
+                                                                existingStok =
+                                                                    existingStok =
+                                                                        stockItem
+                                                                            .stok
+                                                                            .toString();
+
+                                                                showCupertinoDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return Material(
+                                                                      color: Colors
+                                                                          .transparent,
+                                                                      child:
+                                                                          CupertinoAlertDialog(
+                                                                        title: Text(
+                                                                            'Ubah Stock'),
+                                                                        content:
+                                                                            Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.start,
+                                                                          children: [
+                                                                            SizedBox(
+                                                                              child: Text(
+                                                                                "Ukuran",
+                                                                                style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
+                                                                              ),
+                                                                            ),
+                                                                            const SizedBox(height: 8.0),
+                                                                            Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                const SizedBox(height: 8.0),
+                                                                                DropdownButtonFormField<String>(
+                                                                                  value: selectedSizeId,
+                                                                                  decoration: InputDecoration(
+                                                                                    hintText: existingSizeName,
+                                                                                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                                                                                    border: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                                    ),
+                                                                                    enabledBorder: OutlineInputBorder(
+                                                                                      borderSide: BorderSide(color: Color(0xFF8E8E8E), width: 1.0),
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                                    ),
+                                                                                    focusedBorder: OutlineInputBorder(
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                                      borderSide: BorderSide(color: Color(0xFF881FFF), width: 2.0),
+                                                                                    ),
+                                                                                  ),
+                                                                                  onChanged: (String? newValue) {
+                                                                                    setState(() {
+                                                                                      selectedSizeId = newValue;
+                                                                                      if (newValue != null && !selectedSizes.contains(newValue)) {
+                                                                                        selectedSizes.add(newValue);
+                                                                                      }
+                                                                                    });
+                                                                                  },
+                                                                                  items: sizeMapping.keys
+                                                                                      .where((sizeId) => !selectedSizes.contains(sizeId)) // Filter ukuran yang sudah dipilih
+                                                                                      .map<DropdownMenuItem<String>>((sizeId) {
+                                                                                    return DropdownMenuItem<String>(
+                                                                                      value: sizeId,
+                                                                                      child: Text(sizeMapping[sizeId] ?? ''), // Ambil label ukuran dari sizeMapping
+                                                                                    );
+                                                                                  }).toList(),
+                                                                                )
+                                                                              ],
+                                                                            ),
+                                                                            const SizedBox(height: 8.0),
+                                                                            const SizedBox(
+                                                                              child: Text(
+                                                                                "Stok",
+                                                                                style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
+                                                                              ),
+                                                                            ),
+                                                                            const SizedBox(height: 8.0),
+                                                                            TextField(
+                                                                              controller: stok..text = existingStok ?? stok.text,
+                                                                              keyboardType: TextInputType.number,
+                                                                              inputFormatters: [
+                                                                                FilteringTextInputFormatter.digitsOnly,
+                                                                              ],
+                                                                              decoration: const InputDecoration(
+                                                                                hintText: "ex: 1",
+                                                                                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                                                                                border: OutlineInputBorder(
+                                                                                  borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                                ),
+                                                                                enabledBorder: OutlineInputBorder(
+                                                                                  borderSide: BorderSide(color: Color(0xFF8E8E8E), width: 1.0),
+                                                                                  borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                                ),
+                                                                                focusedBorder: OutlineInputBorder(
+                                                                                  borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                                  borderSide: BorderSide(color: Color(0xFF881FFF), width: 2.0),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        actions: <Widget>[
+                                                                          CupertinoDialogAction(
+                                                                            child:
+                                                                                Text('Tutup', style: TextStyle(color: Colors.black)),
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.of(context).pop(); // Close the dialog
+                                                                            },
+                                                                          ),
+                                                                          CupertinoDialogAction(
+                                                                            child:
+                                                                                Text('Ubah', style: TextStyle(color: Colors.black)),
+                                                                            onPressed:
+                                                                                () {
+                                                                              final stokText = stok.text.trim().isEmpty ? existingStok : stok.text.trim();
+
+                                                                              final sizeIdText = (selectedSizeId == null) ? existingSizeId : selectedSizeId;
+
+                                                                              // Only proceed if selectedSizeId is not null
+                                                                              if (sizeIdText != null && stokText != null) {
+                                                                                context.read<StoreBloc>().add(StockUpdate(
+                                                                                      id: selectedStockId.toString(),
+                                                                                      sizeId: sizeIdText.toString(),
+                                                                                      stok: stokText,
+                                                                                    ));
+                                                                              }
+                                                                            },
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              }
+                                                            }
+                                                          },
+                                                          child: Center(
+                                                            child: Icon(
+                                                              Bootstrap
+                                                                  .pencil_square,
+                                                              color:
+                                                                  Colors.yellow,
                                                             ),
-                                                            backgroundColor:
-                                                                Colors.red,
-                                                            duration:
-                                                                const Duration(
-                                                                    seconds: 3),
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            shape:
-                                                                RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                            ),
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .all(10),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    vertical:
-                                                                        10,
-                                                                    horizontal:
-                                                                        20),
-                                                          ),
-                                                        );
-                                                      }
-                                                    },
-                                                    child: Container(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          vertical: 6.0,
-                                                          horizontal: 10),
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          if (selectedStockId !=
-                                                              null) {
-                                                            context
-                                                                .read<
-                                                                    StoreBloc>()
-                                                                .add(StockDelete(
-                                                                    id: selectedStockId
-                                                                        .toString()));
-                                                          } else {
-                                                            null;
-                                                          }
-                                                        },
-                                                        child: Center(
-                                                          child: Icon(
-                                                            Bootstrap.trash,
-                                                            color: Colors.red,
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
+                                                    BlocListener<StoreBloc,
+                                                        StoreState>(
+                                                      listener:
+                                                          (context, state) {
+                                                        if (state
+                                                            is StockDeleteLoading) {
+                                                          showDialog(
+                                                            context: context,
+                                                            barrierDismissible:
+                                                                false,
+                                                            builder: (context) =>
+                                                                const Center(
+                                                              child:
+                                                                  CircularProgressIndicator(),
+                                                            ),
+                                                          );
+                                                        } else if (state
+                                                            is StockDeleteSuccess) {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          Navigator.of(context)
+                                                              .pop(); // Close loading dialog
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Center(
+                                                                child: Text(
+                                                                  state.message,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    color: Colors
+                                                                        .black,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              backgroundColor:
+                                                                  Colors.white,
+                                                              duration:
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .all(10),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10,
+                                                                      horizontal:
+                                                                          20),
+                                                            ),
+                                                          );
+
+                                                          context
+                                                              .read<
+                                                                  DetailBloc>()
+                                                              .add(DetailProduct(
+                                                                  id: currentId));
+                                                        } else if (state
+                                                            is StockDeleteFailure) {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                            SnackBar(
+                                                              content: Center(
+                                                                child: Text(
+                                                                  state.error,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              duration:
+                                                                  const Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .all(10),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                      vertical:
+                                                                          10,
+                                                                      horizontal:
+                                                                          20),
+                                                            ),
+                                                          );
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                vertical: 6.0,
+                                                                horizontal: 10),
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            if (selectedStockId !=
+                                                                null) {
+                                                              context
+                                                                  .read<
+                                                                      StoreBloc>()
+                                                                  .add(StockDelete(
+                                                                      id: selectedStockId
+                                                                          .toString()));
+                                                            } else {
+                                                              null;
+                                                            }
+                                                          },
+                                                          child: Center(
+                                                            child: Icon(
+                                                              Bootstrap.trash,
+                                                              color: Colors.red,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
+                                      );
+                                    },
+                                  ),
                                 );
                               },
                             );

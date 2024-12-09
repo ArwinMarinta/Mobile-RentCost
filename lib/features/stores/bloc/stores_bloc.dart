@@ -15,6 +15,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     on<StockDelete>(_onStockDelete);
     on<ProductUpdateEvent>(_onUpdateProduct);
     on<StockCreate>(_onCreateStock);
+    on<StockUpdate>(_onUpdateStock);
   }
 
   Future<void> _onStoreRequest(
@@ -225,6 +226,46 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     } catch (e) {
       print('Error: $e');
       emit(StockCreateFailure(error: 'Gagal Menghapus Banner'));
+    }
+  }
+
+  Future<void> _onUpdateStock(
+      StockUpdate event, Emitter<StoreState> emit) async {
+    emit(StockUpdateLoading());
+    try {
+      final token = (loginBloc.state is LoginSuccess)
+          ? (loginBloc.state as LoginSuccess).token
+          : null;
+
+      if (token == null) {
+        emit(StockUpdateFailure(error: 'Token tidak ada'));
+        return;
+      }
+
+      final id = event.id;
+
+      final response = await http.patch(
+        Uri.parse('${UrlApi.baseUrl}/stock/${id}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({"size_id": event.sizeId, "stok": event.stok}),
+      );
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        final message = data['message'];
+        emit(StockUpdateSuccess(message: message));
+        // add(BannerRequest());
+      } else {
+        final message = data['error'];
+        emit(StockUpdateFailure(error: message));
+      }
+    } catch (e) {
+      print('Error: $e');
+      emit(StockUpdateFailure(error: 'Gagal Menghapus Banner'));
     }
   }
 }

@@ -76,3 +76,14 @@ class ProductUpdateEvent extends StoreEvent {
   List<Object> get props =>
       [productName, price, imageUrl, categoryId, id, oldImageUrl];
 }
+
+class StockUpdate extends StoreEvent {
+  final String id;
+  final String sizeId;
+  final String stok;
+
+  StockUpdate({required this.id, required this.sizeId, required this.stok});
+
+  @override
+  List<Object> get props => [id, sizeId, stok];
+}

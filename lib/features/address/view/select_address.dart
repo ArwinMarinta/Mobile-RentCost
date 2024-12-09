@@ -11,7 +11,6 @@ class SelectAddress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<AddressBloc>().add(RequestAddress());
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -38,7 +37,9 @@ class SelectAddress extends StatelessWidget {
         ),
       ),
       body: BlocBuilder<AddressBloc, AddressState>(builder: (context, state) {
-        if (state is AddressLoading) {
+        if (state is AddressInitial) {
+          context.read<AddressBloc>().add(RequestAddress());
+        } else if (state is AddressLoading) {
           return const Center(
             child: CircularProgressIndicator(),
           );

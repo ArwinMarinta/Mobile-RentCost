@@ -7,6 +7,7 @@ import 'package:rentcost/features/Authentication/Register/bloc/register_bloc.dar
 import 'package:rentcost/features/SplashScreen/bloc/splash_bloc.dart';
 import 'package:rentcost/features/address/bloc/address_bloc.dart';
 import 'package:rentcost/features/banner/bloc/banner_bloc.dart';
+import 'package:rentcost/features/cart/bloc/cart_bloc.dart';
 import 'package:rentcost/features/category/bloc/category_bloc.dart';
 import 'package:rentcost/features/product/bloc/detail_bloc.dart';
 import 'package:rentcost/features/product/bloc/product_bloc.dart';
@@ -78,6 +79,11 @@ void main() {
         ),
         BlocProvider(
           create: (context) => ChangePasswordBloc(
+            loginBloc: context.read<LoginBloc>(),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => CartBloc(
             loginBloc: context.read<LoginBloc>(),
           ),
         ),

@@ -1,4 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rentcost/features/cart/bloc/cart_bloc.dart';
+import 'package:rentcost/features/cart/bloc/cart_event.dart';
+import 'package:rentcost/features/cart/bloc/cart_state.dart';
 import 'package:rentcost/features/product/bloc/detail_bloc.dart';
 import 'package:rentcost/features/product/bloc/detail_event.dart';
 import 'package:rentcost/features/product/bloc/detail_state.dart';
@@ -254,11 +257,8 @@ class _DetailCostumState extends State<DetailCostum> {
                                     top: Radius.circular(16.0)),
                               ),
                               context: context,
-                              builder: (
-                                BuildContext context,
-                              ) {
+                              builder: (BuildContext context) {
                                 return SingleChildScrollView(
-                                  // Membuat konten bisa scroll jika melebihi tinggi
                                   child: Container(
                                     padding: const EdgeInsets.all(16.0),
                                     child: Column(
@@ -267,120 +267,225 @@ class _DetailCostumState extends State<DetailCostum> {
                                       children: [
                                         Container(
                                           width: double.infinity,
-                                          decoration: BoxDecoration(
-                                              border: Border(
-                                                  bottom: BorderSide(
-                                                      color: Colors.black,
-                                                      width: 0.5))),
+                                          decoration: const BoxDecoration(
+                                            border: Border(
+                                                bottom: BorderSide(
+                                                    color: Colors.black,
+                                                    width: 0.5)),
+                                          ),
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 6.0),
                                           child: Column(
                                             children: [
                                               Icon(Bootstrap.chevron_down),
                                               const SizedBox(height: 6.0),
-                                              Text(
-                                                "Pilih Ukuran",
-                                                style:
-                                                    TextStyle(fontSize: 16.0),
-                                              ),
+                                              Text("Pilih Ukuran",
+                                                  style: TextStyle(
+                                                      fontSize: 16.0)),
                                             ],
                                           ),
                                         ),
                                         const SizedBox(height: 10),
-                                        // ListView.builder yang mengukur tinggi sesuai jumlah item
-                                        ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: data.stock.length,
-                                          itemBuilder: (context, index) {
-                                            final size = data.stock[index];
-                                            return Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Row(
+                                        StatefulBuilder(
+                                          builder: (BuildContext context,
+                                              StateSetter setState) {
+                                            return ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: data.stock.length,
+                                              itemBuilder: (context, index) {
+                                                final size = data.stock[index];
+                                                return Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
-                                                    Checkbox(
-                                                      splashRadius: 0,
-                                                      fillColor:
-                                                          WidgetStateProperty
+                                                    Row(
+                                                      children: [
+                                                        Checkbox(
+                                                          splashRadius: 0,
+                                                          fillColor: WidgetStateProperty
                                                               .resolveWith<
                                                                   Color?>((Set<
                                                                       WidgetState>
                                                                   states) {
-                                                        if (states.contains(
-                                                            WidgetState
-                                                                .selected)) {
-                                                          return const Color(
-                                                              0xFF881FFF);
-                                                        }
-                                                        return Colors
-                                                            .white; // Warna saat tidak dicentang
-                                                      }),
-                                                      shape:
-                                                          const CircleBorder(),
-                                                      side: const BorderSide(
-                                                          width: 0.6),
-                                                      value: selectedStockId ==
-                                                          size.id,
-
-                                                      onChanged: size
-                                                                  .available &&
-                                                              selectedStockId ==
-                                                                  null
-                                                          ? (bool? newValue) {
-                                                              setState(() {
-                                                                selectedStockId =
-                                                                    size.id;
-                                                              });
+                                                            if (states.contains(
+                                                                WidgetState
+                                                                    .selected)) {
+                                                              return const Color(
+                                                                  0xFF881FFF);
                                                             }
-                                                          : null, // Disable checkbox jika available = false atau sudah ada yang dipilih
+                                                            return Colors
+                                                                .white; // Warna saat tidak dicentang
+                                                          }),
+                                                          shape:
+                                                              const CircleBorder(),
+                                                          side:
+                                                              const BorderSide(
+                                                                  width: 0.6),
+                                                          value:
+                                                              selectedStockId ==
+                                                                  size.size.id,
+                                                          onChanged: size
+                                                                  .available
+                                                              ? (bool?
+                                                                  newValue) {
+                                                                  setState(() {
+                                                                    if (selectedStockId ==
+                                                                        size.size
+                                                                            .id) {
+                                                                      selectedStockId =
+                                                                          null;
+                                                                    } else {
+                                                                      selectedStockId = size
+                                                                          .size
+                                                                          .id;
+                                                                    }
+                                                                  });
+                                                                }
+                                                              : null, // Disable checkbox jika available = false atau sudah ada yang dipilih
+                                                        ),
+                                                        Text(
+                                                            size.size.sizeName),
+                                                      ],
                                                     ),
-                                                    Text(size.size.sizeName)
+                                                    // Tampilkan stok produk meskipun available false
+                                                    Text("${size.stok} Produk"),
                                                   ],
-                                                ),
-                                                // Tampilkan stok produk meskipun available false
-                                                Text("${size.stok} Produk"),
-                                              ],
+                                                );
+                                              },
                                             );
                                           },
                                         ),
-                                        Container(
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
+                                        BlocListener<CartBloc, CartState>(
+                                          listener: (context, state) {
+                                            if (state is CartToItemLoading) {
+                                              showDialog(
+                                                context: context,
+                                                barrierDismissible: false,
+                                                builder: (context) =>
+                                                    const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              );
+                                            } else if (state
+                                                is CartToItemSuccess) {
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context)
+                                                  .pop(); // Close loading dialog
+                                              // Close loading dialog
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Center(
+                                                    child: Text(
+                                                      state.message,
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  backgroundColor: Colors.white,
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  margin:
+                                                      const EdgeInsets.all(10),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 20),
+                                                ),
+                                              );
+                                            } else if (state
+                                                is CartToItemFailure) {
+                                              Navigator.of(context).pop();
+                                              Navigator.of(context).pop();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                  content: Center(
+                                                    child: Text(
+                                                      state.error,
+                                                      style: TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  backgroundColor: Colors.red,
+                                                  duration: const Duration(
+                                                      seconds: 3),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  margin:
+                                                      const EdgeInsets.all(10),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 20),
+                                                ),
+                                              );
+                                            }
+                                          },
+                                          child: Container(
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
                                               border: Border(
                                                   top: BorderSide(
                                                       color: Colors.black,
-                                                      width: 0.5))),
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 6.0),
-                                          child: GestureDetector(
-                                            onTap: selectedStockId == null
-                                                ? null // Tidak bisa lanjut jika belum memilih barang
-                                                : () {
-                                                    // Lakukan aksi jika sudah memilih barang
-                                                  },
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 14),
-                                              decoration: BoxDecoration(
-                                                color: Color(0xFF881FFF),
-                                                border: Border.all(
-                                                    color: Colors.white,
-                                                    width: 2.0),
-                                                borderRadius:
-                                                    BorderRadius.circular(18),
-                                              ),
-                                              child: const Text(
-                                                "Masukkan Keranjang",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color: Colors.white,
-                                                    fontWeight:
-                                                        FontWeight.w400),
+                                                      width: 0.5)),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 6.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                print(
+                                                    "testi${selectedStockId}");
+                                                if (selectedStockId != null) {
+                                                  context.read<CartBloc>().add(
+                                                      CartToItemRequest(
+                                                          id: currentId
+                                                              .toString(),
+                                                          sizeId:
+                                                              selectedStockId
+                                                                  .toString()));
+                                                }
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12,
+                                                        vertical: 14),
+                                                decoration: BoxDecoration(
+                                                  color: Color(0xFF881FFF),
+                                                  border: Border.all(
+                                                      color: Colors.white,
+                                                      width: 2.0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(18),
+                                                ),
+                                                child: const Text(
+                                                  "Masukkan Keranjang",
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
                                               ),
                                             ),
                                           ),
