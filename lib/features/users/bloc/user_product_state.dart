@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:rentcost/features/category/model/category_model.dart';
-import 'package:rentcost/features/product/model/product.dart';
+import 'package:rentcost/features/stores/model/product.dart';
 
 abstract class ProductUserState extends Equatable {
   @override
@@ -30,7 +29,10 @@ class ProductUserFailure extends ProductUserState {
 }
 
 final class ProductUserLoaded extends ProductUserState {
-  final List<ProductData> product;
+  final List<ProductUserRent> product;
 
   ProductUserLoaded({required this.product});
+
+  @override
+  List<Object> get props => [product];
 }

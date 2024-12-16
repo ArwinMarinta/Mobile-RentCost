@@ -36,11 +36,11 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   state.message,
                   style: TextStyle(
                     fontSize: 16.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.green,
               duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -176,7 +176,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 const SizedBox(
                   height: 40,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: GestureDetector(
                     onTap: () {

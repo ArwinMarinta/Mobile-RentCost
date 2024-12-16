@@ -7,25 +7,30 @@ import 'package:rentcost/features/Authentication/Login/bloc/login_state.dart';
 import 'package:rentcost/config/config.dart';
 import 'package:rentcost/features/stores/bloc/stores_event.dart';
 import 'package:rentcost/features/stores/bloc/stores_state.dart';
+import 'package:rentcost/features/users/bloc/user_event.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StoreBloc extends Bloc<StoreEvent, StoreState> {
-  final LoginBloc loginBloc;
-  StoreBloc({required this.loginBloc}) : super(StoreInitial()) {
+  StoreBloc() : super(StoreInitial()) {
     on<StoreCreate>(_onStoreRequest);
     on<ProductCreateEvent>(_onCreateProduct);
     on<StockDelete>(_onStockDelete);
     on<ProductUpdateEvent>(_onUpdateProduct);
     on<StockCreate>(_onCreateStock);
     on<StockUpdate>(_onUpdateStock);
+    on<StoreClear>(_onStoreClear);
+  }
+
+  void _onStoreClear(StoreClear event, Emitter<StoreState> emit) {
+    emit(StoreInitial()); // Reset state ke StoreInitial
   }
 
   Future<void> _onStoreRequest(
       StoreCreate event, Emitter<StoreState> emit) async {
     emit(StoreLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(StoreFailure(error: 'Token tidak ada'));
@@ -62,9 +67,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       ProductCreateEvent event, Emitter<StoreState> emit) async {
     emit(ProductLoadingStore());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(ProductFailureStore(error: 'Token tidak ada'));
@@ -105,9 +109,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       StockDelete event, Emitter<StoreState> emit) async {
     emit(StockDeleteLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(StockUpdateFailure(error: 'Token tidak ada'));
@@ -117,7 +120,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       final stock = event.id;
 
       final response = await http.delete(
-        Uri.parse('${UrlApi.baseUrl}/stock/${stock}'),
+        Uri.parse('${UrlApi.baseUrl}/stock/$stock'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -144,9 +147,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       ProductUpdateEvent event, Emitter<StoreState> emit) async {
     emit(ProductUpdateLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(StockUpdateFailure(error: 'Token tidak ada'));
@@ -157,7 +159,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
       var request = http.MultipartRequest(
         'PATCH',
-        Uri.parse('${UrlApi.baseUrl}/products/${id}'),
+        Uri.parse('${UrlApi.baseUrl}/products/$id'),
       );
       request.headers['Authorization'] = 'Bearer $token';
 
@@ -197,9 +199,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       StockCreate event, Emitter<StoreState> emit) async {
     emit(StockCreateLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(StockCreateFailure(error: 'Token tidak ada'));
@@ -209,7 +210,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       final id = event.id;
 
       final response = await http.post(
-        Uri.parse('${UrlApi.baseUrl}/stock/${id}'),
+        Uri.parse('${UrlApi.baseUrl}/stock/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -237,9 +238,8 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       StockUpdate event, Emitter<StoreState> emit) async {
     emit(StockUpdateLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(StockUpdateFailure(error: 'Token tidak ada'));
@@ -249,7 +249,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       final id = event.id;
 
       final response = await http.patch(
-        Uri.parse('${UrlApi.baseUrl}/stock/${id}'),
+        Uri.parse('${UrlApi.baseUrl}/stock/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

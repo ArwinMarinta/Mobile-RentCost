@@ -28,10 +28,11 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _selectedDate)
+    if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;
       });
+    }
   }
 
   @override
@@ -430,7 +431,7 @@ class _ConfirmPaymentState extends State<ConfirmPayment> {
               const SizedBox(
                 height: 40.0,
               ),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 child: GestureDetector(
                   onTap: null,

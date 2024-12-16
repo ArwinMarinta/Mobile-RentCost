@@ -8,10 +8,10 @@ import 'package:rentcost/features/product/bloc/product_event.dart';
 
 import 'package:rentcost/features/product/bloc/product_state.dart';
 import 'package:rentcost/features/product/model/product.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
-  final LoginBloc loginBloc;
-  ProductBloc({required this.loginBloc}) : super(ProductInitial()) {
+  ProductBloc() : super(ProductInitial()) {
     on<ProductFilter>(_onProductFilter);
     on<ProductDeleteRequest>(_onProductDelete);
   }
@@ -20,9 +20,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       ProductFilter event, Emitter<ProductState> emit) async {
     emit(ProductLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(ProductFailure(error: 'Token tidak ada'));
@@ -86,9 +85,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       ProductDeleteRequest event, Emitter<ProductState> emit) async {
     emit(ProductDeleteLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(ProductDeleteFailure(error: 'Token tidak ada'));
@@ -98,7 +96,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       final id = event.id;
 
       final response = await http.delete(
-        Uri.parse('${UrlApi.baseUrl}/products/${id}'),
+        Uri.parse('${UrlApi.baseUrl}/products/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

@@ -14,3 +14,10 @@ class LoginRequest extends LoginEvent {
   @override
   List<Object> get props => [email, password];
 }
+
+class LogoutRequest extends LoginEvent {
+  LogoutRequest();
+
+  @override
+  List<Object> get props => [];
+}

@@ -6,12 +6,11 @@ import 'package:rentcost/features/Authentication/ChangePassword/bloc/change_pass
 import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
 import 'package:rentcost/features/Authentication/Login/bloc/login_state.dart';
 import 'package:rentcost/config/config.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangePasswordBloc
     extends Bloc<ChangePasswordEvent, ChangePasswordState> {
-  final LoginBloc loginBloc;
-  ChangePasswordBloc({required this.loginBloc})
-      : super(ChangePasswordInitial()) {
+  ChangePasswordBloc() : super(ChangePasswordInitial()) {
     on<ChangePasswordRequest>(_onChangePasswordRequest);
   }
 
@@ -19,9 +18,8 @@ class ChangePasswordBloc
       ChangePasswordRequest event, Emitter<ChangePasswordState> emit) async {
     emit(ChangePasswordLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(ChangePasswordFailure(error: 'Token tidak ada'));

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rentcost/features/cart/bloc/cart_bloc.dart';
 import 'package:rentcost/features/cart/bloc/cart_event.dart';
 import 'package:rentcost/features/cart/bloc/cart_state.dart';
+import 'package:rentcost/features/cart/model/cart.dart';
 import 'package:rentcost/features/product/bloc/detail_bloc.dart';
 import 'package:rentcost/features/product/bloc/detail_event.dart';
 import 'package:rentcost/features/product/bloc/detail_state.dart';
@@ -54,7 +55,9 @@ class _DetailCostumState extends State<DetailCostum> {
         );
       } else if (state is DetailProductState) {
         final data = state.detail.data;
+
         return Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
               scrolledUnderElevation: 0.0,
               backgroundColor: Colors.white,
@@ -111,7 +114,7 @@ class _DetailCostumState extends State<DetailCostum> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(data.productName),
+                          Text(data.category.categoryName),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 4.0, horizontal: 8.0),
@@ -194,7 +197,7 @@ class _DetailCostumState extends State<DetailCostum> {
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Text(
-                                      "${stock.size.sizeName}",
+                                      stock.size.sizeName,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 12,
@@ -301,34 +304,36 @@ class _DetailCostumState extends State<DetailCostum> {
                                                   children: [
                                                     Row(
                                                       children: [
-                                                        Checkbox(
-                                                          splashRadius: 0,
-                                                          fillColor: WidgetStateProperty
-                                                              .resolveWith<
-                                                                  Color?>((Set<
-                                                                      WidgetState>
-                                                                  states) {
-                                                            if (states.contains(
-                                                                WidgetState
-                                                                    .selected)) {
-                                                              return const Color(
-                                                                  0xFF881FFF);
-                                                            }
-                                                            return Colors
-                                                                .white; // Warna saat tidak dicentang
-                                                          }),
-                                                          shape:
-                                                              const CircleBorder(),
-                                                          side:
-                                                              const BorderSide(
-                                                                  width: 0.6),
-                                                          value:
-                                                              selectedStockId ==
-                                                                  size.size.id,
-                                                          onChanged: size
-                                                                  .available
-                                                              ? (bool?
-                                                                  newValue) {
+                                                        size.available
+                                                            // Jika tersedia, tampilkan Checkbox
+                                                            ? Checkbox(
+                                                                splashRadius: 0,
+                                                                fillColor: WidgetStateProperty
+                                                                    .resolveWith<
+                                                                        Color?>((Set<
+                                                                            WidgetState>
+                                                                        states) {
+                                                                  if (states.contains(
+                                                                      WidgetState
+                                                                          .selected)) {
+                                                                    return const Color(
+                                                                        0xFF881FFF); // Warna saat dipilih
+                                                                  }
+                                                                  return Colors
+                                                                      .white; // Warna saat tidak dipilih
+                                                                }),
+                                                                shape:
+                                                                    const CircleBorder(),
+                                                                side:
+                                                                    const BorderSide(
+                                                                        width:
+                                                                            0.6),
+                                                                value:
+                                                                    selectedStockId ==
+                                                                        size.size
+                                                                            .id,
+                                                                onChanged: (bool?
+                                                                    newValue) {
                                                                   setState(() {
                                                                     if (selectedStockId ==
                                                                         size.size
@@ -341,9 +346,37 @@ class _DetailCostumState extends State<DetailCostum> {
                                                                           .id;
                                                                     }
                                                                   });
-                                                                }
-                                                              : null, // Disable checkbox jika available = false atau sudah ada yang dipilih
-                                                        ),
+                                                                },
+                                                              )
+                                                            // Jika tidak tersedia, tampilkan Icon
+                                                            : Checkbox(
+                                                                splashRadius: 0,
+                                                                fillColor: WidgetStateProperty
+                                                                    .resolveWith<
+                                                                        Color?>((Set<
+                                                                            WidgetState>
+                                                                        states) {
+                                                                  if (states.contains(
+                                                                      WidgetState
+                                                                          .focused)) {
+                                                                    return Colors
+                                                                            .grey[
+                                                                        300];
+                                                                    // Warna saat dipilih
+                                                                  }
+                                                                  return Colors
+                                                                          .grey[
+                                                                      300]; // Warna saat tidak dipilih
+                                                                }),
+                                                                shape:
+                                                                    const CircleBorder(),
+                                                                side:
+                                                                    const BorderSide(
+                                                                        width:
+                                                                            0.6),
+                                                                value: false,
+                                                                onChanged: null,
+                                                              ), // Ganti dengan ikon yang sesuai
                                                         Text(
                                                             size.size.sizeName),
                                                       ],
@@ -371,9 +404,10 @@ class _DetailCostumState extends State<DetailCostum> {
                                             } else if (state
                                                 is CartToItemSuccess) {
                                               Navigator.of(context).pop();
-                                              Navigator.of(context)
-                                                  .pop(); // Close loading dialog
-                                              // Close loading dialog
+                                              Navigator.of(context).pop();
+                                              context
+                                                  .read<CartBloc>()
+                                                  .add(CartRequest());
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(
                                                 SnackBar(
@@ -382,11 +416,11 @@ class _DetailCostumState extends State<DetailCostum> {
                                                       state.message,
                                                       style: TextStyle(
                                                         fontSize: 16.0,
-                                                        color: Colors.black,
+                                                        color: Colors.white,
                                                       ),
                                                     ),
                                                   ),
-                                                  backgroundColor: Colors.white,
+                                                  backgroundColor: Colors.green,
                                                   duration: const Duration(
                                                       seconds: 3),
                                                   behavior:
@@ -439,6 +473,9 @@ class _DetailCostumState extends State<DetailCostum> {
                                                 ),
                                               );
                                             }
+                                            context
+                                                .read<CartBloc>()
+                                                .add(CartRequest());
                                           },
                                           child: Container(
                                             width: double.infinity,
@@ -453,7 +490,7 @@ class _DetailCostumState extends State<DetailCostum> {
                                             child: GestureDetector(
                                               onTap: () {
                                                 print(
-                                                    "testi${selectedStockId}");
+                                                    "testi$selectedStockId");
                                                 if (selectedStockId != null) {
                                                   context.read<CartBloc>().add(
                                                       CartToItemRequest(

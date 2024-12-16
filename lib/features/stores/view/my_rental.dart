@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rentcost/features/product/model/product.dart';
+import 'package:rentcost/features/stores/model/product.dart';
 import 'package:rentcost/features/users/bloc/user_product_bloc.dart';
 import 'package:rentcost/features/users/bloc/user_product_event.dart';
 import 'package:rentcost/features/users/bloc/user_product_state.dart';
@@ -8,9 +8,15 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rentcost/features/model/costum.dart';
 import 'package:rentcost/features/widget/card_detail_product_user.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MyRental extends StatelessWidget {
   MyRental({super.key});
+
+  Future<void> _onRefresh(BuildContext context) async {
+    context.read<ProductUserBloc>().add(ProductUser());
+    await Future.delayed(Duration(seconds: 2));
+  }
 
   final List<Costum> costum = costumList;
   @override
@@ -78,37 +84,147 @@ class MyRental extends StatelessWidget {
         //   ),
         // ),
       ),
-      body: BlocBuilder<ProductUserBloc, ProductUserState>(
-        builder: (context, state) {
-          if (state is ProductUserInitial) {
-            context.read<ProductUserBloc>().add(ProductUser());
-          } else if (state is ProductUserLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is ProductUserLoaded) {
-            List<ProductData> products = state.product;
-            if (products.isEmpty) {
-              return const Center(child: Text("Tidak ada hasil ditemukan."));
+      body: RefreshIndicator(
+        onRefresh: () => _onRefresh(context),
+        child: BlocBuilder<ProductUserBloc, ProductUserState>(
+          builder: (context, state) {
+            if (state is ProductUserInitial) {
+              context.read<ProductUserBloc>().add(ProductUser());
+            } else if (state is ProductUserLoading) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              height: 200.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Colors.black45, width: 0.2),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(6.0)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 0.5,
+                                    blurRadius: 1,
+                                    offset: const Offset(1, 2),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16.0,
+                        ),
+                        Expanded(
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              height: 200.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Colors.black45, width: 0.2),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(6.0)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 0.5,
+                                    blurRadius: 1,
+                                    offset: const Offset(1, 2),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              height: 200.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Colors.black45, width: 0.2),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(6.0)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 0.5,
+                                    blurRadius: 1,
+                                    offset: const Offset(1, 2),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16.0,
+                        ),
+                        Expanded(
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey.shade300,
+                            highlightColor: Colors.grey.shade100,
+                            child: Container(
+                              height: 200.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Colors.black45, width: 0.2),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(6.0)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 0.5,
+                                    blurRadius: 1,
+                                    offset: const Offset(1, 2),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            } else if (state is ProductUserLoaded) {
+              List<ProductUserRent> products = state.product;
+              if (products.isEmpty) {
+                return const Center(child: Text("Tidak ada hasil ditemukan."));
+              }
+              return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: CardDetailProductUser(costum: products));
             }
             return Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: CardDetailProductUser(costum: products));
-            // return GridView.builder(
-            //   padding: const EdgeInsets.all(10.0),
-            //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //     crossAxisCount: 2, // Jumlah kolom
-            //     crossAxisSpacing: 10.0, // Jarak antar kolom
-            //     mainAxisSpacing: 10.0, // Jarak antar baris
-            //     childAspectRatio: 0.67, // Rasio untuk lebar vs tinggi item
-            //   ),
-            //   itemCount: state.product.length,
-            //   itemBuilder: (context, index) {
-            //     // Kirim data Costum ke widget CardCostumTenant
-            //     return CardCostumTenant(costum: costum[index]);
-            //   },
-            // );
-          }
-          return Container();
-        },
+              child: Center(child: Text("Tidak ada hasil ditemukan.")),
+            );
+          },
+        ),
       ),
     );
   }

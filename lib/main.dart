@@ -4,18 +4,20 @@ import 'package:rentcost/features/Authentication/ChangePassword/bloc/change_pass
 import 'package:rentcost/features/Authentication/ForgotPassword/bloc/forgot_password_bloc.dart';
 import 'package:rentcost/features/Authentication/ForgotPassword/bloc/verify_email_bloc.dart';
 import 'package:rentcost/features/Authentication/Register/bloc/register_bloc.dart';
+import 'package:rentcost/features/History/bloc/histori_bloc.dart';
+import 'package:rentcost/features/History/bloc/histori_user_bloc.dart';
 import 'package:rentcost/features/SplashScreen/bloc/splash_bloc.dart';
 import 'package:rentcost/features/address/bloc/address_bloc.dart';
 import 'package:rentcost/features/banner/bloc/banner_bloc.dart';
 import 'package:rentcost/features/cart/bloc/cart_bloc.dart';
 import 'package:rentcost/features/category/bloc/category_bloc.dart';
+import 'package:rentcost/features/payment/bloc/payment_bloc.dart';
 import 'package:rentcost/features/product/bloc/detail_bloc.dart';
 import 'package:rentcost/features/product/bloc/product_bloc.dart';
 import 'package:rentcost/features/product/bloc/search_bloc.dart';
 import 'package:rentcost/features/stores/bloc/stores_bloc.dart';
 import 'package:rentcost/features/users/bloc/user_bloc.dart';
 import 'package:rentcost/features/users/bloc/user_product_bloc.dart';
-
 import 'package:rentcost/routes/app.routes.dart';
 import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
 
@@ -28,64 +30,49 @@ void main() {
         BlocProvider(create: (context) => LoginBloc()),
         BlocProvider(create: (context) => RegisterBloc()),
         BlocProvider(
-          create: (context) => UserBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => UserBloc(),
         ),
         BlocProvider(
-          create: (context) => BannerBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => BannerBloc(),
         ),
         BlocProvider(
-          create: (context) => CategoriesBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => CategoriesBloc(),
         ),
         BlocProvider(
-          create: (context) => StoreBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => StoreBloc(),
         ),
         BlocProvider(
-          create: (context) => AddressBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => AddressBloc(),
         ),
         BlocProvider(
-          create: (context) => ProductBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => ProductBloc(),
         ),
         BlocProvider(
-          create: (context) => SearchBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => SearchBloc(),
         ),
         BlocProvider(
-          create: (context) => DetailBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => DetailBloc(),
         ),
         BlocProvider(
-          create: (context) => ProductUserBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => ProductUserBloc(),
         ),
         BlocProvider(
-          create: (context) => SplashBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => SplashBloc(),
         ),
         BlocProvider(
-          create: (context) => ChangePasswordBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => ChangePasswordBloc(),
         ),
         BlocProvider(
-          create: (context) => CartBloc(
-            loginBloc: context.read<LoginBloc>(),
-          ),
+          create: (context) => CartBloc(),
+        ),
+        BlocProvider(
+          create: (context) => PaymentBloc(),
+        ),
+        BlocProvider(
+          create: (context) => HistoriBloc(),
+        ),
+        BlocProvider(
+          create: (context) => HistoriUserBloc(),
         ),
         BlocProvider(
           create: (context) => VerifyEmailBloc(),

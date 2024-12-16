@@ -9,11 +9,10 @@ import 'package:rentcost/features/banner/bloc/banner_state.dart';
 import 'package:rentcost/features/banner/model/banner_model.dart';
 import 'package:rentcost/features/users/bloc/user_event.dart';
 import 'package:rentcost/features/users/bloc/user_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BannerBloc extends Bloc<BannerEvent, BannerState> {
-  final LoginBloc loginBloc;
-
-  BannerBloc({required this.loginBloc}) : super(BannerInitial()) {
+  BannerBloc() : super(BannerInitial()) {
     on<BannerRequest>(_onBannerRequest);
     on<BannerCreateEvent>(_onBannerCreate);
     on<BannerDeleteEvent>(_onBannerDelete);
@@ -23,11 +22,10 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
       BannerRequest event, Emitter<BannerState> emit) async {
     emit(BannerLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final tokens = prefs.getString('access_token');
 
-      if (token == null) {
+      if (tokens == null) {
         emit(BannerFailure(error: 'Token tidak ada'));
         return Future.error('Token tidak ada');
       }
@@ -36,7 +34,7 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
         Uri.parse('${UrlApi.baseUrl}/banners'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $tokens',
         },
       );
 
@@ -68,9 +66,8 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
       BannerCreateEvent event, Emitter<BannerState> emit) async {
     emit(BannerCreateLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(BannerCreateFailure(error: 'Token tidak ada'));
@@ -108,9 +105,8 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
       BannerDeleteEvent event, Emitter<BannerState> emit) async {
     emit(BannerDeleteLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(BannerCreateFailure(error: 'Token tidak ada'));
@@ -120,7 +116,7 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
       final banner = event.id;
 
       final response = await http.delete(
-        Uri.parse('${UrlApi.baseUrl}/banners/${banner}'),
+        Uri.parse('${UrlApi.baseUrl}/banners/$banner'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

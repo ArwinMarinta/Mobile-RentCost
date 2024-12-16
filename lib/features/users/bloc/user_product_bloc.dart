@@ -4,23 +4,27 @@ import 'package:http/http.dart' as http;
 import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
 import 'package:rentcost/features/Authentication/Login/bloc/login_state.dart';
 import 'package:rentcost/config/config.dart';
-import 'package:rentcost/features/product/model/product.dart';
+import 'package:rentcost/features/stores/model/product.dart';
 import 'package:rentcost/features/users/bloc/user_product_event.dart';
 import 'package:rentcost/features/users/bloc/user_product_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductUserBloc extends Bloc<ProductUserEvent, ProductUserState> {
-  final LoginBloc loginBloc;
-  ProductUserBloc({required this.loginBloc}) : super(ProductUserInitial()) {
+  ProductUserBloc() : super(ProductUserInitial()) {
     on<ProductUser>(_onProductUser);
+    on<UserProductClear>(_onUserProductClear);
+  }
+  void _onUserProductClear(
+      UserProductClear event, Emitter<ProductUserState> emit) {
+    emit(ProductUserInitial());
   }
 
-  Future<List<ProductData>> _onProductUser(
+  Future<List<ProductUserRent>> _onProductUser(
       ProductUser event, Emitter<ProductUserState> emit) async {
     emit(ProductUserLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(ProductUserFailure(error: 'Token tidak ada'));
@@ -38,8 +42,8 @@ class ProductUserBloc extends Bloc<ProductUserEvent, ProductUserState> {
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
 
-        List<ProductData> list = (data['data'] as List)
-            .map((data) => ProductData.fromJson(data))
+        List<ProductUserRent> list = (data['data'] as List)
+            .map((data) => ProductUserRent.fromJson(data))
             .toList();
 
         if (list.isEmpty) {

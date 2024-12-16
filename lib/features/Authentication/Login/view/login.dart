@@ -48,15 +48,32 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 );
               } else if (state is LoginSuccess) {
-                Navigator.of(context).pop(); // Close loading dialog
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Login Berhasil: ${state.token}')),
-                );
+                Navigator.of(context).pop();
+
                 context.go('/');
               } else if (state is LoginFailure) {
-                Navigator.of(context).pop(); // Close loading dialog
+                Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Login Gagal: ${state.error}')),
+                  SnackBar(
+                    content: Center(
+                      child: Text(
+                        state.error,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Colors.red,
+                    duration: const Duration(seconds: 3),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                  ),
                 );
               }
             },
@@ -185,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 25.0),
                 // Login Button
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: GestureDetector(
                     onTap: () {
@@ -200,12 +217,6 @@ class _LoginPageState extends State<LoginPage> {
                                 password: passwordText,
                               ),
                             );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Field tidak boleh kosong'),
-                          ),
-                        );
                       }
                     },
                     child: Container(
@@ -229,7 +240,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 40),
                 // Register Link
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

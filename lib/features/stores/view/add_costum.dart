@@ -28,7 +28,7 @@ class _AddCostumState extends State<AddCostum> {
 
   String? showFileName = "";
   String errorMessage = '';
-  int maxSizeInBytes = 1 * 1024 * 1024;
+  int maxSizeInBytes = 3 * 1024 * 1024;
   FilePickerResult? filePickerResult;
 
   void _addStock() {
@@ -82,11 +82,11 @@ class _AddCostumState extends State<AddCostum> {
                   state.message,
                   style: TextStyle(
                     fontSize: 16.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.green,
               duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -257,7 +257,7 @@ class _AddCostumState extends State<AddCostum> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -428,14 +428,11 @@ class _AddCostumState extends State<AddCostum> {
                         int index = sizeStock.indexOf(stock);
                         // Dapatkan daftar ukuran yang sudah digunakan
 
-                        String? selectedSize =
-                            stock['size_id'] as String?; 
+                        String? selectedSize = stock['size_id'] as String?;
 
                         List<String> availableSizes = ['1', '2', '3', '4', '5']
                             .where((size) => !sizeStock
-                                .where((s) =>
-                                    s !=
-                                    stock) 
+                                .where((s) => s != stock)
                                 .map((s) => s['size_id'] as String)
                                 .contains(size))
                             .toList();
@@ -481,8 +478,7 @@ class _AddCostumState extends State<AddCostum> {
                                       }).toList(),
                                       onChanged: (value) {
                                         if (value != null) {
-                                          _updateStock(index, 'size_id',
-                                              value);
+                                          _updateStock(index, 'size_id', value);
                                         }
                                       },
                                       decoration: const InputDecoration(
@@ -583,7 +579,7 @@ class _AddCostumState extends State<AddCostum> {
                             ],
                           ),
                         );
-                      }).toList(),
+                      }),
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: _addStock,

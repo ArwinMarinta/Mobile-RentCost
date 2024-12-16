@@ -5,6 +5,8 @@ abstract class ProductUserEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class UserProductClear extends ProductUserEvent {}
+
 class ProductUser extends ProductUserEvent {
   ProductUser();
 

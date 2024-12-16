@@ -31,11 +31,11 @@ class Banners extends StatelessWidget {
                   state.message,
                   style: TextStyle(
                     fontSize: 16.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.green,
               duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -45,7 +45,7 @@ class Banners extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             ),
           );
-          context.read<BannerBloc>().add(BannerRequest());
+          // context.read<BannerBloc>().add(BannerRequest());
         } else if (state is BannerDeleteFailure) {
           Navigator.of(context).pop(); // Menutup dialog jika terjadi error
           ScaffoldMessenger.of(context).showSnackBar(
@@ -160,15 +160,15 @@ class Banners extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                // Implementasi untuk Ubah
-                              },
-                              child: const Text(
-                                "Ubah",
-                                style: TextStyle(color: Color(0xFFFFBE05)),
-                              ),
-                            ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     // Implementasi untuk Ubah
+                            //   },
+                            //   child: const Text(
+                            //     "Ubah",
+                            //     style: TextStyle(color: Color(0xFFFFBE05)),
+                            //   ),
+                            // ),
                             const SizedBox(width: 12.0),
                             GestureDetector(
                               onTap: () {

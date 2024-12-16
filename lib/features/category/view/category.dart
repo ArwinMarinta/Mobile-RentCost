@@ -31,11 +31,11 @@ class Category extends StatelessWidget {
                   state.message,
                   style: TextStyle(
                     fontSize: 16.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.green,
               duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -139,15 +139,15 @@ class Category extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                // Implementasi untuk Ubah
-                              },
-                              child: const Text(
-                                "Ubah",
-                                style: TextStyle(color: Color(0xFFFFBE05)),
-                              ),
-                            ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     // Implementasi untuk Ubah
+                            //   },
+                            //   child: const Text(
+                            //     "Ubah",
+                            //     style: TextStyle(color: Color(0xFFFFBE05)),
+                            //   ),
+                            // ),
                             const SizedBox(width: 12.0),
                             GestureDetector(
                               onTap: () {

@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rentcost/features/Authentication/ForgotPassword/bloc/forgot_password_event.dart';
 import 'package:rentcost/features/Authentication/ForgotPassword/bloc/forgot_password_state.dart';
-import 'package:rentcost/features/Authentication/ForgotPassword/bloc/verify_email_event.dart';
-import 'package:rentcost/features/Authentication/ForgotPassword/bloc/verify_email_state.dart';
 import 'package:rentcost/config/config.dart';
 
 class ForgotPasswordBloc

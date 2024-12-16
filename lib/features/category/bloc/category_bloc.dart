@@ -7,11 +7,10 @@ import 'package:rentcost/features/Authentication/Login/bloc/login_state.dart';
 import 'package:rentcost/features/category/bloc/category_event.dart';
 import 'package:rentcost/features/category/bloc/category_state.dart';
 import 'package:rentcost/features/category/model/category_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
-  final LoginBloc loginBloc;
-
-  CategoriesBloc({required this.loginBloc}) : super(CategoriesInitial()) {
+  CategoriesBloc() : super(CategoriesInitial()) {
     on<CategoriesRequest>(_onCategoriesRequest);
     on<CategoriesCreateEvent>(_onCategorieCreate);
     on<CategoriesDeleteEvent>(_onCategorieDelete);
@@ -21,11 +20,10 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       CategoriesRequest event, Emitter<CategoriesState> emit) async {
     emit(CategoriesLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final tokens = prefs.getString('access_token');
 
-      if (token == null) {
+      if (tokens == null) {
         emit(CategoriesFailure(error: 'Token tidak ada'));
         return Future.error('Token tidak ada');
       }
@@ -34,7 +32,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
         Uri.parse('${UrlApi.baseUrl}/categories'),
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer $tokens',
         },
       );
 
@@ -65,9 +63,8 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       CategoriesCreateEvent event, Emitter<CategoriesState> emit) async {
     emit(CategoriesCreateLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(CategoriesCreateFailure(error: 'Token tidak ada'));
@@ -105,9 +102,8 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       CategoriesDeleteEvent event, Emitter<CategoriesState> emit) async {
     emit(CategoriesDeleteLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(CategoriesCreateFailure(error: 'Token tidak ada'));
@@ -117,7 +113,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
       final categories = event.id;
 
       final response = await http.delete(
-        Uri.parse('${UrlApi.baseUrl}/categories/${categories}'),
+        Uri.parse('${UrlApi.baseUrl}/categories/$categories'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

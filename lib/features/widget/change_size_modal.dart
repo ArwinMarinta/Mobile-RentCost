@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class ChangeSizeModal extends StatelessWidget {
   const ChangeSizeModal({super.key});

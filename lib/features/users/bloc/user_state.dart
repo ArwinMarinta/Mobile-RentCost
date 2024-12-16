@@ -29,7 +29,10 @@ final class UserFailure extends UserState {
 }
 
 final class UserLoaded extends UserState {
-  final List<User> data;
+  final UserResponse data;
 
   UserLoaded({required this.data});
+
+  @override
+  List<Object> get props => [data];
 }

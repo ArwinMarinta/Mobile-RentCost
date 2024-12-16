@@ -30,11 +30,7 @@ class SplashScreen extends StatelessWidget {
               return Container(
                 width: 150.0,
                 height: 150.0,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/rencost_logo.png"),
-                  ),
-                ),
+                child: Image.asset('assets/rencost_logo.png'),
               );
             },
           ),

@@ -16,37 +16,43 @@ class CartResponse {
 }
 
 class CartData {
-  final Address address;
-  final List<CartItem> cartItem;
+  final Address? address; // Address bisa null
+  final List<CartItem> cartItem; // Cart item bisa kosong
 
   CartData({
-    required this.address,
-    required this.cartItem,
+    this.address, // Address nullable
+    required this.cartItem, // Cart item tidak null tetapi bisa kosong
   });
 
   factory CartData.fromJson(Map<String, dynamic> json) {
     return CartData(
-      address: Address.fromJson(json['address']),
-      cartItem: (json['cartItem'] as List)
-          .map((item) => CartItem.fromJson(item))
-          .toList(),
+      address: json['address'] != null
+          ? Address.fromJson(json['address'])
+          : null, // Handle nullable address
+      cartItem: json['cartItem'] != null
+          ? (json['cartItem'] as List)
+              .map((item) => CartItem.fromJson(item))
+              .toList()
+          : [], // Jika cartItem kosong, inisialisasi dengan list kosong
     );
   }
 }
 
 class Address {
-  final int id;
-  final AddressDetails address;
+  final int? id;
+  final AddressDetails? address;
 
   Address({
-    required this.id,
-    required this.address,
+    this.id,
+    this.address, // AddressDetails bisa null
   });
 
   factory Address.fromJson(Map<String, dynamic> json) {
     return Address(
       id: json['id'],
-      address: AddressDetails.fromJson(json['address']),
+      address: json['address'] != null
+          ? AddressDetails.fromJson(json['address'])
+          : null, // Handle nullable address details
     );
   }
 }
@@ -135,7 +141,7 @@ class Cart {
 class Product {
   final int id;
   final String productName;
-  final int rate;
+  final String rate;
   final int price;
   final String imageUrl;
   final int rentalAmount;

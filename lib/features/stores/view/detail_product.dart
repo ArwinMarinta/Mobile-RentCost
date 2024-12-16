@@ -89,24 +89,6 @@ class _DetailCostumState extends State<DetailProductUser> {
       } else if (state is DetailProductState) {
         final data = state.detail.data;
 
-        // List<Stock> stockData = data.stock;
-
-        // bool isStockAvailable(String sizeId) {
-        //   return stockData
-        //       .any((stock) => stock.size.sizeName == sizeId && stock.stok > 0);
-        // }
-
-        // List<String> getAvailableSizeOptions() {
-        //   // Misalnya sizeMapping berisi mapping ukuran produk
-        //   return sizeMapping.entries
-        //       .where((entry) => !stockData.any((stock) =>
-        //           stock.size.sizeName == entry.key && stock.stok > 0))
-        //       .map((entry) => entry.key)
-        //       .toList();
-        // }
-
-// Menghapus ukuran yang sudah ada dari dropdown
-
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
@@ -249,7 +231,7 @@ class _DetailCostumState extends State<DetailProductUser> {
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Text(
-                                      "${stock.size.sizeName}",
+                                      stock.size.sizeName,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 12,
@@ -929,158 +911,155 @@ class _DetailCostumState extends State<DetailProductUser> {
                                                                 // Return a default Stock object if no match is found
                                                               );
 
-                                                              if (stockItem !=
-                                                                  null) {
-                                                                existingSizeName =
-                                                                    stockItem
-                                                                        .size
-                                                                        .sizeName
-                                                                        .toString();
-                                                                existingSizeId =
-                                                                    stockItem
-                                                                        .size.id
-                                                                        .toString();
+                                                              existingSizeName =
+                                                                  stockItem
+                                                                      .size
+                                                                      .sizeName
+                                                                      .toString();
+                                                              existingSizeId =
+                                                                  stockItem
+                                                                      .size.id
+                                                                      .toString();
 
-                                                                ;
+                                                              ;
 
-                                                                existingStok =
-                                                                    existingStok =
-                                                                        stockItem
-                                                                            .stok
-                                                                            .toString();
+                                                              existingStok =
+                                                                  existingStok =
+                                                                      stockItem
+                                                                          .stok
+                                                                          .toString();
 
-                                                                showCupertinoDialog(
-                                                                  context:
-                                                                      context,
-                                                                  builder:
-                                                                      (BuildContext
-                                                                          context) {
-                                                                    return Material(
-                                                                      color: Colors
-                                                                          .transparent,
-                                                                      child:
-                                                                          CupertinoAlertDialog(
-                                                                        title: Text(
-                                                                            'Ubah Stock'),
-                                                                        content:
-                                                                            Column(
-                                                                          crossAxisAlignment:
-                                                                              CrossAxisAlignment.start,
-                                                                          children: [
-                                                                            SizedBox(
-                                                                              child: Text(
-                                                                                "Ukuran",
-                                                                                style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
-                                                                              ),
+                                                              showCupertinoDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  return Material(
+                                                                    color: Colors
+                                                                        .transparent,
+                                                                    child:
+                                                                        CupertinoAlertDialog(
+                                                                      title: Text(
+                                                                          'Ubah Stock'),
+                                                                      content:
+                                                                          Column(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.start,
+                                                                        children: [
+                                                                          SizedBox(
+                                                                            child: Text(
+                                                                              "Ukuran",
+                                                                              style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
                                                                             ),
-                                                                            const SizedBox(height: 8.0),
-                                                                            Column(
-                                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                                              children: [
-                                                                                const SizedBox(height: 8.0),
-                                                                                DropdownButtonFormField<String>(
-                                                                                  value: selectedSizeId,
-                                                                                  decoration: InputDecoration(
-                                                                                    hintText: existingSizeName,
-                                                                                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                                                                                    border: OutlineInputBorder(
-                                                                                      borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                                                                                    ),
-                                                                                    enabledBorder: OutlineInputBorder(
-                                                                                      borderSide: BorderSide(color: Color(0xFF8E8E8E), width: 1.0),
-                                                                                      borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                                                                                    ),
-                                                                                    focusedBorder: OutlineInputBorder(
-                                                                                      borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                                                                                      borderSide: BorderSide(color: Color(0xFF881FFF), width: 2.0),
-                                                                                    ),
-                                                                                  ),
-                                                                                  onChanged: (String? newValue) {
-                                                                                    setState(() {
-                                                                                      selectedSizeId = newValue;
-                                                                                      if (newValue != null && !selectedSizes.contains(newValue)) {
-                                                                                        selectedSizes.add(newValue);
-                                                                                      }
-                                                                                    });
-                                                                                  },
-                                                                                  items: sizeMapping.keys
-                                                                                      .where((sizeId) => !selectedSizes.contains(sizeId)) // Filter ukuran yang sudah dipilih
-                                                                                      .map<DropdownMenuItem<String>>((sizeId) {
-                                                                                    return DropdownMenuItem<String>(
-                                                                                      value: sizeId,
-                                                                                      child: Text(sizeMapping[sizeId] ?? ''), // Ambil label ukuran dari sizeMapping
-                                                                                    );
-                                                                                  }).toList(),
-                                                                                )
-                                                                              ],
-                                                                            ),
-                                                                            const SizedBox(height: 8.0),
-                                                                            const SizedBox(
-                                                                              child: Text(
-                                                                                "Stok",
-                                                                                style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
-                                                                              ),
-                                                                            ),
-                                                                            const SizedBox(height: 8.0),
-                                                                            TextField(
-                                                                              controller: stok..text = existingStok ?? stok.text,
-                                                                              keyboardType: TextInputType.number,
-                                                                              inputFormatters: [
-                                                                                FilteringTextInputFormatter.digitsOnly,
-                                                                              ],
-                                                                              decoration: const InputDecoration(
-                                                                                hintText: "ex: 1",
-                                                                                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                                                                                border: OutlineInputBorder(
-                                                                                  borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                                                                                ),
-                                                                                enabledBorder: OutlineInputBorder(
-                                                                                  borderSide: BorderSide(color: Color(0xFF8E8E8E), width: 1.0),
-                                                                                  borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                                                                                ),
-                                                                                focusedBorder: OutlineInputBorder(
-                                                                                  borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                                                                                  borderSide: BorderSide(color: Color(0xFF881FFF), width: 2.0),
-                                                                                ),
-                                                                              ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        actions: <Widget>[
-                                                                          CupertinoDialogAction(
-                                                                            child:
-                                                                                Text('Tutup', style: TextStyle(color: Colors.black)),
-                                                                            onPressed:
-                                                                                () {
-                                                                              Navigator.of(context).pop(); // Close the dialog
-                                                                            },
                                                                           ),
-                                                                          CupertinoDialogAction(
-                                                                            child:
-                                                                                Text('Ubah', style: TextStyle(color: Colors.black)),
-                                                                            onPressed:
-                                                                                () {
-                                                                              final stokText = stok.text.trim().isEmpty ? existingStok : stok.text.trim();
-
-                                                                              final sizeIdText = (selectedSizeId == null) ? existingSizeId : selectedSizeId;
-
-                                                                              // Only proceed if selectedSizeId is not null
-                                                                              if (sizeIdText != null && stokText != null) {
-                                                                                context.read<StoreBloc>().add(StockUpdate(
-                                                                                      id: selectedStockId.toString(),
-                                                                                      sizeId: sizeIdText.toString(),
-                                                                                      stok: stokText,
-                                                                                    ));
-                                                                              }
-                                                                            },
+                                                                          const SizedBox(height: 8.0),
+                                                                          Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: [
+                                                                              const SizedBox(height: 8.0),
+                                                                              DropdownButtonFormField<String>(
+                                                                                value: selectedSizeId,
+                                                                                decoration: InputDecoration(
+                                                                                  hintText: existingSizeName,
+                                                                                  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                                                                                  border: OutlineInputBorder(
+                                                                                    borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                                  ),
+                                                                                  enabledBorder: OutlineInputBorder(
+                                                                                    borderSide: BorderSide(color: Color(0xFF8E8E8E), width: 1.0),
+                                                                                    borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                                  ),
+                                                                                  focusedBorder: OutlineInputBorder(
+                                                                                    borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                                    borderSide: BorderSide(color: Color(0xFF881FFF), width: 2.0),
+                                                                                  ),
+                                                                                ),
+                                                                                onChanged: (String? newValue) {
+                                                                                  setState(() {
+                                                                                    selectedSizeId = newValue;
+                                                                                    if (newValue != null && !selectedSizes.contains(newValue)) {
+                                                                                      selectedSizes.add(newValue);
+                                                                                    }
+                                                                                  });
+                                                                                },
+                                                                                items: sizeMapping.keys
+                                                                                    .where((sizeId) => !selectedSizes.contains(sizeId)) // Filter ukuran yang sudah dipilih
+                                                                                    .map<DropdownMenuItem<String>>((sizeId) {
+                                                                                  return DropdownMenuItem<String>(
+                                                                                    value: sizeId,
+                                                                                    child: Text(sizeMapping[sizeId] ?? ''), // Ambil label ukuran dari sizeMapping
+                                                                                  );
+                                                                                }).toList(),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                          const SizedBox(height: 8.0),
+                                                                          const SizedBox(
+                                                                            child: Text(
+                                                                              "Stok",
+                                                                              style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
+                                                                            ),
+                                                                          ),
+                                                                          const SizedBox(height: 8.0),
+                                                                          TextField(
+                                                                            controller: stok..text = existingStok ?? stok.text,
+                                                                            keyboardType: TextInputType.number,
+                                                                            inputFormatters: [
+                                                                              FilteringTextInputFormatter.digitsOnly,
+                                                                            ],
+                                                                            decoration: const InputDecoration(
+                                                                              hintText: "ex: 1",
+                                                                              contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                                                                              border: OutlineInputBorder(
+                                                                                borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                              ),
+                                                                              enabledBorder: OutlineInputBorder(
+                                                                                borderSide: BorderSide(color: Color(0xFF8E8E8E), width: 1.0),
+                                                                                borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                              ),
+                                                                              focusedBorder: OutlineInputBorder(
+                                                                                borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                                                                                borderSide: BorderSide(color: Color(0xFF881FFF), width: 2.0),
+                                                                              ),
+                                                                            ),
                                                                           ),
                                                                         ],
                                                                       ),
-                                                                    );
-                                                                  },
-                                                                );
-                                                              }
-                                                            }
+                                                                      actions: <Widget>[
+                                                                        CupertinoDialogAction(
+                                                                          child:
+                                                                              Text('Tutup', style: TextStyle(color: Colors.black)),
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.of(context).pop(); // Close the dialog
+                                                                          },
+                                                                        ),
+                                                                        CupertinoDialogAction(
+                                                                          child:
+                                                                              Text('Ubah', style: TextStyle(color: Colors.black)),
+                                                                          onPressed:
+                                                                              () {
+                                                                            final stokText = stok.text.trim().isEmpty ? existingStok : stok.text.trim();
+
+                                                                            final sizeIdText = (selectedSizeId == null) ? existingSizeId : selectedSizeId;
+
+                                                                            // Only proceed if selectedSizeId is not null
+                                                                            if (sizeIdText != null && stokText != null) {
+                                                                              context.read<StoreBloc>().add(StockUpdate(
+                                                                                    id: selectedStockId.toString(),
+                                                                                    sizeId: sizeIdText.toString(),
+                                                                                    stok: stokText,
+                                                                                  ));
+                                                                            }
+                                                                          },
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
+                                                                                                                        }
                                                           },
                                                           child: Center(
                                                             child: Icon(
@@ -1277,20 +1256,20 @@ class _DetailCostumState extends State<DetailProductUser> {
                           ),
                         ),
                       ),
-                      Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 14),
-                          child: GestureDetector(
-                            onTap: () {
-                              context.go('/update-product/${data.id}');
-                            },
-                            child: Center(
-                              child: Icon(
-                                Bootstrap.pencil_square,
-                                color: Colors.yellow,
-                              ),
-                            ),
-                          )),
+                      // Container(
+                      //     padding: const EdgeInsets.symmetric(
+                      //         horizontal: 16, vertical: 14),
+                      //     child: GestureDetector(
+                      //       onTap: () {
+                      //         context.go('/update-product/${data.id}');
+                      //       },
+                      //       child: Center(
+                      //         child: Icon(
+                      //           Bootstrap.pencil_square,
+                      //           color: Colors.yellow,
+                      //         ),
+                      //       ),
+                      //     )),
                       BlocListener<ProductBloc, ProductState>(
                         listener: (context, state) {
                           if (state is ProductDeleteLoading) {
@@ -1327,6 +1306,7 @@ class _DetailCostumState extends State<DetailProductUser> {
                             );
 
                             context.read<ProductUserBloc>().add(ProductUser());
+                            context.read<ProductBloc>().add(ProductFilter());
                             context.go('/costum-tenant');
                           } else if (state is ProductDeleteFailure) {
                             Navigator.of(context).pop();

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -7,7 +6,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:rentcost/features/category/bloc/category_bloc.dart';
 import 'package:rentcost/features/category/bloc/category_event.dart';
 import 'package:rentcost/features/category/bloc/category_state.dart';
-import 'package:rentcost/features/category/model/category_model.dart';
 
 class CreateCategory extends StatefulWidget {
   const CreateCategory({super.key});
@@ -44,11 +42,11 @@ class _CreateCategoryState extends State<CreateCategory> {
                   state.message,
                   style: TextStyle(
                     fontSize: 16.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.green,
               duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(

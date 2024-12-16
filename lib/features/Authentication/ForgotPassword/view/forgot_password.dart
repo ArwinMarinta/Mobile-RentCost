@@ -44,11 +44,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   state.message,
                   style: TextStyle(
                     fontSize: 16.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.green,
               duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -60,7 +60,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           );
 
           Future.delayed(const Duration(seconds: 2), () {
-            context.read<VerifyEmailBloc>().add(RessetToken()); 
+            context.read<VerifyEmailBloc>().add(RessetToken());
             context.go('/login');
           });
         } else if (state is ForgotPasswordFailure) {
@@ -272,7 +272,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 const SizedBox(
                   height: 40,
                 ),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   child: GestureDetector(
                     onTap: () {

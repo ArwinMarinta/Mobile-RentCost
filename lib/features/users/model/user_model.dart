@@ -1,14 +1,11 @@
-class User {
-  String message;
-  Data data;
+class UserResponse {
+  final String message;
+  final Data data;
 
-  User({
-    required this.message,
-    required this.data,
-  });
+  UserResponse({required this.message, required this.data});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory UserResponse.fromJson(Map<String, dynamic> json) {
+    return UserResponse(
       message: json['message'],
       data: Data.fromJson(json['data']),
     );
@@ -16,64 +13,74 @@ class User {
 }
 
 class Data {
-  int id;
-  String email;
-  String password;
-  bool isVerified;
-  DateTime createdAt;
-  UserClass user;
-  Store? store;
+  final Auth auth;
+  final dynamic
+      store; // Store bisa null atau memiliki value, jadi kita gunakan dynamic
 
-  Data({
+  Data({required this.auth, this.store});
+
+  factory Data.fromJson(Map<String, dynamic> json) {
+    return Data(
+      auth: Auth.fromJson(json['auth']),
+      store: json['store'], // Bisa null
+    );
+  }
+}
+
+class Auth {
+  final int id;
+  final String email;
+  final String password;
+  final bool isVerified;
+  final String createdAt;
+  final User user;
+
+  Auth({
     required this.id,
     required this.email,
     required this.password,
     required this.isVerified,
     required this.createdAt,
     required this.user,
-    this.store, // Parameter store bisa null
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) {
-    return Data(
-      id: json['auth']['id'],
-      email: json['auth']['email'],
-      password: json['auth']['password'],
-      isVerified: json['auth']['is_verified'],
-      createdAt: DateTime.parse(json['auth']['created_at']),
-      user: UserClass.fromJson(json['auth']['user']),
-      store: json['store'] != null
-          ? Store.fromJson(json['store'])
-          : null, // Cek apakah store ada
+  factory Auth.fromJson(Map<String, dynamic> json) {
+    return Auth(
+      id: json['id'],
+      email: json['email'],
+      password: json['password'],
+      isVerified: json['is_verified'],
+      createdAt: json['created_at'],
+      user: User.fromJson(json['user']),
     );
   }
 }
 
-class UserClass {
-  int id;
-  String username;
-  String phoneNumber;
-  String location;
-  String identifyType;
-  String identityNumber;
-  String bankAccount;
-  String imageUrl;
-  DateTime createdAt;
+class User {
+  final int id;
+  final String username;
+  final String phoneNumber;
+  final dynamic location; // Bisa null
+  final dynamic identifyType; // Bisa null
+  final dynamic identityNumber; // Bisa null
+  final dynamic bankAccount; // Bisa null
+  final String? imageUrl; // Bisa null
+  final String createdAt;
 
-  UserClass({
+  User({
     required this.id,
     required this.username,
     required this.phoneNumber,
-    required this.location,
-    required this.identifyType,
-    required this.identityNumber,
-    required this.bankAccount,
-    required this.imageUrl,
+    this.location,
+    this.identifyType,
+    this.identityNumber,
+    this.bankAccount,
+    this.imageUrl,
     required this.createdAt,
   });
 
-  factory UserClass.fromJson(Map<String, dynamic> json) {
-    return UserClass(
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
       id: json['id'],
       username: json['username'],
       phoneNumber: json['phone_number'],
@@ -81,33 +88,8 @@ class UserClass {
       identifyType: json['identify_type'],
       identityNumber: json['identity_number'],
       bankAccount: json['bank_account'],
-      imageUrl: json['image_url'], // Mengakses imageUrl
-      createdAt: DateTime.parse(json['created_at']),
-    );
-  }
-}
-
-// Model Store
-class Store {
-  int id;
-  String storeName;
-  String storeLocation;
-  DateTime createdAt;
-
-  Store({
-    required this.id,
-    required this.storeName,
-    required this.storeLocation,
-    required this.createdAt,
-  });
-
-  // Tambahkan metode fromJson untuk parsing response
-  factory Store.fromJson(Map<String, dynamic> json) {
-    return Store(
-      id: json['id'],
-      storeName: json['store_name'],
-      storeLocation: json['store_location'],
-      createdAt: DateTime.parse(json['created_at']),
+      imageUrl: json['image_url'],
+      createdAt: json['created_at'],
     );
   }
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:rentcost/features/model/costum.dart';
+
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rentcost/features/product/model/product.dart';
+
+import 'package:rentcost/features/stores/model/product.dart';
 
 class CardDetailProductUser extends StatelessWidget {
-  final List<ProductData> costum;
+  final List<ProductUserRent> costum;
 
   const CardDetailProductUser({required this.costum, super.key});
 

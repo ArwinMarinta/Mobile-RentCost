@@ -24,7 +24,7 @@ class CarouselBanner extends StatelessWidget {
       items: imagePaths.map((String imagePath) {
         return Builder(
           builder: (BuildContext context) {
-            return Container(
+            return SizedBox(
               height: 200, // Tentukan tinggi yang konsisten
               width: MediaQuery.of(context).size.width, // Lebar penuh
               child: ClipRRect(

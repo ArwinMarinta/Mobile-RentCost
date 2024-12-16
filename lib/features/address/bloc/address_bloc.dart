@@ -7,25 +7,30 @@ import 'package:rentcost/config/config.dart';
 import 'package:rentcost/features/address/bloc/address_event.dart';
 import 'package:rentcost/features/address/bloc/address_state.dart';
 import 'package:rentcost/features/address/model/address_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddressBloc extends Bloc<AddressEvent, AddressState> {
-  final LoginBloc loginBloc;
-  AddressBloc({required this.loginBloc}) : super(AddressInitial()) {
+  AddressBloc() : super(AddressInitial()) {
     on<CreateAddress>(_onAddressCreate);
-
     on<RequestAddress>(_onAddressRequest);
+    on<AddressDeleteRequest>(_onAddressDelete);
+    on<ShippingAddressUpdate>(_onAddressUpdate);
+    on<AddressClear>(_onAddressClear);
+  }
+
+  void _onAddressClear(AddressClear event, Emitter<AddressState> emit) {
+    emit(AddressInitial()); // Reset state ke StoreInitial
   }
 
   Future<void> _onAddressCreate(
       CreateAddress event, Emitter<AddressState> emit) async {
-    emit(AddressLoading());
+    emit(AddressCreateLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
-        emit(AddressFailure(error: 'Token tidak ada'));
+        emit(AddressCreateFailure(error: 'Token tidak ada'));
         return Future.error('Token tidak ada');
       }
       final response = await http.post(
@@ -45,18 +50,20 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         }),
       );
 
+      final data = jsonDecode(response.body);
+
       if (response.statusCode == 201) {
-        final data = jsonDecode(response.body);
-        final accessToken = data['message'];
-        emit(AddressSuccess(message: accessToken));
+        emit(AddressCreateSuccess(
+            message: data['message'] ?? "Berhasil menambah alamat"));
       } else {
         final errorData = response.body.isNotEmpty
             ? jsonDecode(response.body)
             : {'error': 'Tidak ada detail error dari server'};
-        emit(AddressFailure(error: errorData['error'] ?? 'Address gagal'));
+        emit(AddressCreateFailure(
+            error: errorData['error'] ?? 'Gagal menambah alamat'));
       }
     } catch (e) {
-      emit(AddressFailure(error: 'Terjadi kesalahan, coba lagi.'));
+      emit(AddressCreateFailure(error: 'Terjadi kesalahan, coba lagi.'));
     }
   }
 
@@ -64,9 +71,8 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       RequestAddress event, Emitter<AddressState> emit) async {
     emit(AddressLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(AddressFailure(error: 'Token tidak ada'));
@@ -90,7 +96,7 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
         print(addressList);
 
         emit(AddressLoaded(address: addressList));
-        return addressList; // Mengembalikan list AddressResponse
+        return addressList;
       } else {
         final errorData = response.body.isNotEmpty
             ? jsonDecode(response.body)
@@ -102,6 +108,83 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
       print('Error: $e');
       emit(AddressFailure(error: "error"));
       return Future.error('Error while fetching data');
+    }
+  }
+
+  Future<void> _onAddressDelete(
+      AddressDeleteRequest event, Emitter<AddressState> emit) async {
+    emit(AddressDeleteLoading());
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
+
+      if (token == null) {
+        emit(AddressDeleteFailure(error: 'Token tidak ada'));
+        return Future.error('Token tidak ada');
+      }
+
+      final id = event.id;
+
+      final response = await http.delete(
+        Uri.parse('${UrlApi.baseUrl}/address/$id'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final accessToken = data['message'];
+        emit(AddressDeleteSuccess(message: accessToken));
+      } else {
+        final errorData = response.body.isNotEmpty
+            ? jsonDecode(response.body)
+            : {'error': 'Tidak ada detail error dari server'};
+        emit(
+            AddressDeleteFailure(error: errorData['error'] ?? 'Address gagal'));
+      }
+    } catch (e) {
+      emit(AddressDeleteFailure(error: 'Terjadi kesalahan, coba lagi.'));
+    }
+  }
+
+  Future<void> _onAddressUpdate(
+      ShippingAddressUpdate event, Emitter<AddressState> emit) async {
+    emit(AddressDeleteLoading());
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
+
+      if (token == null) {
+        emit(AddressDeleteFailure(error: 'Token tidak ada'));
+        return Future.error('Token tidak ada');
+      }
+
+      final id = event.id;
+
+      final response = await http.patch(
+        Uri.parse('${UrlApi.baseUrl}/address/$id'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final accessToken = data['message'];
+        emit(AddressDeleteSuccess(
+            message: accessToken ?? "Berhasil mengubah alamat"));
+      } else {
+        final errorData = response.body.isNotEmpty
+            ? jsonDecode(response.body)
+            : {'error': 'Tidak ada detail error dari server'};
+        emit(
+            AddressDeleteFailure(error: errorData['error'] ?? 'Address gagal'));
+      }
+    } catch (e) {
+      emit(AddressDeleteFailure(error: 'Terjadi kesalahan, coba lagi.'));
     }
   }
 }

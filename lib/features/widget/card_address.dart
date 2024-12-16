@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rentcost/features/address/model/address_model.dart';
-import 'package:rentcost/features/model/address.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class CardAddress extends StatelessWidget {

@@ -60,7 +60,7 @@ class _AddAddressState extends State<AddAddress> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: BlocListener<AddressBloc, AddressState>(
             listener: (context, state) {
-              if (state is AddressLoading) {
+              if (state is AddressCreateLoading) {
                 showDialog(
                   context: context,
                   barrierDismissible: false,
@@ -68,14 +68,61 @@ class _AddAddressState extends State<AddAddress> {
                     child: CircularProgressIndicator(),
                   ),
                 );
-              } else if (state is AddressSuccess) {
+              } else if (state is AddressCreateSuccess) {
                 Navigator.of(context).pop();
 
-                context.go('/select_address');
-              } else if (state is AddressFailure) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Center(
+                      child: Text(
+                        state.message,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Colors.green,
+                    duration: const Duration(seconds: 3),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                  ),
+                );
+
+                context.read<AddressBloc>().add(RequestAddress());
+
+                Future.delayed(Duration(seconds: 2), () {
+                  // Navigasi ke halaman select_address
+                  context.go('/select_address');
+                });
+              } else if (state is AddressCreateFailure) {
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Buat adreess: ${state.error}')),
+                  SnackBar(
+                    content: Center(
+                      child: Text(
+                        state.error,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    backgroundColor: Colors.red,
+                    duration: const Duration(seconds: 3),
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
+                  ),
                 );
               }
             },

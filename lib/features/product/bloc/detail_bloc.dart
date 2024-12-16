@@ -7,10 +7,10 @@ import 'package:rentcost/config/config.dart';
 import 'package:rentcost/features/product/bloc/detail_event.dart';
 import 'package:rentcost/features/product/bloc/detail_state.dart';
 import 'package:rentcost/features/product/model/detail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailBloc extends Bloc<DetailEvent, DetailState> {
-  final LoginBloc loginBloc;
-  DetailBloc({required this.loginBloc}) : super(DetailInitial()) {
+  DetailBloc() : super(DetailInitial()) {
     on<DetailProduct>(_onDetailProduct);
   }
 
@@ -18,9 +18,8 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
       DetailProduct event, Emitter<DetailState> emit) async {
     emit(DetailLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(DetailFailure(error: 'Token tidak ada'));
@@ -30,7 +29,7 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
       final id = event.id;
 
       final response = await http.get(
-        Uri.parse('${UrlApi.baseUrl}/products/${id}'),
+        Uri.parse('${UrlApi.baseUrl}/products/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',

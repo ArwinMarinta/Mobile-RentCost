@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rentcost/features/model/costum.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rentcost/features/product/model/product.dart';
@@ -88,7 +87,7 @@ class CardCostum extends StatelessWidget {
                               ),
                               const SizedBox(width: 4.0),
                               Text(
-                                data.productName, // Menggunakan data.productName
+                                data.store.storeLocation,
                                 style: const TextStyle(
                                   fontSize: 14.0,
                                 ),
@@ -105,7 +104,7 @@ class CardCostum extends StatelessWidget {
                               ),
                               const SizedBox(width: 4.0),
                               Text(
-                                  "${data.id} | ${data.rentalAmount}x Tersewa"),
+                                  "${data.rate} | ${data.rentalAmount}x Tersewa"),
                             ],
                           ),
                         ],

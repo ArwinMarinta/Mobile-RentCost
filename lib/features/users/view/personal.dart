@@ -57,12 +57,12 @@ class Personal extends StatelessWidget {
           }
 
           if (state is UserLoaded) {
-            final data = state.data;
+            final data = state.data.data.auth;
 
-            image.text = data.first.data.user.imageUrl;
-            username.text = data.first.data.user.username;
-            email.text = data.first.data.email;
-            phoneNumber.text = data.first.data.user.phoneNumber;
+            image.text = data.user.imageUrl.toString();
+            username.text = data.user.username;
+            email.text = data.email;
+            phoneNumber.text = data.user.phoneNumber;
 
             return SingleChildScrollView(
               child: Container(
@@ -76,7 +76,7 @@ class Personal extends StatelessWidget {
                         borderRadius:
                             const BorderRadius.all(Radius.circular(100.0)),
                         child: Image.network(
-                          data.first.data.user.imageUrl,
+                          data.user.imageUrl.toString(),
                           fit: BoxFit.cover,
                           width: 100.0,
                           height: 100.0,
@@ -132,33 +132,33 @@ class Personal extends StatelessWidget {
           return const Center(child: Text("Error loading user data"));
         },
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: GestureDetector(
-          onTap: () {
-            // Add save functionality here
-          },
-          child: Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFF881FFF),
-              borderRadius: BorderRadius.all(Radius.circular(6.0)),
-            ),
-            child: const Center(
-              child: Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Simpan',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
+      // bottomNavigationBar: BottomAppBar(
+      //   color: Colors.white,
+      //   child: GestureDetector(
+      //     onTap: () {
+      //       // Add save functionality here
+      //     },
+      //     child: Container(
+      //       decoration: const BoxDecoration(
+      //         color: Color(0xFF881FFF),
+      //         borderRadius: BorderRadius.all(Radius.circular(6.0)),
+      //       ),
+      //       child: const Center(
+      //         child: Padding(
+      //           padding: EdgeInsets.all(16.0),
+      //           child: Text(
+      //             'Simpan',
+      //             style: TextStyle(
+      //               fontWeight: FontWeight.bold,
+      //               fontSize: 16.0,
+      //               color: Colors.white,
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
     );
   }
 
@@ -174,7 +174,8 @@ class Personal extends StatelessWidget {
         const SizedBox(height: 10.0),
         TextField(
           controller: controller,
-          enabled: enabled,
+          readOnly: true,
+          // enabled: true,
           decoration: InputDecoration(
             hintText: hintText,
             contentPadding:

@@ -91,7 +91,7 @@ class _MyWidgetState extends State<UpdateCostum> {
 
           context.read<DetailBloc>().add(DetailProduct(id: currentId));
           context.read<ProductUserBloc>().add(ProductUser());
-          context.go("/detail/user/${currentId}");
+          context.go("/detail/user/$currentId");
         }
       },
       child: Scaffold(
@@ -102,7 +102,7 @@ class _MyWidgetState extends State<UpdateCostum> {
             centerTitle: true,
             leading: GestureDetector(
               onTap: () {
-                context.go("/detail/user/${currentId}");
+                context.go("/detail/user/$currentId");
               },
               child: const Icon(
                 FontAwesome.chevron_left_solid,
@@ -240,7 +240,7 @@ class _MyWidgetState extends State<UpdateCostum> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      Container(
+                      SizedBox(
                         width: double.infinity,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -456,17 +456,12 @@ class _MyWidgetState extends State<UpdateCostum> {
                     price.text.trim().isEmpty ? prices : price.text.trim();
 
                 final categoryIdText =
-                    categoryId != null ? categoryId : oldCategoriId;
+                    categoryId ?? oldCategoriId;
 
                 final imageUrlText =
                     filePickerResult?.files.first.path ?? imageUrl;
 
                 final oldImageText = imageUrl.toString();
-
-                print(productNameText);
-                print(priceText);
-                print(categoryIdText);
-                print(imageUrlText);
 
                 context.read<StoreBloc>().add(ProductUpdateEvent(
                     productName: productNameText.toString(),

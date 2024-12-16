@@ -7,10 +7,10 @@ import 'package:rentcost/config/config.dart';
 import 'package:rentcost/features/product/bloc/search_event.dart';
 import 'package:rentcost/features/product/bloc/search_state.dart';
 import 'package:rentcost/features/product/model/product.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  final LoginBloc loginBloc;
-  SearchBloc({required this.loginBloc}) : super(SearchInitial()) {
+  SearchBloc() : super(SearchInitial()) {
     on<SearchProductEvent>(_onSearchSearch);
     on<SearchResetEvent>((event, emit) {
       emit(SearchInitial());
@@ -21,9 +21,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       SearchProductEvent event, Emitter<SearchState> emit) async {
     emit(SearchLoading());
     try {
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         emit(SearchFailure(error: 'Token tidak ada'));

@@ -43,11 +43,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                   state.message,
                   style: TextStyle(
                     fontSize: 16.0,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
-              backgroundColor: Colors.white,
+              backgroundColor: Colors.green,
               duration: const Duration(seconds: 3),
               behavior: SnackBarBehavior.floating,
               shape: RoundedRectangleBorder(
@@ -64,7 +64,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             newPassword.clear();
           });
         } else if (state is ChangePasswordFailure) {
-          Navigator.of(context).pop(); // Menutup dialog jika terjadi error
+          Navigator.of(context).pop();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Center(

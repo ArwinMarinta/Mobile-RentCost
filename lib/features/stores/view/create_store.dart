@@ -68,7 +68,7 @@ class _CreateStoreState extends State<CreateStore> {
                   );
                 } else if (state is StoreSuccess) {
                   Navigator.of(context).pop();
-                  context.go('/select_address');
+                  context.go('/shop');
                   context.read<UserBloc>().add(UserRequest());
                 } else if (state is StoreFailure) {
                   Navigator.of(context).pop();
@@ -172,7 +172,7 @@ class _CreateStoreState extends State<CreateStore> {
                   const SizedBox(
                     height: 40,
                   ),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: GestureDetector(
                       onTap: () {

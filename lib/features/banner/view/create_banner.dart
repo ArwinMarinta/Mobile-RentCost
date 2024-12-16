@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:go_router/go_router.dart';
@@ -85,11 +84,11 @@ class _CreateBannerState extends State<CreateBanner> {
                         state.message,
                         style: TextStyle(
                           fontSize: 16.0,
-                          color: Colors.black,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                    backgroundColor: Colors.white,
+                    backgroundColor: Colors.green,
                     duration: const Duration(seconds: 3),
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(

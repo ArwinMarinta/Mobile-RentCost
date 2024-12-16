@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:rentcost/features/Authentication/Register/bloc/register_bloc.dart';
 import 'package:rentcost/features/SplashScreen/view/splash.dart';
 import 'package:rentcost/features/stores/view/create_store.dart';
 import 'package:rentcost/features/address/view/add_address.dart';
@@ -15,12 +13,12 @@ import 'package:rentcost/features/category/view/create_category.dart';
 import 'package:rentcost/features/product/view/detail_costum.dart';
 import 'package:rentcost/features/view/detail_history.dart';
 import 'package:rentcost/features/Authentication/ForgotPassword/view/forgot_password.dart';
-import 'package:rentcost/features/view/history_tenant.dart';
+import 'package:rentcost/features/History/view/history_tenant.dart';
 import 'package:rentcost/features/home/home.dart';
 import 'package:rentcost/features/Authentication/Login/view/login.dart';
-import 'package:rentcost/features/view/my_order.dart';
+import 'package:rentcost/features/History/view/my_order.dart';
 import 'package:rentcost/features/stores/view/my_rental.dart';
-import 'package:rentcost/features/view/payment.dart';
+import 'package:rentcost/features/payment/view/payment.dart';
 import 'package:rentcost/features/users/view/personal.dart';
 import 'package:rentcost/features/view/profile.dart';
 import 'package:rentcost/features/Authentication/Register/view/register.dart';
@@ -29,8 +27,6 @@ import 'package:rentcost/features/address/view/select_address.dart';
 import 'package:rentcost/features/stores/view/shop.dart';
 import 'package:rentcost/features/Authentication/ForgotPassword/view/verify_email.dart';
 import 'package:rentcost/features/banner/view/banner.dart';
-import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:rentcost/routes/navigation_bloc.dart';
 
 // import 'package:RentCost/features/view/shopping.dart';
@@ -88,7 +84,7 @@ GoRouter goRouter() {
     GoRoute(
         path: "/select_address",
         pageBuilder: (context, state) =>
-            const NoTransitionPage(child: SelectAddress())),
+            NoTransitionPage(child: SelectAddress())),
     GoRoute(
         path: "/add_address",
         pageBuilder: (context, state) =>
@@ -162,9 +158,21 @@ GoRouter goRouter() {
         pageBuilder: (context, state) =>
             const NoTransitionPage(child: CreateCategory())),
     GoRoute(
-        path: "/payment",
-        pageBuilder: (context, state) =>
-            const NoTransitionPage(child: Payment())),
+      path: "/payment",
+      pageBuilder: (context, state) {
+        final selectedProductIds =
+            state.uri.queryParameters['selectedProductIds'] ?? "";
+        final totalPriceString = state.uri.queryParameters['totalPrice'] ?? '';
+
+        // Pass data ke Payment widget
+        return NoTransitionPage(
+          child: Payment(
+            selectedProductIds: selectedProductIds,
+            totalPrice: totalPriceString,
+          ),
+        );
+      },
+    ),
     GoRoute(
         path: "/create-store",
         pageBuilder: (context, state) =>

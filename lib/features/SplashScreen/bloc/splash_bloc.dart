@@ -1,16 +1,12 @@
 import 'package:bloc/bloc.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:rentcost/config/config.dart';
 import 'package:rentcost/features/Authentication/Login/bloc/login_bloc.dart';
 import 'package:rentcost/features/Authentication/Login/bloc/login_state.dart';
 import 'package:rentcost/features/SplashScreen/bloc/splash_event.dart';
 import 'package:rentcost/features/SplashScreen/bloc/splash_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
-  final LoginBloc loginBloc;
-
-  SplashBloc({required this.loginBloc}) : super(SplashInitial()) {
+  SplashBloc() : super(SplashInitial()) {
     on<CheckTokenEvent>(_onCheckTokenEvent);
   }
 
@@ -20,9 +16,8 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
     try {
       // Cek token dari LoginBloc
-      final token = (loginBloc.state is LoginSuccess)
-          ? (loginBloc.state as LoginSuccess).token
-          : null;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
 
       if (token == null) {
         // Jika token tidak ada, navigasikan ke login

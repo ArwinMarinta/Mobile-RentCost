@@ -5,18 +5,15 @@ class ProductDetailModel {
   ProductDetailModel({required this.message, required this.data});
 
   factory ProductDetailModel.fromJson(Map<String, dynamic> json) {
-    // Pastikan ada key 'data' dan 'stock' sebelum diproses
     if (json['data'] == null) {
       throw Exception('Data tidak ditemukan dalam response');
     }
 
-    // Ambil daftar 'stock' dan pastikan jika null, default ke list kosong
     var stockList = json['data']['stock'] as List? ?? [];
 
     // Memetakan setiap item di stock menjadi objek Stock
     List<Stock> stockItems = stockList.map((i) => Stock.fromJson(i)).toList();
 
-    // Kembalikan model ProductDetailModel
     return ProductDetailModel(
       message: json['message'] ??
           'No message', // Default ke 'No message' jika tidak ada
@@ -28,12 +25,13 @@ class ProductDetailModel {
 class ProductData {
   int id;
   String productName;
-  int rate;
+  String rate;
   int price;
   String imageUrl;
   int rentalAmount;
   List<Stock> stock;
   Store store;
+  Category category;
 
   ProductData({
     required this.id,
@@ -44,6 +42,7 @@ class ProductData {
     required this.rentalAmount,
     required this.stock,
     required this.store,
+    required this.category,
   });
 
   factory ProductData.fromJson(
@@ -58,6 +57,7 @@ class ProductData {
       rentalAmount: json['rental_amount'] ?? 0,
       stock: stockItems,
       store: Store.fromJson(json['store'] ?? {}),
+      category: Category.fromJson(json['category'] ?? {}),
     );
   }
 }
@@ -93,10 +93,7 @@ class Size {
   final int id;
   final String sizeName;
 
-  Size({
-    required this.id,
-    required this.sizeName,
-  });
+  Size({required this.id, required this.sizeName});
 
   factory Size.fromJson(Map<String, dynamic> json) {
     return Size(
@@ -122,6 +119,26 @@ class Store {
       id: json['id'] ?? 0,
       storeName: json['store_name'] ?? 'Unknown',
       storeLocation: json['store_location'] ?? 'Unknown',
+    );
+  }
+}
+
+class Category {
+  final int id;
+  final String categoryName;
+  final String imageUrl;
+
+  Category({
+    required this.id,
+    required this.categoryName,
+    required this.imageUrl,
+  });
+
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['id'],
+      categoryName: json['category_name'],
+      imageUrl: json['image_url'],
     );
   }
 }

@@ -5,6 +5,8 @@ abstract class StoreEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class StoreClear extends StoreEvent {}
+
 class StoreCreate extends StoreEvent {
   final String store_name;
   final String store_location;

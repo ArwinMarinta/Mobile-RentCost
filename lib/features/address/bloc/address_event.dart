@@ -12,6 +12,16 @@ class AddressRequest extends AddressEvent {
   List<Object> get props => [];
 }
 
+class AddressClear extends AddressEvent {}
+
+class AddressDeleteRequest extends AddressEvent {
+  final String id;
+  AddressDeleteRequest({required this.id});
+
+  @override
+  List<Object> get props => [id];
+}
+
 class CreateAddress extends AddressEvent {
   final String username;
   final String phone_number;
@@ -40,4 +50,12 @@ class RequestAddress extends AddressEvent {
 
   @override
   List<Object> get props => [];
+}
+
+class ShippingAddressUpdate extends AddressEvent {
+  final String id;
+  ShippingAddressUpdate({required this.id});
+
+  @override
+  List<Object> get props => [id];
 }
