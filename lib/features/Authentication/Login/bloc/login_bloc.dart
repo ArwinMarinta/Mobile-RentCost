@@ -28,8 +28,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (response.statusCode == 201) {
         final data = jsonDecode(response.body);
         final accessToken = data['data']['access_token'];
+        // final expiryTime =
+        //     DateTime.now().add(Duration(seconds: 3600)).millisecondsSinceEpoch;
+
+        // final expiryTime =
+        //     DateTime.now().add(Duration(seconds: 30)).millisecondsSinceEpoch;
 
         final prefs = await SharedPreferences.getInstance();
+        // await prefs.setInt('token_expiry_time', expiryTime);
         await prefs.setString('access_token', accessToken);
         emit(LoginSuccess(message: "Login berhasil"));
       } else {
